@@ -1,0 +1,99 @@
+﻿@using DK.Framework.Models;
+@using DK.Framework.Services;
+@using DK.Web.DependencyResolution;
+@{
+    var userService = IoC.Container.GetInstance<IfwUserService>();
+    var listMenu = userService.CurrentUser == null ? new List<fwMenu>() : IoC.Container.GetInstance<IfwMenuService>().GetList(userService.CurrentUser.ID).ToList().Where(m => m.Area == (string)ViewContext.RouteData.DataTokens["area"]);
+}
+<div class="col-md-3 left_col">
+    <div class="left_col scroll-view">
+        <div class="navbar nav_title" style="border: 0;">
+            <a href="/" class="site_title"><span>Trường Quân sự QN</span></a>
+        </div>
+        <div class="clearfix"></div>
+        <!-- menu profile quick info -->
+        <div class="profile">
+            <div class="profile_pic">
+                <img src="/Content/images/img.jpg" alt="..." class="img-circle profile_img">
+            </div>
+            <div class="profile_info">
+                <span> &nbsp;</span>
+                <h2>&nbsp;</h2>
+            </div>
+        </div>
+        <!-- /menu profile quick info -->
+        <br /><br />
+        <!-- sidebar menu -->
+        <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+            <div class="menu_section">
+                <h3> &nbsp;</h3>
+                <ul class="nav side-menu">
+                    @foreach (var item in listMenu.Where(m => m.ParentID == 0))
+                    {
+                        var listChild = listMenu.Where(m => m.ParentID == item.ID).ToList();
+                        <li>
+                            <a @(listChild.Count > 0 ? null : ("href=" + item.Url))>
+                                <i class="@item.Icon"></i> @item.Title
+                                @if (listChild.Count > 0)
+                                {
+                                    <span class="fa fa-chevron-down"></span>
+                                }
+                            </a>
+                            @if (listChild.Count > 0)
+                            {
+                                <ul class="nav child_menu">
+                                    @foreach (var itemChild in listChild)
+                                    {
+                                        <li>
+                                            <a href="@itemChild.Url" data-href="@itemChild.SubAction">  @itemChild.Title</a>
+                                        </li>
+                                    }
+                                </ul>
+                            }
+
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+        <!-- /sidebar menu -->
+        <!-- /menu footer buttons -->
+        <div class="sidebar-footer hidden-small">
+            <a data-toggle="tooltip" data-placement="top" title="Settings">
+                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+            </a>
+            <a data-toggle="tooltip" data-placement="top" title="FullScreen" onclick="maxWindow();">
+                <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
+            </a>
+            <a href="@Url.Action("Logout", "Account")" data-toggle="tooltip" data-placement="top" title="Lock">
+                <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
+            </a>
+            <a href="@Url.Action("Logout", "Account")" data-toggle="tooltip" data-placement="top" title="Logout">
+                <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+            </a>
+        </div>
+        <script type="text/javascript">
+
+            function maxWindow() {
+                var el = document.documentElement
+    , rfs = // for newer Webkit and Firefox
+           el.requestFullScreen
+        || el.webkitRequestFullScreen
+        || el.mozRequestFullScreen
+        || el.msRequestFullscreen
+                ;
+                if (typeof rfs != "undefined" && rfs) {
+                    rfs.call(el);
+                } else if (typeof window.ActiveXObject != "undefined") {
+                    // for Internet Explorer
+                    var wscript = new ActiveXObject("WScript.Shell");
+                    if (wscript != null) {
+                        wscript.SendKeys("{F11}");
+                    }
+                }
+            }
+
+        </script>
+        <!-- /menu footer buttons -->
+    </div>
+</div>

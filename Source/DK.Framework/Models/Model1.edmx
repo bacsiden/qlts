@@ -1,0 +1,471 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="developtestModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Book">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="500" />
+          <Property Name="TomTat" Type="nvarchar" MaxLength="500" />
+          <Property Name="TacGia" Type="nvarchar" MaxLength="50" />
+          <Property Name="NXB" Type="nvarchar" MaxLength="50" />
+          <Property Name="NamXuatBan" Type="int" />
+          <Property Name="SoThuVien" Type="nvarchar" MaxLength="50" />
+          <Property Name="DoMat" Type="nvarchar" MaxLength="50" />
+          <Property Name="NgayNhap" Type="date" />
+          <Property Name="NguoiNhap" Type="nvarchar" MaxLength="50" />
+          <Property Name="ViTri" Type="nvarchar" MaxLength="200" />
+          <Property Name="Quantity" Type="int" Nullable="false" />
+          <Property Name="Deleted" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="BookBorrow">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BookID" Type="int" Nullable="false" />
+          <Property Name="NgayMuon" Type="date" Nullable="false" />
+          <Property Name="NguoiMuon" Type="nvarchar" MaxLength="50" />
+          <Property Name="DonVi" Type="nvarchar" MaxLength="50" />
+          <Property Name="SDT" Type="nvarchar" MaxLength="50" />
+          <Property Name="NgayHenTra" Type="date" />
+          <Property Name="NgayTra" Type="date" />
+          <Property Name="DaTra" Type="bit" Nullable="false" />
+          <Property Name="Note" Type="nvarchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="Certificate">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="Type" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="StudentID" Type="int" Nullable="false" />
+          <Property Name="DOB" Type="date" Nullable="false" />
+          <Property Name="ChucVu" Type="nvarchar" MaxLength="100" />
+          <Property Name="DonViCongTac" Type="nvarchar" MaxLength="100" />
+          <Property Name="QueQuan" Type="nvarchar" MaxLength="100" />
+          <Property Name="FromDate" Type="date" Nullable="false" />
+          <Property Name="ToDate" Type="date" Nullable="false" />
+          <Property Name="XepLoai" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="NgayKi" Type="date" />
+          <Property Name="NguoiKi" Type="nvarchar" MaxLength="50" />
+          <Property Name="SoHieu" Type="int" />
+          <Property Name="SoVaoSo" Type="int" />
+          <Property Name="ClassID" Type="int" Nullable="false" />
+          <Property Name="Deleted" Type="bit" Nullable="false" />
+          <Property Name="FullName" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Class">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Khoa" Type="int" Nullable="false" />
+          <Property Name="GiaoVien" Type="nvarchar" MaxLength="50" />
+          <Property Name="Ended" Type="bit" Nullable="false" />
+          <Property Name="StartDate" Type="date" />
+          <Property Name="EndDate" Type="date" />
+          <Property Name="ThoiGianDaoTao" Type="int" />
+          <Property Name="Year" Type="int" />
+          <Property Name="Deleted" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Student">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FullName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="50" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="NguyenQuan" Type="nvarchar" MaxLength="500" />
+          <Property Name="TruQuan" Type="nvarchar" MaxLength="500" />
+          <Property Name="CapBac" Type="nvarchar" MaxLength="50" />
+          <Property Name="NgayNhapNgu" Type="nvarchar" MaxLength="500" />
+          <Property Name="ChucVu" Type="nvarchar" MaxLength="50" />
+          <Property Name="DonVi" Type="nvarchar" MaxLength="200" />
+          <Property Name="NgayVaoDang" Type="nvarchar" MaxLength="200" />
+          <Property Name="QuaTruong" Type="nvarchar" MaxLength="200" />
+          <Property Name="TrinhDoVanHoa" Type="nvarchar" MaxLength="50" />
+          <Property Name="SucKhoe" Type="nvarchar" MaxLength="50" />
+          <Property Name="GiaDinh" Type="nvarchar" MaxLength="50" />
+          <Property Name="DanToc" Type="nvarchar" MaxLength="200" />
+          <Property Name="TonGiao" Type="nvarchar" MaxLength="50" />
+          <Property Name="ThanhPhanGiaDinh" Type="nvarchar" MaxLength="500" />
+          <Property Name="SDT" Type="varchar" MaxLength="50" />
+          <Property Name="SDTGiaDinh" Type="nvarchar" MaxLength="50" />
+          <Property Name="GhiChu" Type="nvarchar" MaxLength="500" />
+          <Property Name="Deleted" Type="bit" Nullable="false" />
+          <Property Name="BirthDate" Type="date" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_BookBorrow_Book">
+          <End Role="Book" Type="Self.Book" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="BookBorrow" Type="Self.BookBorrow" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Book">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="BookBorrow">
+              <PropertyRef Name="BookID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Certificate_Class">
+          <End Role="Class" Type="Self.Class" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Certificate" Type="Self.Certificate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Class">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Certificate">
+              <PropertyRef Name="ClassID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Certificate_Student">
+          <End Role="Student" Type="Self.Student" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Certificate" Type="Self.Certificate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Certificate">
+              <PropertyRef Name="StudentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="developtestModelStoreContainer">
+          <EntitySet Name="Book" EntityType="Self.Book" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BookBorrow" EntityType="Self.BookBorrow" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Certificate" EntityType="Self.Certificate" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Class" EntityType="Self.Class" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Student" EntityType="Self.Student" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_BookBorrow_Book" Association="Self.FK_BookBorrow_Book">
+            <End Role="Book" EntitySet="Book" />
+            <End Role="BookBorrow" EntitySet="BookBorrow" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Certificate_Class" Association="Self.FK_Certificate_Class">
+            <End Role="Class" EntitySet="Class" />
+            <End Role="Certificate" EntitySet="Certificate" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Certificate_Student" Association="Self.FK_Certificate_Student">
+            <End Role="Student" EntitySet="Student" />
+            <End Role="Certificate" EntitySet="Certificate" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="developtestModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Certificate">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="StudentID" Type="Int32" Nullable="false" />
+          <Property Name="DOB" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="ChucVu" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="DonViCongTac" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="QueQuan" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="FromDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="ToDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="XepLoai" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NgayKi" Type="DateTime" Precision="0" />
+          <Property Name="NguoiKi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SoHieu" Type="Int32" />
+          <Property Name="SoVaoSo" Type="Int32" />
+          <Property Name="ClassID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Class" Relationship="Self.FK_Certificate_Class" FromRole="Certificate" ToRole="Class" />
+          <NavigationProperty Name="Student" Relationship="Self.FK_Certificate_Student" FromRole="Certificate" ToRole="Student" />
+          <Property Name="Deleted" Type="Boolean" Nullable="false" />
+          <Property Name="FullName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Class">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Khoa" Type="Int32" Nullable="false" />
+          <Property Name="GiaoVien" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Ended" Type="Boolean" Nullable="false" />
+          <Property Name="StartDate" Type="DateTime" Precision="0" />
+          <Property Name="EndDate" Type="DateTime" Precision="0" />
+          <Property Name="ThoiGianDaoTao" Type="Int32" />
+          <Property Name="Year" Type="Int32" />
+          <Property Name="Deleted" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Certificate" Relationship="Self.FK_Certificate_Class" FromRole="Class" ToRole="Certificate" />
+        </EntityType>
+        <EntityType Name="Student">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FullName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NguyenQuan" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="TruQuan" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="CapBac" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NgayNhapNgu" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ChucVu" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DonVi" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="NgayVaoDang" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="QuaTruong" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="TrinhDoVanHoa" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SucKhoe" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="GiaDinh" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DanToc" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="TonGiao" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ThanhPhanGiaDinh" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="SDT" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="SDTGiaDinh" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="GhiChu" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Deleted" Type="Boolean" Nullable="false" />
+          <Property Name="BirthDate" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="Certificate" Relationship="Self.FK_Certificate_Student" FromRole="Student" ToRole="Certificate" />
+        </EntityType>
+        <Association Name="FK_Certificate_Class">
+          <End Role="Class" Type="Self.Class" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Certificate" Type="Self.Certificate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Class">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Certificate">
+              <PropertyRef Name="ClassID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Certificate_Student">
+          <End Role="Student" Type="Self.Student" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Certificate" Type="Self.Certificate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Certificate">
+              <PropertyRef Name="StudentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="developtestEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Certificate" EntityType="Self.Certificate" />
+          <EntitySet Name="Class" EntityType="Self.Class" />
+          <EntitySet Name="Student" EntityType="Self.Student" />
+          <AssociationSet Name="FK_Certificate_Class" Association="Self.FK_Certificate_Class">
+            <End Role="Class" EntitySet="Class" />
+            <End Role="Certificate" EntitySet="Certificate" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Certificate_Student" Association="Self.FK_Certificate_Student">
+            <End Role="Student" EntitySet="Student" />
+            <End Role="Certificate" EntitySet="Certificate" />
+          </AssociationSet>
+          <EntitySet Name="Book" EntityType="developtestModel.Book" />
+          <EntitySet Name="BookBorrow" EntityType="developtestModel.BookBorrow" />
+          <AssociationSet Name="FK_BookBorrow_Book" Association="developtestModel.FK_BookBorrow_Book">
+            <End Role="Book" EntitySet="Book" />
+            <End Role="BookBorrow" EntitySet="BookBorrow" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Book">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="TomTat" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="TacGia" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NXB" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NamXuatBan" Type="Int32" />
+          <Property Name="SoThuVien" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DoMat" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NgayNhap" Type="DateTime" Precision="0" />
+          <Property Name="NguoiNhap" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ViTri" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <Property Name="Deleted" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="BookBorrow" Relationship="developtestModel.FK_BookBorrow_Book" FromRole="Book" ToRole="BookBorrow" />
+        </EntityType>
+        <EntityType Name="BookBorrow">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BookID" Type="Int32" Nullable="false" />
+          <Property Name="NgayMuon" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="NguoiMuon" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DonVi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SDT" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NgayHenTra" Type="DateTime" Precision="0" />
+          <Property Name="NgayTra" Type="DateTime" Precision="0" />
+          <Property Name="DaTra" Type="Boolean" Nullable="false" />
+          <Property Name="Note" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Book" Relationship="developtestModel.FK_BookBorrow_Book" FromRole="BookBorrow" ToRole="Book" />
+        </EntityType>
+        <Association Name="FK_BookBorrow_Book">
+          <End Type="developtestModel.Book" Role="Book" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="developtestModel.BookBorrow" Role="BookBorrow" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Book">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="BookBorrow">
+              <PropertyRef Name="BookID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="developtestModelStoreContainer" CdmEntityContainer="developtestEntities">
+          <EntitySetMapping Name="Certificate">
+            <EntityTypeMapping TypeName="developtestModel.Certificate">
+              <MappingFragment StoreEntitySet="Certificate">
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="StudentID" ColumnName="StudentID" />
+                <ScalarProperty Name="DOB" ColumnName="DOB" />
+                <ScalarProperty Name="ChucVu" ColumnName="ChucVu" />
+                <ScalarProperty Name="DonViCongTac" ColumnName="DonViCongTac" />
+                <ScalarProperty Name="QueQuan" ColumnName="QueQuan" />
+                <ScalarProperty Name="FromDate" ColumnName="FromDate" />
+                <ScalarProperty Name="ToDate" ColumnName="ToDate" />
+                <ScalarProperty Name="XepLoai" ColumnName="XepLoai" />
+                <ScalarProperty Name="NgayKi" ColumnName="NgayKi" />
+                <ScalarProperty Name="NguoiKi" ColumnName="NguoiKi" />
+                <ScalarProperty Name="SoHieu" ColumnName="SoHieu" />
+                <ScalarProperty Name="SoVaoSo" ColumnName="SoVaoSo" />
+                <ScalarProperty Name="ClassID" ColumnName="ClassID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Class">
+            <EntityTypeMapping TypeName="developtestModel.Class">
+              <MappingFragment StoreEntitySet="Class">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Khoa" ColumnName="Khoa" />
+                <ScalarProperty Name="GiaoVien" ColumnName="GiaoVien" />
+                <ScalarProperty Name="Ended" ColumnName="Ended" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="ThoiGianDaoTao" ColumnName="ThoiGianDaoTao" />
+                <ScalarProperty Name="Year" ColumnName="Year" />
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Student">
+            <EntityTypeMapping TypeName="developtestModel.Student">
+              <MappingFragment StoreEntitySet="Student">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="NguyenQuan" ColumnName="NguyenQuan" />
+                <ScalarProperty Name="TruQuan" ColumnName="TruQuan" />
+                <ScalarProperty Name="CapBac" ColumnName="CapBac" />
+                <ScalarProperty Name="NgayNhapNgu" ColumnName="NgayNhapNgu" />
+                <ScalarProperty Name="ChucVu" ColumnName="ChucVu" />
+                <ScalarProperty Name="DonVi" ColumnName="DonVi" />
+                <ScalarProperty Name="NgayVaoDang" ColumnName="NgayVaoDang" />
+                <ScalarProperty Name="QuaTruong" ColumnName="QuaTruong" />
+                <ScalarProperty Name="TrinhDoVanHoa" ColumnName="TrinhDoVanHoa" />
+                <ScalarProperty Name="SucKhoe" ColumnName="SucKhoe" />
+                <ScalarProperty Name="GiaDinh" ColumnName="GiaDinh" />
+                <ScalarProperty Name="DanToc" ColumnName="DanToc" />
+                <ScalarProperty Name="TonGiao" ColumnName="TonGiao" />
+                <ScalarProperty Name="ThanhPhanGiaDinh" ColumnName="ThanhPhanGiaDinh" />
+                <ScalarProperty Name="SDT" ColumnName="SDT" />
+                <ScalarProperty Name="SDTGiaDinh" ColumnName="SDTGiaDinh" />
+                <ScalarProperty Name="GhiChu" ColumnName="GhiChu" />
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+                <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Book">
+            <EntityTypeMapping TypeName="developtestModel.Book">
+              <MappingFragment StoreEntitySet="Book">
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="ViTri" ColumnName="ViTri" />
+                <ScalarProperty Name="NguoiNhap" ColumnName="NguoiNhap" />
+                <ScalarProperty Name="NgayNhap" ColumnName="NgayNhap" />
+                <ScalarProperty Name="DoMat" ColumnName="DoMat" />
+                <ScalarProperty Name="SoThuVien" ColumnName="SoThuVien" />
+                <ScalarProperty Name="NamXuatBan" ColumnName="NamXuatBan" />
+                <ScalarProperty Name="NXB" ColumnName="NXB" />
+                <ScalarProperty Name="TacGia" ColumnName="TacGia" />
+                <ScalarProperty Name="TomTat" ColumnName="TomTat" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BookBorrow">
+            <EntityTypeMapping TypeName="developtestModel.BookBorrow">
+              <MappingFragment StoreEntitySet="BookBorrow">
+                <ScalarProperty Name="Note" ColumnName="Note" />
+                <ScalarProperty Name="DaTra" ColumnName="DaTra" />
+                <ScalarProperty Name="NgayTra" ColumnName="NgayTra" />
+                <ScalarProperty Name="NgayHenTra" ColumnName="NgayHenTra" />
+                <ScalarProperty Name="SDT" ColumnName="SDT" />
+                <ScalarProperty Name="DonVi" ColumnName="DonVi" />
+                <ScalarProperty Name="NguoiMuon" ColumnName="NguoiMuon" />
+                <ScalarProperty Name="NgayMuon" ColumnName="NgayMuon" />
+                <ScalarProperty Name="BookID" ColumnName="BookID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

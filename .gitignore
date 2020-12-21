@@ -1,0 +1,19 @@
+Military/packages/
+Source/DK.Web/bin/
+Source/DK.Web/obj/
+Source/.vs/config/applicationhost.config
+Source/packages/
+Source/DK.Services/obj/
+Source/DK.Services/bin/
+Source/DK.Services.Specs/obj/
+Source/DK.Web.Specs/obj/
+Source/DK.Services.Specs/bin/
+Source/DK.Web.Specs/bin/
+Source/DK.Application/bin/
+Source/DK.Application/obj/
+Source/.vs/DK/v14/.suo
+~$Military Design.xlsx
+From Customer/~$ch HL SQDB Khóa XI. 2017.doc
+Source/DK.Framework/obj/
+Source/DK.Framework/bin/
+publish/
