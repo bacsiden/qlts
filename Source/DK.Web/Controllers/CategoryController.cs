@@ -24,7 +24,7 @@ namespace DK.Web.Controllers
             var list = _typeRepository.Find(m => m.Name == id).ToList();
             if (list.Count == 0)
             {
-                list.Add(new Application.Models.Type());
+                list = Enumerable.Repeat(new Application.Models.Type(), 3).ToList();
             }
             return View(list);
         }
@@ -51,7 +51,8 @@ namespace DK.Web.Controllers
             }
             catch
             {
-                return View();
+                var listTypes = Enumerable.Repeat(new Application.Models.Type(), 3).ToList();
+                return View(listTypes);
             }
         }
     }

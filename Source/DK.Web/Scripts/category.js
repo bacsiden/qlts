@@ -1,10 +1,42 @@
-﻿$(document).ready(function () {
+﻿var key = {
+    enter: 13,
+    tab: 9,
+    up: 38,
+    down: 40
+}
+
+$(document).ready(function () {
     $(document).on('keydown', '#post-data input.table-text-box', function (e) {
         var keyCode = e.keyCode || e.which;
-        if (keyCode === 13 || keyCode === 9) {
-            var next = $(e).closest('tr').next();
-            if (next.length === 0) addRow();
+        if (keyCode === key.enter) {
+            if (e.shiftKey) {
+                focusUp(e.target);
+                return false;
+            }
+
+            if (shouldAddRow(e.target)) {
+                addRow();
+            } else {
+                focusDown(e.target);
+            }
             return false;
+        }
+
+        if (keyCode === key.tab && shouldAddRow(e.target)) {
+            if (e.shiftKey) {
+                focusUp(e.target);
+            } else {
+                addRow();
+                return false;
+            }
+        }
+
+        if (keyCode === key.up) {
+            focusUp(e.target);
+        }
+
+        if (keyCode === key.down) {
+            focusDown(e.target);
         }
     });
 })
@@ -19,13 +51,18 @@ function beforeSubmit() {
             i++;
         }
     });
+
+    if (!result) {
+        $('#post-data tr:last input').focus();
+        return false;
+    }
+
     $("#inputElement").html(result);
     return true;
 }
 
 function addRow() {
     var row = $('#post-data tr:last').html();
-    var tlast = $('#post-data tr:last input:first').val();
     $('#post-data tr:last').after('<tr>' + row + '</tr>');
     $('#post-data tr:last input').val('');
 
@@ -41,6 +78,20 @@ function addRow() {
 }
 
 function onChange(e) {
+    if (shouldAddRow(e)) {
+        addRow();
+    }
+}
+
+function shouldAddRow(e) {
     var next = $(e).closest('tr').next();
-    if (next.length === 0) addRow();
+    return next.length === 0;
+}
+
+function focusUp(e) {
+    $(e).parents("tr").prev().find("input").focus();
+}
+
+function focusDown(e) {
+    $(e).parents("tr").next().find("input").focus();
 }

@@ -15,27 +15,58 @@
                             foreach (var item in Model)
                             {
                                 <tr class="stat even">
-                                    <td class="ac stt">
+                                    <td class="ac stt text-center">
                                         @(stt++)
                                     </td>
-                                    <td>
-                                        <input class="table-text-box" placeholder="Nhập tên..." onchange="onChange(this)" type="text" value="@item.Title" />
+                                    <td class="pl-0">
+                                        <input class="table-text-box form-control" placeholder="Nhập tên @ViewBag.Title.ToLower()..." onchange="onChange(this)" type="text" value="@item.Title" />
                                     </td>
                                 </tr>
                             }
                         }
                     </table>
                 </div>
-                <div class="col-md-12">
+                <div class="col-md-12 mt-3 mb-2">
                     <a href="javascript:void(0)" onclick="addRow()"><i class="icon ion-ios-plus"> </i>Thêm dòng</a>
                 </div>
                 <div id="inputElement"></div>
             </div>
-            <button class="btn btn-primary" onclick="return beforeSubmit();" type="submit">Lưu</button>
+            <button class="btn btn-primary mt-2" onclick="return beforeSubmit();" type="submit">Lưu</button>
         </form>
     </div>
 </div>
 
+@section Styles {
+    <style>
+        #post-data td {
+            padding-top: 0px;
+            padding-bottom: 0px;
+        }
+        td.ac.stt {
+            width: 50px;
+            vertical-align: middle;
+        }
+
+        td input.form-control {
+            border: none;
+        }
+    </style>
+}
+
 @section Scripts {
     <script src="~/Scripts/category.js"></script>
+    <script>
+        $(document).ready(function () {
+            reActiveMenu();
+            $('#post-data tr:first input').focus();
+        })
+
+        function reActiveMenu() {
+            $("#LeftMenu a").each((_, item) => {
+                if ($(item).attr('href').indexOf('@Html.Raw(ViewBag.Name)') === -1) {
+                    $(item).removeClass('active');
+                }
+            });
+        }
+    </script>
 }
