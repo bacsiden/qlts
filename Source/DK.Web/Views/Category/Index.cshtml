@@ -1,0 +1,41 @@
+﻿@model IEnumerable<DK.Application.Models.Type>
+@{
+    ViewBag.Title = ViewBag.Name;
+}
+
+<div class="row mt-2">
+    <div class="col-12">
+        <form method="post">
+            <div class="card shadow-base bd-0">
+                <div class="table-responsive" id="post-data">
+                    <table class="table mg-b-0" cellspacing="0">
+                        @if (Model != null)
+                        {
+                            var stt = 1;
+                            foreach (var item in Model)
+                            {
+                                <tr class="stat even">
+                                    <td class="ac stt">
+                                        @(stt++)
+                                    </td>
+                                    <td>
+                                        <input class="table-text-box" placeholder="Nhập tên..." onchange="onChange(this)" type="text" value="@item.Title" />
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </table>
+                </div>
+                <div class="col-md-12">
+                    <a href="javascript:void(0)" onclick="addRow()"><i class="icon ion-ios-plus"> </i>Thêm dòng</a>
+                </div>
+                <div id="inputElement"></div>
+            </div>
+            <button class="btn btn-primary" onclick="return beforeSubmit();" type="submit">Lưu</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/Scripts/category.js"></script>
+}

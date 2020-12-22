@@ -20,5 +20,7 @@ namespace DK.Application.Models
         public bool IsSubmenu { get; set; }
 
         public Guid ParentId { get; set; }
+
+        public static List<string> MenuCategories = new List<string> { "Chủng loại", "Danh mục", "Nguồn kinh phí", "Chất lượng" };
     }
 }

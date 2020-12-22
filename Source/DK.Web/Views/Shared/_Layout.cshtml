@@ -6,25 +6,20 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>@ViewBag.Title </title>
-    <!-- Bootstrap -->
-    <link href="/Content/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link href="/Content/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-    <!-- NProgress -->
-    <link href="/Content/nprogress/nprogress.css" rel="stylesheet">
-    <!-- iCheck -->
-    <link href="/Content/iCheck/skins/flat/green.css" rel="stylesheet">
-    <!-- bootstrap-progressbar -->
-    <link href="/Content/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
-    <link href="~/Content/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css" rel="stylesheet" />
-    <link href="/Content/select2/dist/css/select2.min.css" rel="stylesheet">
-    <link href="~/Content/switchery/dist/switchery.min.css" rel="stylesheet" />
-    <link href="~/Content/PagedList.css" rel="stylesheet" />
-    <link href="/Content/build/css/custom.css" rel="stylesheet">
-    <link href="~/Content/PagedList.css" rel="stylesheet" />
-    <link href="~/Content/Site.css" rel="stylesheet" />
-    <link href="~/Content/jquery-ui/jquery-ui.css" rel="stylesheet" />
+    <title>@ViewBag.Title</title>
+
+    <!-- vendor css -->
+    <link href="@Url.Content("~/Content/lib/font-awesome/css/font-awesome.css")" rel="stylesheet">
+    <link href="@Url.Content("~/Content/lib/Ionicons/css/ionicons.css")" rel="stylesheet">
+    <link href="@Url.Content("~/Content/lib/perfect-scrollbar/css/perfect-scrollbar.css")" rel="stylesheet">
+    <link href="@Url.Content("~/Content/lib/jquery-switchbutton/jquery.switchButton.css")" rel="stylesheet">
+    <link href="@Url.Content("~/Content/lib/rickshaw/rickshaw.min.css")" rel="stylesheet">
+    <link href="@Url.Content("~/Content/lib/select2/css/select2.min.css")" rel="stylesheet">
+
+    <!-- Bracket CSS -->
+    <link rel="stylesheet" href="@Url.Content("~/Content/bracket.css")">
+    <link rel="stylesheet" href="@Url.Content("~/Content/site.css")">
+
     @RenderSection("styles", required: false)
     <style>
         .message-success {
@@ -40,120 +35,156 @@
         }
     </style>
 </head>
-<body class="nav-md">
-    <div class="container body">
-        <div class="main_container">
-            @Html.Partial("_MenuLeft")
-            <!-- top navigation -->
-            <div class="top_nav">
-                <div class="nav_menu">
-                    <nav>
-                        <div class="nav toggle">
-                            <a id="menu_toggle"><i class="fa fa-bars"></i></a>
-                        </div>
-                        <ul class="nav navbar-nav navbar-right">
-                            <li class="">
-                                <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                    <img src="/Content/images/user.png" alt="">@(DK.Web.DependencyResolution.IoC.Container.GetInstance<DK.Framework.Services.IfwUserService>().CurrentUser.Name)
-                                        <span class="fa fa-angle-down"></span>
-                                </a>
-                                <ul class="dropdown-menu dropdown-usermenu pull-right">
-                                    @*<li><a href="javascript:;"> Profile</a></li>
-                                        <li>
-                                            <a href="javascript:;">
-                                                <span class="badge bg-red pull-right">50%</span>
-                                                <span>Settings</span>
-                                            </a>
-                                        </li>
-                                        <li><a href="javascript:;">Help</a></li>*@
-                                    <li><a href="/Weblib/ChangePassword"><i class="fa fa-send-o pull-right"></i> Đổi mật khẩu</a></li>
-                                    <li><a href="/Account/Logout"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-
-            </div>
-            <!-- /top navigation -->
-            <!-- page content -->
-            <div class="right_col" role="main">
-                @if (DK.Framework.SessionUtilities.Get(Constant.SESSION_MessageSuccess) != null)
-                {
-                    <div class="col-md-12 col-sm-12 col-xs-12 bg-success">@DK.Framework.SessionUtilities.Get(Constant.SESSION_MessageSuccess)</div>
-                    DK.Framework.SessionUtilities.Remove(Constant.SESSION_MessageSuccess);
-                }
-                @if (DK.Framework.SessionUtilities.Get(Constant.SESSION_MessageError) != null)
-                {
-                    <div class="col-md-12 col-sm-12 col-xs-12 bg-danger">@DK.Framework.SessionUtilities.Get(Constant.SESSION_MessageError)</div>
-                    DK.Framework.SessionUtilities.Remove(Constant.SESSION_MessageError);
-                }
-                <!-- top tiles -->
-                @RenderBody()
-            </div>
-            <!-- /page content -->
-            <!-- footer content -->
-            <footer>
-                <div class="pull-right">
-                    Bản quyền thuộc Bộ chỉ huy quân sự tỉnh Quảng Ninh</a>
-                </div>
-                <div class="clearfix"></div>
-            </footer>
-            <!-- /footer content -->
+<body>
+    <!-- ########## START: LEFT PANEL ########## -->
+    <div class="br-logo">
+        <div class="text-center w-100">
+            <a href="/">
+                @*<img src="~/Images/logo.png" alt="@ViewBag.HeadTitle" class="logo-image">*@
+                <span>QL TÀI SẢN</span>
+            </a>
         </div>
     </div>
+    <div class="br-sideleft overflow-y-auto">
+        <div class="br-sideleft-menu pt-3" id="LeftMenu">
+            @Html.Partial("_MenuLeft")
+        </div><!-- br-sideleft-menu -->
+    </div><!-- info-lst -->
+    <!-- ########## END: LEFT PANEL ########## -->
+    <!-- ########## START: HEAD PANEL ########## -->
+    <div class="br-header">
+        <div class="br-header-left">
+            <div class="navicon-left hidden-md-down"><a id="btnLeftMenu" href=""><i class="icon ion-navicon-round"></i></a></div>
+            <div class="navicon-left hidden-lg-up"><a id="btnLeftMenuMobile" href=""><i class="icon ion-navicon-round"></i></a></div>
+        </div><!-- br-header-left -->
+        <div>
+            @RenderSection("Factory", false)
+        </div>
+        <div class="br-header-right">
+            <nav class="nav">
+                <div class="dropdown">
+                    @Html.Partial("_LoginPartial")
+                </div><!-- dropdown -->
+            </nav>
+        </div><!-- br-header-right -->
+    </div><!-- br-header -->
+    <!-- ########## END: HEAD PANEL ########## -->
+    <!-- ########## START: MAIN PANEL ########## -->
+    <div class="br-mainpanel">
+        <div class="pd-x-30 pd-t-30">
+            @RenderSection("Button", required: false)
+            <h4 class="tx-gray-800 mg-b-5 panel-title">@ViewBag.Title</h4>
+        </div>
+        <div class="br-pagebody mg-t-5 pd-x-30">
+            @RenderBody()
+        </div><!-- br-pagebody -->
+        <footer class="br-footer">
+            <div class="footer-left">
+                <div class="mg-b-2">Copyright &copy; 2020. @ViewBag.HeadTitle. All Rights Reserved.</div>
+            </div>
+        </footer>
+    </div><!-- br-mainpanel -->
+    <!-- ########## END: MAIN PANEL ########## -->
+    <!-- Modal Default -->
+    <div class="modal fade" id="modalDefault" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+    </div>
+
     <div class="modal fade  bs-example-modal-lg" id="GeneralModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
          aria-hidden="true">
     </div>
-    <!-- jQuery -->
-    <script src="~/Scripts/dist/jquery.js"></script>
-    <script src="~/Content/jquery-ui/jquery-ui.js"></script>
-    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
-    <!-- Bootstrap -->
-    <script src="/Content/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="~/Content/bootstrap-datetimepicker/moment.min.js"></script>
-    <script src="~/Content/bootstrap-datetimepicker/moment-with-locales.min.js"></script>
-    <script src="~/Content/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script>
-    <!-- FastClick -->
-    <script src="/Content/fastclick/lib/fastclick.js"></script>
-    <!-- NProgress -->
-    <script src="/Content/nprogress/nprogress.js"></script>
-    <!-- Chart.js -->
-    <script src="/Content/Chart.js/dist/Chart.min.js"></script>
-    <!-- gauge.js -->
-    <script src="/Content/gauge.js/dist/gauge.min.js"></script>
-    <!-- bootstrap-progressbar -->
-    <script src="/Content/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
-    <!-- iCheck -->
-    <script src="~/Content/iCheck/icheck.min.js"></script>
-    <script src="~/Content/switchery/dist/switchery.min.js"></script>
-    <!-- Skycons -->
-    <script src="/Content/skycons/skycons.js"></script>
-    <!-- Flot -->
-    <script src="/Content/Flot/jquery.flot.js"></script>
-    <script src="/Content/Flot/jquery.flot.pie.js"></script>
-    <script src="/Content/Flot/jquery.flot.time.js"></script>
-    <script src="/Content/Flot/jquery.flot.stack.js"></script>
-    <script src="/Content/Flot/jquery.flot.resize.js"></script>
-    <!-- Flot plugins -->
-    <script src="/Content/flot.orderbars/js/jquery.flot.orderBars.js"></script>
-    <script src="/Content/flot-spline/js/jquery.flot.spline.min.js"></script>
-    <script src="/Content/flot.curvedlines/curvedLines.js"></script>
-    <!-- DateJS -->
-    @*<script src="/Content/DateJS/build/date.js"></script>*@
-    <!-- bootstrap-daterangepicker -->
-    <script src="/Content/js/moment/moment.min.js"></script>
-    <script src="/Content/js/datepicker/daterangepicker.js"></script>
-    <script src="/Content/select2/dist/js/select2.full.min.js"></script>
-    <!-- Custom Theme Scripts -->
-    <script src="/Content/build/js/custom.min.js"></script>
-    <script src="~/Content/js/unsaved.js"></script>
-    <script src="~/Content/js/common.js"></script>
-    @RenderSection("scripts", required: false)
-    @RenderSection("autocomplete", required: false)
-    <script src="~/Scripts/DK.js"></script>
+
     <script>
-        DK.init();
+        var iclassic = {
+            currentLink: "@ViewContext.RouteData.Values["controller"]/@ViewContext.RouteData.Values["action"]"
+        };
     </script>
+
+    <script src="~/Content/lib/jquery/jquery.js"></script>
+    <script src="~/Content/lib/popper.js/popper.js"></script>
+    <script src="~/Content/lib/bootstrap/bootstrap.js"></script>
+    <script src="~/Content/lib/perfect-scrollbar/js/perfect-scrollbar.jquery.js"></script>
+    <script src="~/Content/lib/moment/moment.js"></script>
+    <script src="~/Content/lib/jquery-ui/jquery-ui.js"></script>
+    <script src="~/Content/lib/jquery-switchbutton/jquery.switchButton.js"></script>
+    <script src="~/Content/lib/peity/jquery.peity.js"></script>
+    <script src="~/Content/lib/chartist/chartist.js"></script>
+    <script src="~/Content/lib/jquery.sparkline.bower/jquery.sparkline.min.js"></script>
+    <script src="~/Content/lib/d3/d3.js"></script>
+    <script src="~/Content/lib/rickshaw/rickshaw.min.js"></script>
+
+    <script src="~/Scripts/bracket.js"></script>
+    <script src="~/Scripts/ResizeSensor.js"></script>
+    <script src="~/Scripts/site.js"></script>
+
+    <script>
+        $(function () {
+            'use strict'
+
+            // FOR DEMO ONLY
+            // menu collapsed by default during first page load or refresh with screen
+            // having a size between 992px and 1299px. This is intended on this page only
+            // for better viewing of widgets demo.
+            $(window).resize(function () {
+                minimizeMenu();
+            });
+
+            minimizeMenu();
+
+            function minimizeMenu() {
+                if (window.matchMedia('(min-width: 992px)').matches && window.matchMedia('(max-width: 1299px)').matches) {
+                    // show only the icons and hide left menu label by default
+                    $('.menu-item-label,.menu-item-arrow').addClass('op-lg-0-force d-lg-none');
+                    $('body').addClass('collapsed-menu');
+                    $('.show-sub + .br-menu-sub').slideUp();
+                } else if (window.matchMedia('(min-width: 1300px)').matches && !$('body').hasClass('collapsed-menu')) {
+                    $('.menu-item-label,.menu-item-arrow').removeClass('op-lg-0-force d-lg-none');
+                    $('body').removeClass('collapsed-menu');
+                    $('.show-sub + .br-menu-sub').slideDown();
+                }
+            }
+        });
+    </script>
+
+    <script>
+        function alertSuccess(mess) {
+            jQuery.gritter.add({
+                position: 'center',
+                title: 'Thông báo',
+                text: mess,
+                class_name: 'growl-success',
+                image: '/images/screen.png',
+                sticky: false,
+                time: '10000'
+            });
+        }
+        function alertError(mess) {
+            jQuery.gritter.add({
+                title: 'Thông báo lỗi',
+                text: mess,
+                class_name: 'growl-danger',
+                image: '/images/screen.png',
+                sticky: false,
+                time: '10000'
+            });
+        }
+
+        function cfmDelete() {
+            var isConfirm = confirm("Bạn có chắc chắn muốn xóa bản ghi này?");
+            return isConfirm;
+        }
+
+        jQuery(document).ready(function () {
+            "use strict";
+
+            $(".btnConfirm").click(function () {
+                return cfmDelete();
+            });
+
+            $("#btnSearch").click(function () {
+                $("#frmSearch").submit();
+            });
+        });
+    </script>
+    @RenderSection("scripts", required: false)
 </body>
 </html>

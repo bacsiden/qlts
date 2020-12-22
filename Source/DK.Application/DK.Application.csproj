@@ -90,7 +90,9 @@
     <Compile Include="Models\TaiSan.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\BaseRepository.cs" />
+    <Compile Include="Repositories\ITypeRepository.cs" />
     <Compile Include="Repositories\ITaiSanRepository.cs" />
+    <Compile Include="Repositories\TypeRepository.cs" />
     <Compile Include="Repositories\TaiSanRepository.cs" />
     <Compile Include="Repositories\IBaseRepository.cs" />
   </ItemGroup>

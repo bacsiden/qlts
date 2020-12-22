@@ -15,21 +15,26 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace DK.Web.DependencyResolution {
+namespace DK.Web.DependencyResolution
+{
+    using DK.Application.Repositories;
     using MongoDB.Driver;
     using StructureMap;
     using StructureMap.Configuration.DSL;
     using StructureMap.Graph;
 
-    public class DefaultRegistry : Registry {
+    public class DefaultRegistry : Registry
+    {
         #region Constructors and Destructors
 
-        public DefaultRegistry() {
+        public DefaultRegistry()
+        {
             Scan(
-                scan => {
-                    scan.AssembliesFromApplicationBaseDirectory(m=>m.FullName.StartsWith("DK."));
+                scan =>
+                {
+                    scan.AssembliesFromApplicationBaseDirectory(m => m.FullName.StartsWith("DK."));
                     scan.WithDefaultConventions();
-					scan.With(new ControllerConvention());
+                    scan.With(new ControllerConvention());
                 });
 
             //For<DK.Framework.Models.DefaultConnection>().Use<DK.Framework.Models.DefaultConnection>().Singleton();
@@ -40,6 +45,9 @@ namespace DK.Web.DependencyResolution {
             var url = new MongoUrl(connectionString);
             var database = new MongoClient(url).GetDatabase(url.DatabaseName);
             For<IMongoDatabase>().Use(database);
+
+            For<ITypeRepository>().Use<TypeRepository>().Singleton();
+            For<ITaiSanRepository>().Use<TaiSanRepository>().Singleton();
         }
 
         #endregion
