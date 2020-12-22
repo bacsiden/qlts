@@ -35,20 +35,20 @@ namespace DK.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(LoginViewModel model, string returnUrl)
         {
-            //if (ModelState.IsValid)
-            //{
-            //    if (userService.Login(model.UserName, model.Password, model.RememberMe))
-            //    {
-            //        if (string.IsNullOrEmpty(returnUrl))
-            //            return RedirectToAction("Index", "Home");
-            //        return Redirect(returnUrl);
-            //    }
-            //    else
-            //    {
-            //        ModelState.AddModelError("UserName", "Sai mật khẩu hoặc tên đăng nhập.");
-            //        return View(model);
-            //    }
-            //}
+            if (ModelState.IsValid)
+            {
+                //if (userService.Login(model.UserName, model.Password, model.RememberMe))
+                //{
+                //    if (string.IsNullOrEmpty(returnUrl))
+                //        return RedirectToAction("Index", "Home");
+                //    return Redirect(returnUrl);
+                //}
+                //else
+                //{
+                //    ModelState.AddModelError("UserName", "Sai mật khẩu hoặc tên đăng nhập.");
+                //    return View(model);
+                //}
+            }
 
             // If we got this far, something failed, redisplay form
             ModelState.AddModelError("", "Sai mật khẩu hoặc tên đăng nhập.");
