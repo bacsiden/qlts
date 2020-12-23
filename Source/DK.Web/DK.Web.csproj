@@ -267,6 +267,7 @@
     <Compile Include="Models\ApplicationOAuthProvider.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\PagerModel.cs" />
+    <Compile Include="Models\TaiSanSearchModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Utilities\Common.cs" />
@@ -430,6 +431,7 @@
     <Content Include="Views\Shared\_SaveButton.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Category\Index.cshtml" />
+    <Content Include="Views\Home\_SearchForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

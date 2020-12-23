@@ -1,7 +1,25 @@
-﻿
+﻿@model DK.Web.Models.PagerModel
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Danh sách tài sản";
+    var searchModel = ViewBag.SearchModel as DK.Web.Models.TaiSanSearchModel;
 }
 
-<h2>Index</h2>
+<style>
+    #frmSearch input[type="date"] {
+        height: 39.6px;
+    }
+    #frmSearch label {
+        margin-bottom: 0;
+    }
+
+    #frmSearch .search-item {
+        margin-bottom: 10px;
+    }
+</style>
+
+@section Button {
+    <a href="@Url.Action("NewOrEdit")" class="btn btn-primary btn-sm pull-right">Thêm mới</a>
+}
+
+@Html.Partial("_SearchForm", searchModel)
 

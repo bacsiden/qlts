@@ -90,6 +90,7 @@
     <Compile Include="Models\ColumIndexAttribute.cs" />
     <Compile Include="Models\Type.cs" />
     <Compile Include="Models\TaiSan.cs" />
+    <Compile Include="Models\TypeConstant.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\BaseRepository.cs" />
     <Compile Include="Repositories\ITaiSanRepository.cs" />

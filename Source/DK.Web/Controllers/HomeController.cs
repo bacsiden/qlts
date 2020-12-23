@@ -1,4 +1,8 @@
-﻿using System;
+﻿using DK.Application.Models;
+using DK.Application.Repositories;
+using DK.Web.Models;
+using PagedList;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -6,24 +10,36 @@ using System.Web.Mvc;
 
 namespace DK.Web.Controllers
 {
-    public class HomeController : Controller
+    [Authorize]
+    public class HomeController : BaseController
     {
+        private readonly ITaiSanRepository _taiSanRepository;
+        private readonly ITypeRepository _typeRepository;
+        public HomeController(ITaiSanRepository taiSanRepository, ITypeRepository typeRepository)
+        {
+            _taiSanRepository = taiSanRepository;
+            _typeRepository = typeRepository;
+        }
         // GET: Home
-        public ActionResult Index()
+        public ActionResult Index(TaiSanSearchModel search)
         {
-            return View();
-        }
+            var types = _typeRepository.Find(m => true).ToList();
 
-        // GET: Home/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
+            ViewBag.ChungLoai = types.Where(m => m.Name == TypeConstant.ChungLoai).Select(m => m.Title);
+            ViewBag.DanhMuc = types.Where(m => m.Name == TypeConstant.DanhMuc).Select(m => m.Title);
+            ViewBag.NguonKinhPhi = types.Where(m => m.Name == TypeConstant.NguonKinhPhi).Select(m => m.Title);
+            ViewBag.ChatLuong = types.Where(m => m.Name == TypeConstant.ChatLuong).Select(m => m.Title);
+            ViewBag.LoaiXe = types.Where(m => m.Name == TypeConstant.LoaiXe).Select(m => m.Title);
+            ViewBag.Tags = types.Where(m => m.Name == TypeConstant.Tags).Select(m => m.Title);
 
-        // GET: Home/Create
-        public ActionResult Create()
-        {
-            return View();
+            ViewBag.SearchModel = search;
+            var list = _taiSanRepository.Find(m => true).AsEnumerable().ToPagedList(search.Page, _pageSize);
+            var pager = new PagerModel
+            {
+                list = list
+            };
+
+            return View(pager);
         }
 
         // POST: Home/Create

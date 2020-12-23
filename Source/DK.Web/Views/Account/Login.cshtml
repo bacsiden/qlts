@@ -5,67 +5,77 @@
     ViewBag.Title = "Quản lý tài sản";
 }
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="shortcut icon" href="~/favicon.ico" type="image/png">
-    <title>@ViewBag.Title - @ViewBag.HeadTitle</title>
-    <link href="~/Content/style.default.css" rel="stylesheet">
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-    <script src="js/html5shiv.js"></script>
-    <script src="js/respond.min.js"></script>
-    <![endif]-->
-    <style>
-        .field-validation-error, .validation-summary-errors {
-            color: #e80c4d;
-        }
-    </style>
+    <meta charset="UTF-8">
+    <title>@ViewBag.Title</title>
+
+
+    @*<link rel='stylesheet prefetch' href='http://fonts.googleapis.com/css?family=Open+Sans:600'>*@
+    <link href="~/Content/login.css" rel="stylesheet" />
+
 </head>
-<body class="signin">
-    <section>
-        <div class="signinpanel">
-            <div class="row">
-                <div class="col-md-6 col-md-offset-3">
-                    <div class="text-center mb10">
-                        @*<img src="~/images/logo.png" style="width: 100%;" />*@
-                    </div>
-                    <form method="post" role="form" class="form-horizontal">
-                        <h4 class="nomargin">Đăng nhập hệ thống</h4>
+<body>
+    <div class="login-wrap">
+        <div class="login-html">
+            <input id="tab-1" type="radio" name="tab" class="sign-in" checked><label for="tab-1" class="tab">Quản lý tài sản - đăng nhập</label>
+            <input id="tab-2" type="radio" name="tab" class="sign-up"><label for="tab-2" class="tab"></label>
+            <div class="login-form">
+                <div class="sign-in-htm">
+                    @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post))
+                    {
                         @Html.AntiForgeryToken()
                         @Html.ValidationSummary(true)
+                        <div class="group">
+                            <label for="username" class="label">Tên đăng nhập</label>
+                            <input type="text" class="input" name="username">
+                        </div>
+                        <div class="group">
+                            <label for="password" class="label">Mật khẩu</label>
+                            <input type="password" class="input" data-type="password" name="password">
+                        </div>
+                        <div class="group">
+                            <input id="check" value="true" type="checkbox" class="check" checked name="rememberMe">
+                            <label for="check"><span class="icon"></span> Ghi nhớ mật khẩu</label>
+                        </div>
+                        <div class="group">
+                            <input type="submit" class="button" value="Đăng nhập">
+                        </div>
+                    }
+                    <div class="hr"></div>
+                    @*<div class="foot-lnk">
+                        <a href="#forgot">Quên mật khẩu?</a>
+                    </div>*@
+                </div>
+                <div class="sign-up-htm">
+                    <div class="group">
+                        <label for="user" class="label">Username</label>
+                        <input id="user" type="text" class="input">
+                    </div>
+                    <div class="group">
+                        <label for="pass" class="label">Password</label>
+                        <input id="pass" type="password" class="input" data-type="password">
+                    </div>
+                    <div class="group">
+                        <label for="pass" class="label">Repeat Password</label>
+                        <input id="pass" type="password" class="input" data-type="password">
+                    </div>
+                    <div class="group">
+                        <label for="pass" class="label">Email Address</label>
+                        <input id="pass" type="text" class="input">
+                    </div>
+                    <div class="group">
+                        <input type="submit" class="button" value="Sign Up">
+                    </div>
+                    <div class="hr"></div>
+                    <div class="foot-lnk">
 
-                        <input name="ReturnUrl" type="hidden" value="" />
-                        @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", placeholder = "Tên đăng nhập" })
-                        @Html.ValidationMessageFor(m => m.UserName)
-
-                        @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Mật khẩu" })
-                        @Html.ValidationMessageFor(m => m.Password)
-                        <button type="submit" class="btn btn-success btn-block">Đăng nhập</button>
-                    </form>
-                </div><!-- col-sm-5 -->
-            </div><!-- row -->
-
-            <div class="signup-footer">
-                <div class="pull-left">
-                    &copy; 2020. @ViewBag.HeadTitle
+                    </div>
                 </div>
             </div>
+        </div>
+    </div>
 
-        </div><!-- signin -->
 
-    </section>
-
-    <script src="@Url.Content("~/Scripts/dist/jquery.min.js")"></script>
-    @Scripts.Render("~/bundles/jqueryval")
-
-    <script>
-        jQuery(document).ready(function () {
-            $("#Email").focus();
-        });
-    </script>
 </body>
 </html>

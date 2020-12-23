@@ -49,7 +49,7 @@ namespace DK.Application.Models
         public string NguonKinhPhi { get; set; }
 
         [Display(Name = "Ngân sách năm")]
-        public int NganSachName { get; set; }
+        public int NganSachNam { get; set; }
 
         [Display(Name = "Năm sản xuất")]
         public int NamSanXuat { get; set; }

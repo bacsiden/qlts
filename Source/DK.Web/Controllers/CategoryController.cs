@@ -9,6 +9,7 @@ using System.Web.Mvc;
 
 namespace DK.Web.Controllers
 {
+    [Authorize]
     public class CategoryController : Controller
     {
         private readonly ITypeRepository _typeRepository;
