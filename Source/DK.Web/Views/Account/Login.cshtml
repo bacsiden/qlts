@@ -19,6 +19,11 @@
     <script src="js/html5shiv.js"></script>
     <script src="js/respond.min.js"></script>
     <![endif]-->
+    <style>
+        .field-validation-error, .validation-summary-errors {
+            color: #e80c4d;
+        }
+    </style>
 </head>
 <body class="signin">
     <section>
@@ -32,7 +37,7 @@
                         <h4 class="nomargin">Đăng nhập hệ thống</h4>
                         @Html.AntiForgeryToken()
                         @Html.ValidationSummary(true)
-                        
+
                         <input name="ReturnUrl" type="hidden" value="" />
                         @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", placeholder = "Tên đăng nhập" })
                         @Html.ValidationMessageFor(m => m.UserName)
@@ -55,7 +60,7 @@
     </section>
 
     <script src="@Url.Content("~/Scripts/dist/jquery.min.js")"></script>
-    @*@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}*@
+    @Scripts.Render("~/bundles/jqueryval")
 
     <script>
         jQuery(document).ready(function () {

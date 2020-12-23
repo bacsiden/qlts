@@ -1,29 +1,42 @@
-﻿using System;
+﻿using FlexCel.Core;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using System.Web.Routing;
-using FlexCel.XlsAdapter;
-using FlexCel.Render;
-using FlexCel.Report;
-using FlexCel.Core;
-using System.Threading.Tasks;
-using PagedList;
-using DK.Web.DependencyResolution;
 
 namespace DK.Web.Controllers
 {
     public class BaseController : Controller
     {
+        public int _pageSize = 10;
         public string DateTimeReport { get { return DateTime.Now.ToString("_dd-MM-yyyy"); } }
         protected string ReportTempleFolder
         {
             get
             {
                 return Server.MapPath(@"~/ReportTemplates\");
+            }
+        }
+
+        protected ApplicationUserManager _userManager;
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set { _userManager = value; }
+        }
+
+        public string CurrentUserId
+        {
+            get
+            {
+                return User.Identity.GetUserId();
             }
         }
 
@@ -38,7 +51,7 @@ namespace DK.Web.Controllers
         public List<T> JsonDeserializeListObject<T>(string value)
         {
             if (string.IsNullOrWhiteSpace(value))
-            return new List<T>();
+                return new List<T>();
 
             return Newtonsoft.Json.JsonConvert.DeserializeObject<List<T>>(value);
         }

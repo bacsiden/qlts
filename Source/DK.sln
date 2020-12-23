@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DK.Framework", "DK.Framewor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DK.Application", "DK.Application\DK.Application.csproj", "{5AEF556F-66BD-4F5D-AC7F-D6BDE32A5CAD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MongoDB.AspNet.Identity", "MongoDB.AspNet.Identity\MongoDB.AspNet.Identity.csproj", "{B4138817-0BE8-4F14-B147-390F2F0DF95E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,10 @@ Global
 		{5AEF556F-66BD-4F5D-AC7F-D6BDE32A5CAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5AEF556F-66BD-4F5D-AC7F-D6BDE32A5CAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5AEF556F-66BD-4F5D-AC7F-D6BDE32A5CAD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4138817-0BE8-4F14-B147-390F2F0DF95E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4138817-0BE8-4F14-B147-390F2F0DF95E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4138817-0BE8-4F14-B147-390F2F0DF95E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4138817-0BE8-4F14-B147-390F2F0DF95E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

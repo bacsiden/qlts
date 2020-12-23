@@ -26,6 +26,9 @@ namespace DK.Web
             //bundles.Add(new StyleBundle("~/Content/css").Include(
             //          "~/Content/bootstrap.css",
             //          "~/Content/site.css"));
+
+            if (!HttpContext.Current.IsDebuggingEnabled)
+                BundleTable.EnableOptimizations = true;
         }
     }
 }

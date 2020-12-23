@@ -17,3 +17,5 @@ From Customer/~$ch HL SQDB Khóa XI. 2017.doc
 Source/DK.Framework/obj/
 Source/DK.Framework/bin/
 publish/
+/Source/MongoDB.AspNet.Identity/bin/
+/Source/MongoDB.AspNet.Identity/obj/

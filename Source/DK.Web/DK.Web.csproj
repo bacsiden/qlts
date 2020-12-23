@@ -247,6 +247,7 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\StructuremapMvc.cs" />
@@ -263,6 +264,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\ApplicationOAuthProvider.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\PagerModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -274,10 +276,14 @@
     <Compile Include="Utilities\ListMessage.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\bootstrap-override.css" />
+    <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bracket.css" />
+    <Content Include="Content\font.roboto.css" />
     <Content Include="Content\images\bg-login.jpg" />
     <Content Include="Content\login.css" />
     <Content Include="Content\site.css" />
+    <Content Include="Content\style.default.css" />
     <Content Include="Core\Compression\Snappy\lib\win\snappy32.dll" />
     <Content Include="Core\Compression\Snappy\lib\win\snappy64.dll" />
     <Content Include="Core\Compression\Zstandard\lib\win\libzstd.dll" />
@@ -439,6 +445,10 @@
     <ProjectReference Include="..\DK.Application\DK.Application.csproj">
       <Project>{5aef556f-66bd-4f5d-ac7f-d6bde32a5cad}</Project>
       <Name>DK.Application</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MongoDB.AspNet.Identity\MongoDB.AspNet.Identity.csproj">
+      <Project>{b4138817-0be8-4f14-b147-390f2f0df95e}</Project>
+      <Name>MongoDB.AspNet.Identity</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

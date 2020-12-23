@@ -1,26 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
+﻿using DK.Application.Repositories;
+using DK.Web.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin.Security;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.Owin.Security;
-using DK.Web.Models;
-using DK.Application.Repositories;
 
 namespace DK.Web.Controllers
 {
     [Authorize]
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
         private ITaiSanRepository _TaiSanRepository;
+
 
         public AccountController(ITaiSanRepository taiSanRepository)
         {
             _TaiSanRepository = taiSanRepository;
+        }
+
+        private IAuthenticationManager Authentication
+        {
+            get { return Request.GetOwinContext().Authentication; }
+        }
+
+        private ApplicationSignInManager _signInManager;
+        public ApplicationSignInManager SignInManager
+        {
+            get
+            {
+                return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
+            }
+            private set { _signInManager = value; }
         }
 
         [AllowAnonymous]
@@ -33,30 +45,27 @@ namespace DK.Web.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public ActionResult Login(LoginViewModel model, string returnUrl)
+        public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                //if (userService.Login(model.UserName, model.Password, model.RememberMe))
-                //{
-                //    if (string.IsNullOrEmpty(returnUrl))
-                //        return RedirectToAction("Index", "Home");
-                //    return Redirect(returnUrl);
-                //}
-                //else
-                //{
-                //    ModelState.AddModelError("UserName", "Sai mật khẩu hoặc tên đăng nhập.");
-                //    return View(model);
-                //}
+                return View(model);
+            }
+            // This doesn't count login failures towards account lockout
+            // To enable password failures to trigger account lockout, change to shouldLockout: true
+            var result = await SignInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, shouldLockout: false);
+            if (result == SignInStatus.Success)
+            {
+                returnUrl = returnUrl ?? "/";
+                return Redirect(returnUrl);
             }
 
-            // If we got this far, something failed, redisplay form
             ModelState.AddModelError("", "Sai mật khẩu hoặc tên đăng nhập.");
             return View(model);
         }
         public ActionResult Logout()
         {
-            //userService.Logout();
+            Authentication.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             return RedirectToAction("Login", "Account");
         }
     }
