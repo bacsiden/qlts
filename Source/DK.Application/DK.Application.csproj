@@ -78,6 +78,7 @@
     <Reference Include="System.Security.Cryptography.X509Certificates, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Security.Cryptography.X509Certificates.4.3.0\lib\net46\System.Security.Cryptography.X509Certificates.dll</HintPath>
     </Reference>
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -86,15 +87,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\BaseEntity.cs" />
+    <Compile Include="Models\ColumIndexAttribute.cs" />
     <Compile Include="Models\Type.cs" />
     <Compile Include="Models\TaiSan.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\BaseRepository.cs" />
-    <Compile Include="Repositories\ITypeRepository.cs" />
     <Compile Include="Repositories\ITaiSanRepository.cs" />
-    <Compile Include="Repositories\TypeRepository.cs" />
+    <Compile Include="Repositories\ITypeRepository.cs" />
     <Compile Include="Repositories\TaiSanRepository.cs" />
     <Compile Include="Repositories\IBaseRepository.cs" />
+    <Compile Include="Repositories\TypeRepository.cs" />
+    <Compile Include="TaiSanService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

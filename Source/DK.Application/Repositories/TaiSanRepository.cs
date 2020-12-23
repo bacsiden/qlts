@@ -1,6 +1,7 @@
 ﻿using MongoDB.Driver;
 using System.Threading.Tasks;
 using System;
+using DK.Application.Models;
 
 namespace DK.Application.Repositories
 {

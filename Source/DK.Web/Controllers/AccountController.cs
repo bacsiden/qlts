@@ -1,4 +1,5 @@
-﻿using DK.Application.Repositories;
+﻿using DK.Application;
+using DK.Application.Repositories;
 using DK.Web.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
@@ -13,11 +14,13 @@ namespace DK.Web.Controllers
     public class AccountController : BaseController
     {
         private ITaiSanRepository _TaiSanRepository;
+        private readonly TaiSanService _taiSanService;
 
 
         public AccountController(ITaiSanRepository taiSanRepository)
         {
             _TaiSanRepository = taiSanRepository;
+            _taiSanService = new TaiSanService(taiSanRepository);
         }
 
         private IAuthenticationManager Authentication
@@ -38,6 +41,7 @@ namespace DK.Web.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
+            _taiSanService.Import();
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }

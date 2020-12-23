@@ -2,7 +2,7 @@
 using MongoDB.Bson.Serialization.IdGenerators;
 using System;
 
-namespace DK.Application.Repositories
+namespace DK.Application.Models
 {
     public class BaseEntity
     {

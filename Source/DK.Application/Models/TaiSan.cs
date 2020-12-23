@@ -2,8 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Reflection;
 
-namespace DK.Application.Repositories
+namespace DK.Application.Models
 {
     /// <summary>
     /// Tài sản
@@ -11,6 +13,13 @@ namespace DK.Application.Repositories
     [BsonIgnoreExtraElements]
     public class TaiSan : BaseEntity
     {
+        public static int GetCol(string fieldName)
+        {
+            var property = typeof(TaiSan).GetProperty(fieldName);
+            var attribute = (ColumnIndexAttribute)property.GetCustomAttributes(typeof(ColumnIndexAttribute), true).First();
+            return attribute.Index;
+        }
+
         [Display(Name = "Mã tài sản")]
         public string Code { get; set; }
 
@@ -20,6 +29,7 @@ namespace DK.Application.Repositories
         /// <summary>
         /// Lấy từ bảng chúng loại
         /// </summary>
+        [ColumnIndex(3)]
         [Display(Name = "Chủng loại")]
         public string ChungLoai { get; set; }
 
@@ -51,10 +61,10 @@ namespace DK.Application.Repositories
         public int SoLuong { get; set; }
 
         [Display(Name = "Nguyên giá kế toán")]
-        public decimal NguyenGiaKeToan { get; set; }
+        public decimal? NguyenGiaKeToan { get; set; }
 
         [Display(Name = "Nguyên giá kiểm kê")]
-        public decimal NguyenGiaKiemKe { get; set; }
+        public decimal? NguyenGiaKiemKe { get; set; }
 
         [Display(Name = "Chất lượng")]
         public string ChatLuong { get; set; }
