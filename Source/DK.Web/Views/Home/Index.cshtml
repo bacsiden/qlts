@@ -1,13 +1,14 @@
 ﻿@model DK.Web.Models.PagerModel
 @{
     ViewBag.Title = "Danh sách tài sản";
-    var searchModel = ViewBag.SearchModel as DK.Web.Models.TaiSanSearchModel;
+    var searchModel = ViewBag.SearchModel as DK.Application.Models.TaiSanSearchModel;
 }
 
 <style>
     #frmSearch input[type="date"] {
         height: 39.6px;
     }
+
     #frmSearch label {
         margin-bottom: 0;
     }
@@ -15,11 +16,53 @@
     #frmSearch .search-item {
         margin-bottom: 10px;
     }
+
+    .select2-results__option[aria-selected="true"] {
+        display: none;
+    }
+
+    #searchBox .card-header a {
+        display: inline-block;
+        width: 100%;
+        color: inherit;
+    }
 </style>
 
 @section Button {
     <a href="@Url.Action("NewOrEdit")" class="btn btn-primary btn-sm pull-right">Thêm mới</a>
 }
 
-@Html.Partial("_SearchForm", searchModel)
+<div class="card mt-2 mb-2 shadow-base" id="searchBox">
+    <div class="card-header">
+        <a data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+            <strong>Tìm kiếm</strong>
+            <i class="fa fa-plus pull-right mt-1"></i>
+        </a>
+    </div>
+    <div class="card-body collapse" id="collapseExample">
+        @Html.Partial("_SearchForm", searchModel)
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="~/Content/lib/select2/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            if (localStorage.getItem("displaySearchBox") === "true") {
+                $('#collapseExample').addClass("show");
+                $("#searchBox .card-header a i").toggleClass("fa-plus fa-minus");
+            }
+
+            $(".select2").select2({ width: '100%' });
+
+            $('#searchBox .card-header a').click(function () {
+                $("#searchBox .card-header a i").toggleClass("fa-plus fa-minus");
+
+                var displayStatus = $("#searchBox .card-header a i").hasClass("fa-minus");
+                localStorage.setItem("displaySearchBox", displayStatus);
+            });
+        });
+    </script>
+}
 

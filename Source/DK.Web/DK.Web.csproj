@@ -267,7 +267,6 @@
     <Compile Include="Models\ApplicationOAuthProvider.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\PagerModel.cs" />
-    <Compile Include="Models\TaiSanSearchModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Utilities\Common.cs" />

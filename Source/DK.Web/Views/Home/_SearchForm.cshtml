@@ -1,6 +1,6 @@
-﻿@model DK.Web.Models.TaiSanSearchModel
+﻿@model DK.Application.Models.TaiSanSearchModel
 
-@using (Html.BeginForm(null, null, FormMethod.Get, new { role = "form", Class = "mt-4", id = "frmSearch" }))
+@using (Html.BeginForm(null, null, FormMethod.Get, new { role = "form", id = "frmSearch" }))
 {
     <div class="row">
         <div class="col-md-2 col-sm-3 search-item">
@@ -32,32 +32,50 @@
             @Html.DropDownListFor(x => x.NguonKinhPhi, new SelectList(ViewBag.NguonKinhPhi), "Tất cả", new { Class = "form-control" })
         </div>
         <div class="col-md-2 col-sm-3 search-item">
-            @Html.LabelFor(m => m.NganSachNam)
-            @Html.TextBoxFor(m => m.NganSachNam, new { Class = "form-control", type="number" })
+            @Html.LabelFor(m => m.NganSachNamSearch)
+            @Html.TextBoxFor(m => m.NganSachNamSearch, new { Class = "form-control", type = "number", min = "1" })
         </div>
         <div class="col-md-2 col-sm-3 search-item">
-            @Html.LabelFor(m => m.NamSanXuat)
-            @Html.TextBoxFor(m => m.NamSanXuat, new { Class = "form-control", type = "number" })
+            @Html.LabelFor(m => m.NamSanXuatSearch)
+            @Html.TextBoxFor(m => m.NamSanXuatSearch, new { Class = "form-control", type = "number", min = "1" })
         </div>
         <div class="col-md-2 col-sm-3 search-item">
-            @Html.LabelFor(m => m.NamSuDung)
-            @Html.TextBoxFor(m => m.NamSuDung, new { Class = "form-control", type = "number" })
+            @Html.LabelFor(m => m.NamSuDungSearch)
+            @Html.TextBoxFor(m => m.NamSuDungSearch, new { Class = "form-control", type = "number", min = "1" })
         </div>
         <div class="col-md-2 col-sm-3 search-item">
-            @Html.LabelFor(m => m.SoLuong)
-            @Html.TextBoxFor(m => m.SoLuong, new { Class = "form-control", type = "number" })
-        </div>
-        <div class="col-md-2 col-sm-3 search-item">
-            @Html.LabelFor(m => m.NguyenGiaKeToan)
-            @Html.TextBoxFor(m => m.NguyenGiaKeToan, new { Class = "form-control" })
-        </div>
-        <div class="col-md-2 col-sm-3 search-item">
-            @Html.LabelFor(m => m.NguyenGiaKiemKe)
-            @Html.TextBoxFor(m => m.NguyenGiaKiemKe, new { Class = "form-control" })
+            @Html.LabelFor(m => m.SoLuongSearch)
+            @Html.TextBoxFor(m => m.SoLuongSearch, new { Class = "form-control", type = "number", min = "1" })
         </div>
         <div class="col-md-2 col-sm-3 search-item">
             @Html.LabelFor(m => m.ChatLuong)
             @Html.DropDownListFor(x => x.ChatLuong, new SelectList(ViewBag.ChatLuong), "Tất cả", new { Class = "form-control" })
+        </div>
+        <div class="col-md-4 col-sm-6 search-item">
+            @Html.LabelFor(m => m.NguyenGiaKeToan)
+            <div class="input-group">
+                <span class="input-group-addon">
+                    Từ
+                </span>
+                @Html.TextBoxFor(m => m.GiaKeToanTu, new { Class = "form-control price" })
+                <span class="input-group-addon">
+                    đến
+                </span>
+                @Html.TextBoxFor(m => m.GiaKeToanDen, new { Class = "form-control price" })
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-6 search-item">
+            @Html.LabelFor(m => m.NguyenGiaKiemKe)
+            <div class="input-group">
+                <span class="input-group-addon">
+                    Từ
+                </span>
+                @Html.TextBoxFor(m => m.GiaKeToanTu, new { Class = "form-control price" })
+                <span class="input-group-addon">
+                    đến
+                </span>
+                @Html.TextBoxFor(m => m.GiaKiemKeDen, new { Class = "form-control price" })
+            </div>
         </div>
         <div class="col-md-2 col-sm-3 search-item">
             @Html.Label("Người sử dụng")
@@ -77,7 +95,7 @@
         </div>
         <div class="col-md-4 col-sm-6 search-item">
             @Html.LabelFor(m => m.Tags)
-            @Html.DropDownListFor(x => x.Tags, new SelectList(ViewBag.Tags), new { Class = "form-control select2", multiple= "multiple" })
+            @Html.DropDownListFor(x => x.Tags, new SelectList(ViewBag.Tags), new { Class = "form-control select2" })
         </div>
         <div class="col-md-2 col-sm-3 search-item">
             <label>&nbsp;</label>
