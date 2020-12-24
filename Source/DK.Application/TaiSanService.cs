@@ -37,7 +37,7 @@ namespace DK.Application
                 {
                     int XF = -1;
                     object cell = xls.GetCellValueIndexed(row, colIndex, ref XF);
-                    var index = TaiSan.GetCol(nameof(TaiSan.Name));
+                    var index = TaiSan.GetCol(nameof(TaiSan.ChungLoai));
                     TCellAddress addr = new TCellAddress(row, xls.ColFromIndex(row, colIndex));
                     Console.Write("Cell " + addr.CellRef + " ");
                     if (cell == null) Console.WriteLine("is empty.");
