@@ -1,11 +1,7 @@
 ﻿using DK.Application.Models;
 using DK.Application.Repositories;
-using DK.Web.Models;
-using PagedList;
-using System;
-using System.Collections.Generic;
+using DK.Web.Core;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace DK.Web.Controllers
@@ -23,23 +19,41 @@ namespace DK.Web.Controllers
         // GET: Home
         public ActionResult Index(TaiSanSearchModel search)
         {
-            var types = _typeRepository.Find(m => true).ToList();
+            CreateDropDownViewBag();
+            ViewBag.SearchModel = search;
 
+            var result = SearchTaiSan(search);
+            return View(result);
+        }
+
+        private PagerViewModel SearchTaiSan(TaiSanSearchModel search)
+        {
+            var list = _taiSanRepository.Find(m => true).AsEnumerable();
+
+            if (!string.IsNullOrWhiteSpace(search.Code))
+            {
+                list = list.Where(m => m.Code == search.Code);
+            }
+
+            var pager = new Pager(list.Count(), search.Page);
+            return new PagerViewModel
+            {
+                BaseUrl = Url.Action("Index", search.ToPagingModel()),
+                Items = list.Skip((pager.CurrentPage - 1) * pager.PageSize).Take(pager.PageSize).OrderBy(m => m.Name).ToList(),
+                Pager = pager
+            };
+        }
+
+        private void CreateDropDownViewBag()
+        {
+            var types = _typeRepository.Find(m => true).ToList();
             ViewBag.ChungLoai = types.Where(m => m.Name == TypeConstant.ChungLoai).Select(m => m.Title);
             ViewBag.DanhMuc = types.Where(m => m.Name == TypeConstant.DanhMuc).Select(m => m.Title);
             ViewBag.NguonKinhPhi = types.Where(m => m.Name == TypeConstant.NguonKinhPhi).Select(m => m.Title);
             ViewBag.ChatLuong = types.Where(m => m.Name == TypeConstant.ChatLuong).Select(m => m.Title);
             ViewBag.LoaiXe = types.Where(m => m.Name == TypeConstant.LoaiXe).Select(m => m.Title);
+            ViewBag.PhongBan = types.Where(m => m.Name == TypeConstant.PhongBan).Select(m => m.Title);
             ViewBag.Tags = types.Where(m => m.Name == TypeConstant.Tags).Select(m => m.Title);
-
-            ViewBag.SearchModel = search;
-            var list = _taiSanRepository.Find(m => true).AsEnumerable().ToPagedList(search.Page, _pageSize);
-            var pager = new PagerModel
-            {
-                list = list
-            };
-
-            return View(pager);
         }
 
         // POST: Home/Create

@@ -256,6 +256,7 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Core\Pager.cs" />
     <Compile Include="DependencyResolution\ControllerConvention.cs" />
     <Compile Include="DependencyResolution\DefaultRegistry.cs" />
     <Compile Include="DependencyResolution\IoC.cs" />
@@ -432,6 +433,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Category\Index.cshtml" />
     <Content Include="Views\Home\_SearchForm.cshtml" />
+    <Content Include="Views\Shared\_PagerPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

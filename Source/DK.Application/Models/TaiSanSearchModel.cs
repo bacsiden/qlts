@@ -32,5 +32,34 @@ namespace DK.Application.Models
         public int Page { get; set; } = 1;
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
+
+        public object ToPagingModel()
+        {
+            return this;
+            //return new
+            //{
+            //    Code,
+            //    Name,
+            //    GroupCode,
+            //    GroupName,
+            //    ChungLoai,
+            //    DanhMuc,
+            //    NhanHieu,
+            //    Serial,
+            //    XuatXu,
+            //    ThuocHopDong,
+            //    ThuocGoiThau,
+            //    NguonKinhPhi,
+            //    NganSachNamSearch,
+            //    NamSanXuatSearch,
+            //    NamSuDungSearch,
+            //    ChatLuong,
+            //    NguoiSuDung,
+            //    NguoiQuanLy,
+            //    PhongQuanLy,
+            //    LoaiXe,
+            //    Tags
+            //};
+        }
     }
 }
