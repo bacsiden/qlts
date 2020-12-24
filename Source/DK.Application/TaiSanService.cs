@@ -13,11 +13,6 @@ namespace DK.Application
 {
     public class TaiSanService
     {
-        const int Code = 2;
-        const int Name = 3;
-        const int ChungLoai = 4;
-        const int DanhMuc = 5;
-        const int NhanHieu = 6;
         protected readonly string TemplateFolder = HttpContext.Current.Server.MapPath("~/ReportTemplates\\");
         private readonly ITaiSanRepository _taiSanRepository;
         public TaiSanService(ITaiSanRepository taiSanRepository)
