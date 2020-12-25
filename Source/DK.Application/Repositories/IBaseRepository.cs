@@ -20,10 +20,11 @@ namespace DK.Application.Repositories
         Task<T> AddAsync(T model);
 
         Task AddRangeAsync(IEnumerable<T> list);
-
+        void AddRange(IEnumerable<T> list);
         Task<T> UpsertAsync(T model);
 
         Task<T> UpdateAsync(T model);
+        T Update(T model);
 
         Task DeleteAsync(Guid id);
         Task DeleteAsync(string id);

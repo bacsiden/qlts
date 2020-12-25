@@ -19,6 +19,18 @@ namespace DK.Application.Models
             var attribute = (ColumnIndexAttribute)property.GetCustomAttributes(typeof(ColumnIndexAttribute), true).First();
             return attribute.Index;
         }
+
+        public void GenerateCode(int? i = null)
+        {
+            Code = $"fuck-{i}";
+        }
+
+        public bool IsVehicle()
+        {
+            var value = $"{ChungLoai}{DanhMuc}".ToLower();
+            return LoaiXe != null || DungTichXiLanh != null || SoChoNgoi != null || value.Contains("phương tiện giao thông") || value.Contains("ô tô");
+        }
+
         // search chính xác
         [ColumnIndex(2)]
         [Display(Name = "Mã tài sản")]
@@ -113,18 +125,18 @@ namespace DK.Application.Models
         [Display(Name = "Số lượng kiểm kê")]
         public int? SoLuongKiemKe { get; set; }
 
-        // filter
         [ColumnIndex(21)]
-        [Display(Name = "Chất lượng")]
-        public string ChatLuong { get; set; }
-
-        [ColumnIndex(22)]
         [Display(Name = "Hao mòn lũy kế")]
         public int? HaoMonLuyKe { get; set; }
 
-        [ColumnIndex(23)]
+        [ColumnIndex(22)]
         [Display(Name = "Giá trị còn lại")]
         public string GiaTriConLai { get; set; }
+
+        // filter
+        [ColumnIndex(23)]
+        [Display(Name = "Chất lượng")]
+        public string ChatLuong { get; set; }
 
         // search contains
         [ColumnIndex(24)]
@@ -203,5 +215,7 @@ namespace DK.Application.Models
         /// </summary>
         [ColumnIndex(35)]
         public List<string> Tags { get; set; }
+
+        public string JoinedTags { get; set; }
     }
 }
