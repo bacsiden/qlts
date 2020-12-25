@@ -41,10 +41,10 @@ namespace DK.Web.Controllers
                 }
 
                 await _typeRepository.DeleteManyAsync(nameof(Application.Models.Type.Name), id);
-                var listTypes = list.Select(m => new Application.Models.Type
+                var listTypes = list.Where(m => !string.IsNullOrWhiteSpace(m)).Select(m => new Application.Models.Type
                 {
                     Name = id,
-                    Title = m
+                    Title = m.Trim()
                 });
 
                 await _typeRepository.AddRangeAsync(listTypes);

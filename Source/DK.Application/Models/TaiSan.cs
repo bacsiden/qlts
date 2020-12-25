@@ -214,8 +214,9 @@ namespace DK.Application.Models
         /// Multi select
         /// </summary>
         [ColumnIndex(35)]
-        public List<string> Tags { get; set; }
+        public List<string> Tags { get; set; } = new List<string>();
 
         public string JoinedTags { get; set; }
+        
     }
 }

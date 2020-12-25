@@ -1,4 +1,6 @@
-﻿@model DK.Web.Models.PagerModel
+﻿@using DK.Web.Utilities
+@using DK.Application.Models
+@model DK.Web.Core.PagerViewModel
 @{
     ViewBag.Title = "Danh sách tài sản";
     var searchModel = ViewBag.SearchModel as DK.Application.Models.TaiSanSearchModel;
@@ -26,24 +28,45 @@
         width: 100%;
         color: inherit;
     }
+
+    #collapseExample {
+        border-top: 1px dotted;
+    }
+
+    .collapse-icon {
+        border-top: 1px dotted;
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+    }
 </style>
 
 @section Button {
-    <a href="@Url.Action("NewOrEdit")" class="btn btn-primary btn-sm pull-right">Thêm mới</a>
+    <a href="@Url.Action("NewOrEdit")" class="btn btn-primary btn-sm pull-right">Import</a>
 }
 
 <div class="card mt-2 mb-2 shadow-base" id="searchBox">
     <div class="card-header">
-        <a data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-            <strong>Tìm kiếm</strong>
-            <i class="fa fa-plus pull-right mt-1"></i>
-        </a>
+        <strong>Tìm kiếm</strong>
     </div>
-    <div class="card-body collapse" id="collapseExample">
+    <div class="card-body pb-0">
         @Html.Partial("_SearchForm", searchModel)
     </div>
 </div>
 
+<div class="row mt-2">
+    <div class="col-12">
+        <form method="post">
+            <div class="card shadow-base bd-0">
+                <div class="table-responsive">
+                    @Html.Partial("_Table", Model.Items)
+                </div>
+            </div>
+            @Html.Partial("_PagerPartial", Model)
+        </form>
+    </div>
+</div>
 
 @section Scripts {
     <script src="~/Content/lib/select2/js/select2.min.js"></script>
@@ -51,15 +74,15 @@
         $(document).ready(function () {
             if (localStorage.getItem("displaySearchBox") === "true") {
                 $('#collapseExample').addClass("show");
-                $("#searchBox .card-header a i").toggleClass("fa-plus fa-minus");
+                $("#searchBox .collapse-icon a i").toggleClass("ion-chevron-down ion-chevron-up");
             }
 
             $(".select2").select2({ width: '100%' });
 
-            $('#searchBox .card-header a').click(function () {
-                $("#searchBox .card-header a i").toggleClass("fa-plus fa-minus");
+            $('#searchBox .collapse-icon a').click(function () {
+                $("#searchBox .collapse-icon a i").toggleClass("ion-chevron-down ion-chevron-up");
 
-                var displayStatus = $("#searchBox .card-header a i").hasClass("fa-minus");
+                var displayStatus = $("#searchBox a i").hasClass("ion-chevron-up");
                 localStorage.setItem("displaySearchBox", displayStatus);
             });
         });

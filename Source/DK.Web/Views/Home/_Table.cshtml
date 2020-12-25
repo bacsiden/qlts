@@ -1,0 +1,225 @@
+﻿@using DK.Application.Models
+@model IEnumerable<TaiSan>
+
+<table class="table mg-b-0" cellspacing="0">
+    <tr>
+        <th>STT</th>
+        <th>
+            @Html.DisplayNameFor(m => m.Code)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.GroupCode)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.GroupName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.ChungLoai)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.DanhMuc)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.NhanHieu)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.Serial)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.XuatXu)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.ThuocHopDong)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.ThuocGoiThau)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.NguonKinhPhi)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.NganSachNam)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.NamSanXuat)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.NamSuDung)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.NguyenGiaKeToan)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.SoLuong)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.NguyenGiaKiemKe)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.SoLuongKiemKe)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.ChatLuong)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.HaoMonLuyKe)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.GiaTriConLai)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.NguoiSuDung)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.NguoiQuanLy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.PhongQuanLy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.LoaiXe)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.DungTichXiLanh)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.SoChoNgoi)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.SoTang)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.DienTichXayDung)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.CapCongTrinh)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.DiaChi)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.DienTichKhuonVien)
+        </th>
+        <th>
+            Tags
+        </th>
+    </tr>
+
+    @{
+        var stt = 1;
+        foreach (var item in Model)
+        {
+            <tr class="stat even">
+                <td class="ac">
+                    @(stt++)
+                </td>
+                <td>
+                    @item.Code
+                </td>
+                <td>
+                    @item.Name
+                </td>
+                <td>
+                    @item.GroupCode
+                </td>
+                <td>
+                    @item.GroupName
+                </td>
+                <td>
+                    @item.ChungLoai
+                </td>
+                <td>
+                    @item.DanhMuc
+                </td>
+                <td>
+                    @item.NhanHieu
+                </td>
+                <td>
+                    @item.Serial
+                </td>
+                <td>
+                    @item.XuatXu
+                </td>
+                <td>
+                    @item.ThuocHopDong
+                </td>
+                <td>
+                    @item.ThuocGoiThau
+                </td>
+                <td>
+                    @item.NguonKinhPhi
+                </td>
+                <td>
+                    @item.NganSachNam
+                </td>
+                <td>
+                    @item.NamSanXuat
+                </td>
+                <td>
+                    @item.NamSuDung
+                </td>
+                <td>
+                    @item.NguyenGiaKeToan
+                </td>
+                <td>
+                    @item.SoLuong
+                </td>
+                <td>
+                    @item.NguyenGiaKiemKe
+                </td>
+                <td>
+                    @item.SoLuongKiemKe
+                </td>
+                <td>
+                    @item.ChatLuong
+                </td>
+                <td>
+                    @item.HaoMonLuyKe
+                </td>
+                <td>
+                    @item.GiaTriConLai
+                </td>
+                <td>
+                    @item.NguoiSuDung
+                </td>
+                <td>
+                    @item.NguoiQuanLy
+                </td>
+                <td>
+                    @item.PhongQuanLy
+                </td>
+                <td>
+                    @item.LoaiXe
+                </td>
+                <td>
+                    @item.DungTichXiLanh
+                </td>
+                <td>
+                    @item.SoChoNgoi
+                </td>
+                <td>
+                    @item.SoTang
+                </td>
+                <td>
+                    @item.DienTichXayDung
+                </td>
+                <td>
+                    @item.CapCongTrinh
+                </td>
+                <td>
+                    @item.DiaChi
+                </td>
+                <td>
+                    @item.DienTichKhuonVien
+                </td>
+                <td>
+                    @string.Join("<br />", item.Tags)
+                </td>
+            </tr>
+        }
+    }
+</table>
+
