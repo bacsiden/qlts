@@ -14,7 +14,7 @@ using FlexCel.XlsAdapter;
 
 namespace DK.Application
 {
-    public class TaiSanService
+    public class TaiSanService : ITaiSanService
     {
         protected readonly string TemplateFolder = HttpContext.Current.Server.MapPath("~/ReportTemplates\\");
         private readonly ITaiSanRepository _taiSanRepository;
@@ -120,6 +120,8 @@ namespace DK.Application
             {
                 _taiSanRepository.Update(item);
             }
+            if (newTypes.Any())
+                _typeRepository.AddRange(newTypes);
         }
 
         public Task ExportAsync(List<TaiSan> taiSans)
