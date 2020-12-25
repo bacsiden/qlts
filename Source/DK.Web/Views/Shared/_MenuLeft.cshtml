@@ -1,20 +1,34 @@
-﻿@{
+﻿@using DK.Application.Models
+@{
     var listMenu = DK.Application.Models.Type.MenuCategories;
+    var icons = new Dictionary<string, string>
+{
+        {TypeConstant.ChungLoai, "ion-ios-color-filter-outline"},
+        {TypeConstant.DanhMuc, "ion-ios-folder-outline"},
+        {TypeConstant.NguonKinhPhi, "ion-social-usd-outline"},
+        {TypeConstant.ChatLuong, "ion-ios-star-half"},
+        {TypeConstant.LoaiXe, "ion-model-s"},
+        {TypeConstant.PhongBan, "ion-person-stalker"},
+        {TypeConstant.Tags, "ion-ios-pricetags-outline"},
+    };
 }
 
-
-<a href="/Home/Index" data-href="Index" class="br-menu-link">
+<a href="/" data-href="/Home/Index" class="br-menu-link">
     <div class="br-menu-item">
-        <i class="menu-item-icon ion-ios-ionic-outline tx-20"></i>
+        <i class="menu-item-icon ion-ios-list-outline tx-20"></i>
         <span class="menu-item-label">Quản lý tài sản</span>
     </div>
 </a>
 
 @foreach (var item in listMenu)
 {
+    var icon = "";
+    icons.TryGetValue(item, out icon);
+    icon = !string.IsNullOrEmpty(icon) ? icon : "ion-ios-folder-outline";
+
     <a href="/Category/Index/@item" data-href="Index/Category/NewOrEdit" class="br-menu-link">
         <div class="br-menu-item">
-            <i class="menu-item-icon icon ion-ios-folder-outline tx-20"></i>
+            <i class="menu-item-icon icon @icon tx-20"></i>
             <span class="menu-item-label">@item</span>
         </div>
     </a>

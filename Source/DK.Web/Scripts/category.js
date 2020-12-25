@@ -77,12 +77,6 @@ function addRow() {
     $('#post-data tr:last input').focus();
 }
 
-function onChange(e) {
-    if (shouldAddRow(e)) {
-        addRow();
-    }
-}
-
 function shouldAddRow(e) {
     var next = $(e).closest('tr').next();
     return next.length === 0;

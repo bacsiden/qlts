@@ -1,6 +1,7 @@
 ﻿using DK.Application.Models;
 using DK.Application.Repositories;
 using DK.Web.Core;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -28,18 +29,13 @@ namespace DK.Web.Controllers
 
         private PagerViewModel SearchTaiSan(TaiSanSearchModel search)
         {
-            var list = _taiSanRepository.Find(m => true).AsEnumerable();
+            var list = _taiSanRepository.Find(search);
 
-            if (!string.IsNullOrWhiteSpace(search.Code))
-            {
-                list = list.Where(m => m.Code == search.Code);
-            }
-
-            var pager = new Pager(list.Count(), search.Page);
+            var pager = new Pager(list.Count(), search.PageIndex);
             return new PagerViewModel
             {
                 BaseUrl = Url.Action("Index", search.ToPagingModel()),
-                Items = list.Skip((pager.CurrentPage - 1) * pager.PageSize).Take(pager.PageSize).OrderBy(m => m.Name).ToList(),
+                Items = list.Skip((pager.CurrentPage - 1) * pager.PageSize).Take(pager.PageSize).ToList(),
                 Pager = pager
             };
         }
@@ -114,6 +110,25 @@ namespace DK.Web.Controllers
             {
                 return View();
             }
+        }
+
+        private void FakeData()
+        {
+            _taiSanRepository.DeleteManyAsync("GroupCode", "").GetAwaiter().GetResult();
+
+            var list = new List<TaiSan>();
+            for (int i = 0; i < 100; i++)
+            {
+                list.Add(new TaiSan
+                {
+                    Code = $"Code {i}",
+                    Name = $"Name {i}",
+                    ChungLoai = "Chủng loại 1",
+                    Tags = new List<string> { "Tag 1" }
+                });
+            }
+
+            _taiSanRepository.AddRangeAsync(list);
         }
     }
 }

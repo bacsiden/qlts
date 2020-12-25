@@ -1,4 +1,6 @@
-﻿@model DK.Web.Core.PagerViewModel
+﻿@using DK.Web.Utilities
+@using DK.Application.Models
+@model DK.Web.Core.PagerViewModel
 @{
     ViewBag.Title = "Danh sách tài sản";
     var searchModel = ViewBag.SearchModel as DK.Application.Models.TaiSanSearchModel;
@@ -34,6 +36,10 @@
     .collapse-icon {
         border-top: 1px dotted;
     }
+
+    .table-responsive {
+        overflow-x: auto;
+    }
 </style>
 
 @section Button {
@@ -49,8 +55,18 @@
     </div>
 </div>
 
-
-@Html.Partial("_PagerPartial", Model)
+<div class="row mt-2">
+    <div class="col-12">
+        <form method="post">
+            <div class="card shadow-base bd-0">
+                <div class="table-responsive">
+                    @Html.Partial("_Table", Model.Items)
+                </div>
+            </div>
+            @Html.Partial("_PagerPartial", Model)
+        </form>
+    </div>
+</div>
 
 @section Scripts {
     <script src="~/Content/lib/select2/js/select2.min.js"></script>

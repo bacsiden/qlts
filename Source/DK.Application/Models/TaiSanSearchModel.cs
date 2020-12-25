@@ -29,37 +29,36 @@ namespace DK.Application.Models
         [Display(Name = "Giá kiểm kê đến")]
         public decimal? GiaKiemKeDen { get; set; }
 
-        public int Page { get; set; } = 1;
+        public int PageIndex { get; set; } = 1;
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
 
         public object ToPagingModel()
         {
-            return this;
-            //return new
-            //{
-            //    Code,
-            //    Name,
-            //    GroupCode,
-            //    GroupName,
-            //    ChungLoai,
-            //    DanhMuc,
-            //    NhanHieu,
-            //    Serial,
-            //    XuatXu,
-            //    ThuocHopDong,
-            //    ThuocGoiThau,
-            //    NguonKinhPhi,
-            //    NganSachNamSearch,
-            //    NamSanXuatSearch,
-            //    NamSuDungSearch,
-            //    ChatLuong,
-            //    NguoiSuDung,
-            //    NguoiQuanLy,
-            //    PhongQuanLy,
-            //    LoaiXe,
-            //    Tags
-            //};
+            return new
+            {
+                Code,
+                Name,
+                GroupCode,
+                GroupName,
+                ChungLoai,
+                DanhMuc,
+                NhanHieu,
+                Serial,
+                XuatXu,
+                ThuocHopDong,
+                ThuocGoiThau,
+                NguonKinhPhi,
+                NganSachNamSearch,
+                NamSanXuatSearch,
+                NamSuDungSearch,
+                ChatLuong,
+                NguoiSuDung,
+                NguoiQuanLy,
+                PhongQuanLy,
+                LoaiXe,
+                Tags = string.Join(",", Tags)
+            };
         }
     }
 }
