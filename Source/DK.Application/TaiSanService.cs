@@ -124,10 +124,9 @@ namespace DK.Application
                 _typeRepository.AddRange(newTypes);
         }
 
-        public Task ExportAsync(List<TaiSan> taiSans)
+        public Task ExportAsync(List<TaiSan> taiSans, string pattern)
         {
-            var taisans = _taiSanRepository.Find(m => true).Select(m => new { key = m.Code, value = m }).ToDictionary(x => x.key, x => x.value);
-
+            var template = ReportVariables.Templates[pattern];
             using (FlexCelReport fr = new FlexCelReport(true))
             {
                 foreach (var item in taiSans)
@@ -137,12 +136,12 @@ namespace DK.Application
 
                 fr.AddTable("row", taiSans);
                 var xlsx = new XlsFile(true);
-                xlsx.Open(TemplateFolder + "ImportForm.xlsx");
+                xlsx.Open(TemplateFolder + template.Item2);
                 fr.Run(xlsx);
                 using (MemoryStream XlsStream = new MemoryStream())
                 {
                     xlsx.Save(XlsStream);
-                    return SendToBrowser(XlsStream, "application/excel", $"Danh-sach-tai-san.xlsx");
+                    return SendToBrowser(XlsStream, "application/excel", $"{template.Item1} - {pattern}.xlsx");
                 }
             }
         }

@@ -1,8 +1,10 @@
-﻿using DK.Application.Models;
+﻿using DK.Application;
+using DK.Application.Models;
 using DK.Application.Repositories;
 using DK.Web.Core;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace DK.Web.Controllers
@@ -12,10 +14,12 @@ namespace DK.Web.Controllers
     {
         private readonly ITaiSanRepository _taiSanRepository;
         private readonly ITypeRepository _typeRepository;
-        public HomeController(ITaiSanRepository taiSanRepository, ITypeRepository typeRepository)
+        private readonly ITaiSanService _taiSanService;
+        public HomeController(ITaiSanRepository taiSanRepository, ITypeRepository typeRepository, ITaiSanService taiSanService)
         {
             _taiSanRepository = taiSanRepository;
             _typeRepository = typeRepository;
+            _taiSanService = taiSanService;
         }
         // GET: Home
         public ActionResult Index(TaiSanSearchModel search)
@@ -32,6 +36,8 @@ namespace DK.Web.Controllers
             var list = _taiSanRepository.Find(search);
 
             var pager = new Pager(list.Count(), search.PageIndex);
+            if (search.pattern != null)
+                _taiSanService.ExportAsync(list.ToList(), search.pattern);
             return new PagerViewModel
             {
                 BaseUrl = Url.Action("Index", search.ToPagingModel()),
@@ -50,6 +56,12 @@ namespace DK.Web.Controllers
             ViewBag.LoaiXe = types.Where(m => m.Name == TypeConstant.LoaiXe).Select(m => m.Title);
             ViewBag.PhongBan = types.Where(m => m.Name == TypeConstant.PhongBan).Select(m => m.Title);
             ViewBag.Tags = types.Where(m => m.Name == TypeConstant.Tags).Select(m => m.Title);
+        }
+        [HttpPost]
+        public Task GetReportAsync(TaiSanSearchModel search, string pattern)
+        {
+            var taiSans = _taiSanRepository.Find(search).ToList();
+            return _taiSanService.ExportAsync(taiSans, pattern);
         }
 
         // POST: Home/Create

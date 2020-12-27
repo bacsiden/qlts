@@ -30,6 +30,8 @@ namespace DK.Application.Models
             var value = $"{ChungLoai}{DanhMuc}".ToLower();
             return LoaiXe != null || DungTichXiLanh != null || SoChoNgoi != null || value.Contains("phương tiện giao thông") || value.Contains("ô tô");
         }
+        [BsonIgnore]
+        public int No { get; set; }
 
         // search chính xác
         [ColumnIndex(2)]

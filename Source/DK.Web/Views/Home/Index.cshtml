@@ -85,6 +85,15 @@
                 var displayStatus = $("#searchBox a i").hasClass("ion-chevron-up");
                 localStorage.setItem("displaySearchBox", displayStatus);
             });
+
+            $("#btnSearch").click(function () {
+                $("#pattern").val(null);
+                $("#frmSearch").submit();
+            });
+            $('.report').click(function () {
+                $("#pattern").val($(this).data('pattern'));
+                $("#frmSearch").submit();
+            });
         });
     </script>
 }

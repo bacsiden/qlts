@@ -7,7 +7,7 @@ namespace DK.Application
 {
     public interface ITaiSanService
     {
-        Task ExportAsync(List<TaiSan> taiSans);
+        Task ExportAsync(List<TaiSan> taiSans, string pattern);
         void Import();
         Task SendToBrowser(Stream OutStream, string MimeType, string FileName);
     }
