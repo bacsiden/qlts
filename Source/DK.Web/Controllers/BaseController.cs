@@ -1,5 +1,4 @@
-﻿using FlexCel.Core;
-using Microsoft.AspNet.Identity;
+﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using System;
 using System.Collections.Generic;
@@ -80,14 +79,14 @@ namespace DK.Web.Controllers
             //return Content("<html><head><script>location.reload();</script></head></html>");
             return JavaScript(@"$('#GeneralModal').modal('hide'); location.reload();");
         }
-        public void SendToBrowser(ExcelFile xlsx, string filename)
-        {
-            using (MemoryStream XlsStream = new MemoryStream())
-            {
-                xlsx.Save(XlsStream);
-                SendToBrowser(XlsStream, "application/excel", filename);
-            }
-        }
+        //public void SendToBrowser(ExcelFile xlsx, string filename)
+        //{
+        //    using (MemoryStream XlsStream = new MemoryStream())
+        //    {
+        //        xlsx.Save(XlsStream);
+        //        SendToBrowser(XlsStream, "application/excel", filename);
+        //    }
+        //}
         public void SendToBrowser(MemoryStream OutStream, string MimeType, string FileName)
         {
             Response.Clear();

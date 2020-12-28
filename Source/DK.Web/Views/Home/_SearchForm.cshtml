@@ -145,9 +145,10 @@
                     <i class="fa fa-download"></i> Tải file
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
-                    <a class="dropdown-item report" href="javascript:void(0)" data-pattern="data" >Mẫu báo cáo trống</a>
-                    <a class="dropdown-item" href="javascript:void(0)" onclick="exportCsvAverage()">Báo cáo loại 1</a>
-                    <a class="dropdown-item" href="javascript:void(0)" onclick="exportCsvAverage()">Báo cáo loại 2</a>
+                    @foreach (var item in DK.Application.Models.ReportVariables.Templates)
+                    {
+                        <a class="dropdown-item report" href="javascript:void(0)" data-pattern="@item.Key">@item.Value.Item1 - @item.Key</a>
+                    }
                 </div>
             </div>
         </div>

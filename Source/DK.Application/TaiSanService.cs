@@ -9,6 +9,7 @@ using System.Web;
 using DK.Application.Models;
 using DK.Application.Repositories;
 using FlexCel.Core;
+using FlexCel.Render;
 using FlexCel.Report;
 using FlexCel.XlsAdapter;
 
@@ -45,16 +46,19 @@ namespace DK.Application
                 ts.GroupCode = GetCellString(xls, row, nameof(TaiSan.GroupCode));
                 ts.GroupName = GetCellString(xls, row, nameof(TaiSan.GroupName));
                 ts.ChungLoai = GetCellString(xls, row, nameof(TaiSan.ChungLoai));
-                if (!types.Any(m => m.Name == TypeConstant.ChungLoai && m.Title == ts.ChungLoai)) newTypes.Add(new Models.Type { Name = TypeConstant.ChungLoai, Title = ts.ChungLoai });
+                AddNewType(types, newTypes, TypeConstant.ChungLoai, ts.ChungLoai);
+
                 ts.DanhMuc = GetCellString(xls, row, nameof(TaiSan.DanhMuc));
-                if (!types.Any(m => m.Name == TypeConstant.DanhMuc && m.Title == ts.DanhMuc)) newTypes.Add(new Models.Type { Name = TypeConstant.DanhMuc, Title = ts.DanhMuc });
+                AddNewType(types, newTypes, TypeConstant.DanhMuc, ts.DanhMuc);
+
                 ts.NhanHieu = GetCellString(xls, row, nameof(TaiSan.NhanHieu));
                 ts.Serial = GetCellString(xls, row, nameof(TaiSan.Serial));
                 ts.XuatXu = GetCellString(xls, row, nameof(TaiSan.XuatXu));
                 ts.ThuocHopDong = GetCellString(xls, row, nameof(TaiSan.ThuocHopDong));
                 ts.ThuocGoiThau = GetCellString(xls, row, nameof(TaiSan.ThuocGoiThau));
                 ts.NguonKinhPhi = GetCellString(xls, row, nameof(TaiSan.NguonKinhPhi));
-                if (!types.Any(m => m.Name == TypeConstant.NguonKinhPhi && m.Title == ts.NguonKinhPhi)) newTypes.Add(new Models.Type { Name = TypeConstant.NguonKinhPhi, Title = ts.NguonKinhPhi });
+                AddNewType(types, newTypes, TypeConstant.NguonKinhPhi, ts.NguonKinhPhi);
+
                 ts.NganSachNam = GetCellInt(xls, row, nameof(TaiSan.NganSachNam));
                 ts.NamSanXuat = GetCellInt(xls, row, nameof(TaiSan.NamSanXuat));
                 ts.NamSuDung = GetCellInt(xls, row, nameof(TaiSan.NamSuDung));
@@ -63,15 +67,15 @@ namespace DK.Application
                 ts.NguyenGiaKiemKe = GetCellDecimal(xls, row, nameof(TaiSan.NguyenGiaKiemKe));
                 ts.SoLuongKiemKe = GetCellInt(xls, row, nameof(TaiSan.SoLuongKiemKe));
                 ts.ChatLuong = GetCellString(xls, row, nameof(TaiSan.ChatLuong));
-                if (!types.Any(m => m.Name == TypeConstant.ChatLuong && m.Title == ts.ChatLuong)) newTypes.Add(new Models.Type { Name = TypeConstant.ChatLuong, Title = ts.ChatLuong });
+                AddNewType(types, newTypes, TypeConstant.ChatLuong, ts.ChatLuong);
+
                 ts.HaoMonLuyKe = GetCellInt(xls, row, nameof(TaiSan.HaoMonLuyKe));
                 ts.GiaTriConLai = GetCellString(xls, row, nameof(TaiSan.GiaTriConLai));
                 ts.NguoiSuDung = GetCellString(xls, row, nameof(TaiSan.NguoiSuDung));
                 ts.NguoiQuanLy = GetCellString(xls, row, nameof(TaiSan.NguoiQuanLy));
                 ts.PhongQuanLy = GetCellString(xls, row, nameof(TaiSan.PhongQuanLy));
-                if (!types.Any(m => m.Name == TypeConstant.PhongBan && m.Title == ts.PhongQuanLy)) newTypes.Add(new Models.Type { Name = TypeConstant.PhongBan, Title = ts.PhongQuanLy });
-                ts.LoaiXe = GetCellString(xls, row, nameof(TaiSan.LoaiXe));
-                if (!types.Any(m => m.Name == TypeConstant.LoaiXe && m.Title == ts.LoaiXe)) newTypes.Add(new Models.Type { Name = TypeConstant.LoaiXe, Title = ts.LoaiXe });
+                AddNewType(types, newTypes, TypeConstant.PhongBan, ts.PhongQuanLy);
+
                 ts.DungTichXiLanh = GetCellInt(xls, row, nameof(TaiSan.DungTichXiLanh));
                 ts.SoChoNgoi = GetCellInt(xls, row, nameof(TaiSan.SoChoNgoi));
                 ts.SoTang = GetCellInt(xls, row, nameof(TaiSan.SoTang));
@@ -80,6 +84,7 @@ namespace DK.Application
                 ts.DiaChi = GetCellString(xls, row, nameof(TaiSan.DiaChi));
                 ts.DienTichKhuonVien = GetCellInt(xls, row, nameof(TaiSan.DienTichKhuonVien));
                 ts.Tags = GetCellListString(xls, row, nameof(TaiSan.Tags));
+                AddNewType(types, newTypes, TypeConstant.Tags, ts.Tags);
 
                 if (ts.Code == null)
                 {
@@ -124,9 +129,14 @@ namespace DK.Application
                 _typeRepository.AddRange(newTypes);
         }
 
-        public Task ExportAsync(List<TaiSan> taiSans, string pattern)
+        public Task ExportDataAsync(List<TaiSan> taiSans, string pattern)
         {
             var template = ReportVariables.Templates[pattern];
+            if (pattern.StartsWith("2"))
+            {
+                ExportReportAsync(taiSans, pattern);
+                return Task.CompletedTask;
+            }
             using (FlexCelReport fr = new FlexCelReport(true))
             {
                 foreach (var item in taiSans)
@@ -138,14 +148,59 @@ namespace DK.Application
                 var xlsx = new XlsFile(true);
                 xlsx.Open(TemplateFolder + template.Item2);
                 fr.Run(xlsx);
+                using (FlexCelPdfExport pdf = new FlexCelPdfExport(xlsx, true))
+                {
+                    pdf.Export($"{TemplateFolder}result.pdf");
+                }
+                //return Task.CompletedTask;
                 using (MemoryStream XlsStream = new MemoryStream())
                 {
                     xlsx.Save(XlsStream);
-                    return SendToBrowser(XlsStream, "application/excel", $"{template.Item1} - {pattern}.xlsx");
+                    return SendToBrowser(XlsStream, "application/excel", $"{pattern}.xlsx");
                 }
             }
         }
 
+        public Task ExportReportAsync(List<TaiSan> taiSans, string pattern)
+        {
+            var template = ReportVariables.Templates[pattern];
+            using (FlexCelReport fr = new FlexCelReport(true))
+            {
+                var no = 1;
+                foreach (var item in taiSans)
+                {
+                    item.JoinedTags = string.Join("; ", item.Tags);
+
+                }
+
+                fr.AddTable("row", taiSans);
+                //fr.AddTable("sum", new List<TaiSan> { new TaiSan { SoLuong = 1 } });
+                fr.SetValue("title", template.Item1);
+                fr.SetValue("pattern", pattern);
+                var xlsx = new XlsFile(true);
+                xlsx.Open(TemplateFolder + template.Item2);
+                fr.Run(xlsx);
+                using (MemoryStream XlsStream = new MemoryStream())
+                {
+                    xlsx.Save(XlsStream);
+                    return SendToBrowser(XlsStream, "application/excel", $"{pattern}.xlsx");
+                }
+            }
+        }
+
+        private void AddNewType(List<Models.Type> types, List<Models.Type> newTypes, string name, string value)
+        {
+            if (!string.IsNullOrWhiteSpace(value) && !types.Any(m => m.Name == name && value.Equals(m.Title, StringComparison.OrdinalIgnoreCase)))
+                newTypes.Add(new Models.Type { Name = name, Title = value });
+        }
+        private void AddNewType(List<Models.Type> types, List<Models.Type> newTypes, string name, List<string> values)
+        {
+            values.ForEach(x =>
+            {
+                if (!string.IsNullOrWhiteSpace(x) && !types.Any(m => m.Name == name && x.Equals(m.Title, StringComparison.OrdinalIgnoreCase)))
+                    newTypes.Add(new Models.Type { Name = name, Title = x });
+            });
+        }
         private string GetCellString(XlsFile xls, int row, string fieldName)
         {
             var colIndex = TaiSan.GetCol(fieldName);
