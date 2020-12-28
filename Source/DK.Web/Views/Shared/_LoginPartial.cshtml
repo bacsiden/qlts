@@ -3,7 +3,6 @@
 {
     using (Html.BeginForm("Logout", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right  d-none hidden" }))
     {
-        @Html.AntiForgeryToken()
     }
 
     <a href="#@Url.Action("Manage", "Account")" class="nav-link nav-link-profile" data-toggle="dropdown">

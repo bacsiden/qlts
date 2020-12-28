@@ -60,5 +60,7 @@ namespace DK.Application.Models
                 Tags = string.Join(",", Tags)
             };
         }
+
+        public string pattern { get; set; }
     }
 }

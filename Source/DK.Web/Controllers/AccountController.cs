@@ -14,13 +14,13 @@ namespace DK.Web.Controllers
     public class AccountController : BaseController
     {
         private ITaiSanRepository _TaiSanRepository;
-        //private readonly TaiSanService _taiSanService;
+        private readonly ITaiSanService _taiSanService;
 
 
-        public AccountController(ITaiSanRepository taiSanRepository)
+        public AccountController(ITaiSanRepository taiSanRepository, ITaiSanService taiSanService)
         {
             _TaiSanRepository = taiSanRepository;
-            //_taiSanService = new TaiSanService(taiSanRepository);
+            _taiSanService = taiSanService;
         }
 
         private IAuthenticationManager Authentication
@@ -41,7 +41,7 @@ namespace DK.Web.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
-            //_taiSanService.Import();
+            _taiSanService.Import();
             ViewBag.ReturnUrl = returnUrl;  
             return View();
         }

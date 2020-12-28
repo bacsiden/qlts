@@ -35,7 +35,7 @@ namespace DK.Application.Repositories
         }
 
         public virtual Task AddRangeAsync(IEnumerable<T> list) => _collection.InsertManyAsync(list);
-
+        public void AddRange(IEnumerable<T> list) => _collection.InsertMany(list);
         public virtual Task<T> UpsertAsync(T model)
         {
             if ((Guid)typeof(T).GetProperty("Id").GetValue(model) == Guid.Empty)
@@ -52,7 +52,14 @@ namespace DK.Application.Repositories
 
             return model;
         }
+        public virtual T Update(T model)
+        {
+            var id = typeof(T).GetProperty("Id").GetValue(model);
+            var filter_id = Builders<T>.Filter.Eq("_id", id);
+            _collection.ReplaceOne(filter_id, model);
 
+            return model;
+        }
         public virtual Task SetAsync(string id, string fieldName, dynamic value)
         {
             var filter_id = Builders<T>.Filter.Eq("_id", ObjectId.Parse(id));

@@ -86,8 +86,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ITaiSanService.cs" />
     <Compile Include="Models\BaseEntity.cs" />
     <Compile Include="Models\ColumIndexAttribute.cs" />
+    <Compile Include="Models\ReportVariables.cs" />
     <Compile Include="Models\TaiSanSearchModel.cs" />
     <Compile Include="Models\Type.cs" />
     <Compile Include="Models\TaiSan.cs" />
