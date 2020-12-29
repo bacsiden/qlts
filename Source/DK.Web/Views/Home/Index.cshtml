@@ -40,6 +40,9 @@
     .table-responsive {
         overflow-x: auto;
     }
+    .dropdown-menu.show {
+        z-index: 10000;
+    }
 </style>
 
 @section Button {
@@ -47,9 +50,6 @@
 }
 
 <div class="card mt-2 mb-2 shadow-base" id="searchBox">
-    <div class="card-header">
-        <strong>Tìm kiếm</strong>
-    </div>
     <div class="card-body pb-0">
         @Html.Partial("_SearchForm", searchModel)
     </div>
