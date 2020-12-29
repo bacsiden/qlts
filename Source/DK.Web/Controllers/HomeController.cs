@@ -146,7 +146,7 @@ namespace DK.Web.Controllers
 
             var pager = new Pager(list.Count(), search.PageIndex, search.PageSize);
             if (search.pattern != null)
-                _taiSanService.ExportDataAsync(list.ToList(), search.pattern);
+                _taiSanService.ExportTaiSanAsync(list.ToList(), search.pattern);
             return new PagerViewModel
             {
                 BaseUrl = Url.Action("Index", search.ToPagingModel()),
