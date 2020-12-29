@@ -250,6 +250,7 @@
     <Compile Include="App_Start\StructuremapMvc.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\KiemKeController.cs" />
     <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Core\Pager.cs" />
@@ -368,6 +369,7 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\bracket.js" />
+    <Content Include="Scripts\common.js" />
     <Content Include="Scripts\dist\jquery.js" />
     <Content Include="Scripts\dist\jquery.min.js" />
     <Content Include="Scripts\DK.js" />
@@ -431,6 +433,8 @@
     <Content Include="Views\Home\_SearchForm.cshtml" />
     <Content Include="Views\Shared\_PagerPartial.cshtml" />
     <Content Include="Views\Home\_Table.cshtml" />
+    <Content Include="Views\Home\Dashboard.cshtml" />
+    <Content Include="Views\KiemKe\Index.cshtml" />
     <Content Include="Views\Home\Import.cshtml" />
   </ItemGroup>
   <ItemGroup>

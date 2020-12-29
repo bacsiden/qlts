@@ -65,11 +65,18 @@
             </div>
             @Html.Partial("_PagerPartial", Model)
         </form>
+
+        <div class="d-none">
+            <form action="/Home/DeleteTaiSan" method="post" id="form-delete">
+                
+            </form>
+        </div>
     </div>
 </div>
 
 @section Scripts {
     <script src="~/Content/lib/select2/js/select2.min.js"></script>
+    <script src="~/Scripts/common.js"></script>
     <script>
         $(document).ready(function () {
             if (localStorage.getItem("displaySearchBox") === "true") {

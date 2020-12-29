@@ -1,6 +1,7 @@
 ﻿@model DK.Application.Models.TaiSanSearchModel
 @{
     var tags = ViewBag.Tags as IEnumerable<string> ?? new List<string>();
+    var pageSizeList = new int[] { 2, 10, 50, 100, 200, 500 };
 }
 
 @using (Html.BeginForm(null, null, FormMethod.Get, new { role = "form", id = "frmSearch" }))
@@ -140,6 +141,7 @@
         <div class="col search-item">
             <button id="btnSearch" class="btn bd bg-primary tx-white pointer" type="button"><i class="fa fa-search"></i> Tìm kiếm</button>
             <a class="btn bd pointer" href="/"><i class="fa fa-refresh"></i> Reset</a>
+
             <div class="dropdown d-sm-inline-block pull-right">
                 <a class="dropdown-toggle btn btn-primary" href="javascript:void(0)" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fa fa-download"></i> Tải file
@@ -151,6 +153,17 @@
                     }
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col search-item">
+            <div class="pull-left mr-2" style="width: 112px;">
+                <div class="input-group">
+                    @Html.DropDownListFor(x => x.PageSize, new SelectList(pageSizeList), new { Class = "form-control" })
+                </div>
+            </div>
+            <a class="btn btn-danger pointer DeleteItem" href="/Home/DeleteTaiSan"><i class="fa fa-times"></i> Xóa</a>
         </div>
     </div>
 }

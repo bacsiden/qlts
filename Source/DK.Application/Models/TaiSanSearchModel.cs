@@ -30,6 +30,7 @@ namespace DK.Application.Models
         public decimal? GiaKiemKeDen { get; set; }
 
         public int PageIndex { get; set; } = 1;
+        public int PageSize { get; set; } = 10;
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
 
@@ -57,6 +58,7 @@ namespace DK.Application.Models
                 NguoiQuanLy,
                 PhongQuanLy,
                 LoaiXe,
+                PageSize,
                 Tags = string.Join(",", Tags)
             };
         }

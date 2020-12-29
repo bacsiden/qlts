@@ -2,6 +2,7 @@
 using DK.Application.Models;
 using DK.Application.Repositories;
 using DK.Web.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -32,32 +33,6 @@ namespace DK.Web.Controllers
             return View(result);
         }
 
-        private PagerViewModel SearchTaiSan(TaiSanSearchModel search)
-        {
-            var list = _taiSanRepository.Find(search);
-
-            var pager = new Pager(list.Count(), search.PageIndex);
-            if (search.pattern != null)
-                _taiSanService.ExportTaiSanAsync(list.ToList(), search.pattern);
-            return new PagerViewModel
-            {
-                BaseUrl = Url.Action("Index", search.ToPagingModel()),
-                Items = list.Skip((pager.CurrentPage - 1) * pager.PageSize).Take(pager.PageSize).ToList(),
-                Pager = pager
-            };
-        }
-
-        private void CreateDropDownViewBag()
-        {
-            var types = _typeRepository.Find(m => true).ToList();
-            ViewBag.ChungLoai = types.Where(m => m.Name == TypeConstant.ChungLoai).Select(m => m.Title);
-            ViewBag.DanhMuc = types.Where(m => m.Name == TypeConstant.DanhMuc).Select(m => m.Title);
-            ViewBag.NguonKinhPhi = types.Where(m => m.Name == TypeConstant.NguonKinhPhi).Select(m => m.Title);
-            ViewBag.ChatLuong = types.Where(m => m.Name == TypeConstant.ChatLuong).Select(m => m.Title);
-            ViewBag.LoaiXe = types.Where(m => m.Name == TypeConstant.LoaiXe).Select(m => m.Title);
-            ViewBag.PhongBan = types.Where(m => m.Name == TypeConstant.PhongBan).Select(m => m.Title);
-            ViewBag.Tags = types.Where(m => m.Name == TypeConstant.Tags).Select(m => m.Title);
-        }
         [HttpPost]
         public Task GetReportAsync(TaiSanSearchModel search, string pattern)
         {
@@ -74,6 +49,11 @@ namespace DK.Web.Controllers
         public ActionResult Import(HttpPostedFileBase taisan)
         {
             _taiSanService.ImportTaiSan(taisan.InputStream);
+            return View();
+        }
+
+        public ActionResult Dashboard()
+        {
             return View();
         }
 
@@ -123,17 +103,20 @@ namespace DK.Web.Controllers
 
         // POST: Home/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public async Task<ActionResult> DeleteTaiSan(Guid[] ids)
         {
             try
             {
-                // TODO: Add delete logic here
+                foreach (var id in ids)
+                {
+                    await _taiSanRepository.DeleteAsync(id);
+                }
 
                 return RedirectToAction("Index");
             }
             catch
             {
-                return View();
+                return RedirectToAction("Index");
             }
         }
 
@@ -154,6 +137,34 @@ namespace DK.Web.Controllers
             }
 
             _taiSanRepository.AddRangeAsync(list);
+        }
+
+
+        private PagerViewModel SearchTaiSan(TaiSanSearchModel search)
+        {
+            var list = _taiSanRepository.Find(search);
+
+            var pager = new Pager(list.Count(), search.PageIndex, search.PageSize);
+            if (search.pattern != null)
+                _taiSanService.ExportDataAsync(list.ToList(), search.pattern);
+            return new PagerViewModel
+            {
+                BaseUrl = Url.Action("Index", search.ToPagingModel()),
+                Items = list.Skip((pager.CurrentPage - 1) * pager.PageSize).Take(pager.PageSize).ToList(),
+                Pager = pager
+            };
+        }
+
+        private void CreateDropDownViewBag()
+        {
+            var types = _typeRepository.Find(m => true).ToList();
+            ViewBag.ChungLoai = types.Where(m => m.Name == TypeConstant.ChungLoai).Select(m => m.Title);
+            ViewBag.DanhMuc = types.Where(m => m.Name == TypeConstant.DanhMuc).Select(m => m.Title);
+            ViewBag.NguonKinhPhi = types.Where(m => m.Name == TypeConstant.NguonKinhPhi).Select(m => m.Title);
+            ViewBag.ChatLuong = types.Where(m => m.Name == TypeConstant.ChatLuong).Select(m => m.Title);
+            ViewBag.LoaiXe = types.Where(m => m.Name == TypeConstant.LoaiXe).Select(m => m.Title);
+            ViewBag.PhongBan = types.Where(m => m.Name == TypeConstant.PhongBan).Select(m => m.Title);
+            ViewBag.Tags = types.Where(m => m.Name == TypeConstant.Tags).Select(m => m.Title);
         }
     }
 }
