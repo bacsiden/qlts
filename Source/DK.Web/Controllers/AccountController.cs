@@ -41,7 +41,6 @@ namespace DK.Web.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
-            _taiSanService.Import();
             ViewBag.ReturnUrl = returnUrl;  
             return View();
         }

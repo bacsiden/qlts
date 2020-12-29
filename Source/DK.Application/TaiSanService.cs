@@ -20,20 +20,22 @@ namespace DK.Application
         protected readonly string TemplateFolder = HttpContext.Current.Server.MapPath("~/ReportTemplates\\");
         private readonly ITaiSanRepository _taiSanRepository;
         private readonly ITypeRepository _typeRepository;
-        public TaiSanService(ITaiSanRepository taiSanRepository, ITypeRepository typeRepository)
+        private readonly IKiemKeRepository _kiemKeRepository;
+        public TaiSanService(ITaiSanRepository taiSanRepository, ITypeRepository typeRepository, IKiemKeRepository kiemKeRepository)
         {
             _taiSanRepository = taiSanRepository;
             _typeRepository = typeRepository;
-            //xlsx.Open(TemplateFolder + "TimeLine.xlsx");
+            _kiemKeRepository = kiemKeRepository;
         }
 
-        public void Import()
+        public void ImportTaiSan(Stream stream)
         {
             var taisans = _taiSanRepository.Find(m => true).ToList().Select(m => new { key = m.Code, value = m }).ToDictionary(x => x.key, x => x.value);
             var types = _typeRepository.Find(m => true).ToList();
             var newTypes = new List<Models.Type>();
 
-            XlsFile xls = new XlsFile(TemplateFolder + "ImportForm.xlsx");
+            XlsFile xls = new XlsFile();
+            xls.Open(stream);
             var newTaiSans = new List<TaiSan>();
             var oldTaiSans = new List<TaiSan>();
 
@@ -64,13 +66,12 @@ namespace DK.Application
                 ts.NamSuDung = GetCellInt(xls, row, nameof(TaiSan.NamSuDung));
                 ts.NguyenGiaKeToan = GetCellDecimal(xls, row, nameof(TaiSan.NguyenGiaKeToan));
                 ts.SoLuong = GetCellInt(xls, row, nameof(TaiSan.SoLuong));
-                ts.NguyenGiaKiemKe = GetCellDecimal(xls, row, nameof(TaiSan.NguyenGiaKiemKe));
-                ts.SoLuongKiemKe = GetCellInt(xls, row, nameof(TaiSan.SoLuongKiemKe));
+                ts.KhoiLuong = GetCellInt(xls, row, nameof(TaiSan.KhoiLuong));
                 ts.ChatLuong = GetCellString(xls, row, nameof(TaiSan.ChatLuong));
                 AddNewType(types, newTypes, TypeConstant.ChatLuong, ts.ChatLuong);
 
                 ts.HaoMonLuyKe = GetCellInt(xls, row, nameof(TaiSan.HaoMonLuyKe));
-                ts.GiaTriConLai = GetCellString(xls, row, nameof(TaiSan.GiaTriConLai));
+                ts.GiaTriConLai = GetCellDecimal(xls, row, nameof(TaiSan.GiaTriConLai));
                 ts.NguoiSuDung = GetCellString(xls, row, nameof(TaiSan.NguoiSuDung));
                 ts.NguoiQuanLy = GetCellString(xls, row, nameof(TaiSan.NguoiQuanLy));
                 ts.PhongQuanLy = GetCellString(xls, row, nameof(TaiSan.PhongQuanLy));
@@ -132,9 +133,21 @@ namespace DK.Application
         public Task ExportDataAsync(List<TaiSan> taiSans, string pattern)
         {
             var template = ReportVariables.Templates[pattern];
+            if (pattern == "data")
+                return ExportTaiSanAsync(taiSans, pattern);
+            else if (template.Item1.Contains("chi tiết"))
+                return ExportReportDetailsAsync(taiSans, pattern);
+            else if (template.Item1.Contains("tổng hợp"))
+                return ExportReportGroupAsync(taiSans, pattern);
+            return Task.CompletedTask;
+        }
+
+        public Task ExportTaiSanAsync(List<TaiSan> taiSans, string pattern)
+        {
+            var template = ReportVariables.Templates[pattern];
             if (pattern.StartsWith("2"))
             {
-                ExportReportAsync(taiSans, pattern);
+                ExportReportDetailsAsync(taiSans, pattern);
                 return Task.CompletedTask;
             }
             using (FlexCelReport fr = new FlexCelReport(true))
@@ -152,16 +165,15 @@ namespace DK.Application
                 {
                     pdf.Export($"{TemplateFolder}result.pdf");
                 }
-                //return Task.CompletedTask;
                 using (MemoryStream XlsStream = new MemoryStream())
                 {
                     xlsx.Save(XlsStream);
-                    return SendToBrowser(XlsStream, "application/excel", $"{pattern}.xlsx");
+                    return SendToBrowser(XlsStream, "application/excel", GetReportName(pattern));
                 }
             }
         }
 
-        public Task ExportReportAsync(List<TaiSan> taiSans, string pattern)
+        public Task ExportReportDetailsAsync(List<TaiSan> taiSans, string pattern)
         {
             var template = ReportVariables.Templates[pattern];
             using (FlexCelReport fr = new FlexCelReport(true))
@@ -174,8 +186,111 @@ namespace DK.Application
                 }
 
                 fr.AddTable("row", taiSans);
-                //fr.AddTable("sum", new List<TaiSan> { new TaiSan { SoLuong = 1 } });
-                fr.SetValue("title", template.Item1);
+                fr.AddTable("sum", new List<TaiSan> { BuildSumTaiSan(taiSans) });
+                fr.SetValue("title", template.Item1.ToUpperInvariant());
+                fr.SetValue("pattern", pattern);
+                var xlsx = new XlsFile(true);
+                xlsx.Open(TemplateFolder + template.Item2);
+                fr.Run(xlsx);
+                using (MemoryStream XlsStream = new MemoryStream())
+                {
+                    xlsx.Save(XlsStream);
+                    return SendToBrowser(XlsStream, "application/excel", GetReportName(pattern));
+                }
+            }
+        }
+
+        public Task ExportReportGroupAsync(List<TaiSan> taiSans, string pattern)
+        {
+            var template = ReportVariables.Templates[pattern];
+            var groups = taiSans.Where(m => !string.IsNullOrWhiteSpace(m.GroupName)).Select(m => m.GroupName).Distinct();
+            var reportData = taiSans.Where(m => string.IsNullOrWhiteSpace(m.GroupName)).ToList();
+            foreach (var item in groups)
+            {
+                var groupTaiSans = taiSans.Where(m => m.GroupName == item).ToList();
+                var sum = BuildSumTaiSan(groupTaiSans);
+                sum.GroupName = item;
+                reportData.Add(sum);
+            }
+            var sumAll = BuildSumTaiSan(reportData);
+
+            var no = 1;
+            foreach (var item in reportData)
+            {
+                item.No = no++;
+            }
+
+            using (FlexCelReport fr = new FlexCelReport(true))
+            {
+                fr.AddTable("row", reportData);
+                fr.AddTable("sum", new List<TaiSan> { sumAll });
+                fr.SetValue("title", template.Item1.ToUpperInvariant());
+                fr.SetValue("pattern", pattern);
+                var xlsx = new XlsFile(true);
+                xlsx.Open(TemplateFolder + template.Item2);
+                fr.Run(xlsx);
+                using (MemoryStream XlsStream = new MemoryStream())
+                {
+                    xlsx.Save(XlsStream);
+                    return SendToBrowser(XlsStream, "application/excel", GetReportName(pattern));
+                }
+            }
+        }
+
+        private string GetReportName(string pattern)
+        {
+            var template = ReportVariables.Templates[pattern];
+            return $"{pattern}.xlsx";
+        }
+
+        private TaiSan BuildSumTaiSan(List<TaiSan> taiSans)
+        {
+            var sum = new TaiSan();
+            sum.SoLuong = taiSans.Where(m => m.SoLuong.HasValue).Sum(m => m.SoLuong);
+            sum.KhoiLuong = taiSans.Where(m => m.KhoiLuong.HasValue).Sum(m => m.KhoiLuong);
+            sum.NguyenGiaKeToan = taiSans.Where(m => m.NguyenGiaKeToan.HasValue).Sum(m => m.NguyenGiaKeToan);
+            sum.HaoMonLuyKe = taiSans.Where(m => m.HaoMonLuyKe.HasValue).Sum(m => m.HaoMonLuyKe);
+            sum.GiaTriConLai = taiSans.Where(m => m.GiaTriConLai.HasValue).Sum(m => m.GiaTriConLai);
+            sum.DienTichXayDung = taiSans.Where(m => m.DienTichXayDung.HasValue).Sum(m => m.DienTichXayDung);
+            sum.DienTichKhuonVien = taiSans.Where(m => m.DienTichKhuonVien.HasValue).Sum(m => m.DienTichKhuonVien);
+
+            sum.NganSachBo = taiSans.Where(m => m.NganSachBo.HasValue).Sum(m => m.NganSachBo);
+            sum.Khac = taiSans.Where(m => m.Khac.HasValue).Sum(m => m.Khac);
+            sum.TongCong = sum.NganSachBo + sum.Khac;
+
+            return sum;
+        }
+
+        public Task ExportKiemKeAsync(List<KiemKe> kiemKes, string pattern)
+        {
+            var template = ReportVariables.Templates[pattern];
+            using (FlexCelReport fr = new FlexCelReport(true))
+            {
+                var no = 1;
+                foreach (var item in kiemKes)
+                {
+                    item.No = no++;
+                    item.SoLuongChenhLech = KiemKe.GetChenhLech(item.SoLuongKeToan, item.SoLuongKiemKe);
+                    item.NguyenGieChenhLech = KiemKe.GetChenhLech(item.NguyenGiaKeToan, item.NguyenGiaKiemKe);
+                    item.GiaTriConLaiChenhLech = KiemKe.GetChenhLech(item.GiaTriConLaiKeToan, item.GiaTriConLaiKiemKe);
+                }
+
+                fr.AddTable("row", kiemKes);
+                var sum = new KiemKe();
+                sum.SoLuongKeToan = kiemKes.Where(m => m.SoLuongKeToan.HasValue).Sum(m => m.SoLuongKeToan);
+                sum.SoLuongKiemKe = kiemKes.Where(m => m.SoLuongKiemKe.HasValue).Sum(m => m.SoLuongKiemKe);
+                sum.SoLuongChenhLech = KiemKe.GetChenhLech(sum.SoLuongKeToan, sum.SoLuongKiemKe);
+
+                sum.NguyenGiaKeToan = kiemKes.Where(m => m.NguyenGiaKeToan.HasValue).Sum(m => m.NguyenGiaKeToan);
+                sum.NguyenGiaKiemKe = kiemKes.Where(m => m.NguyenGiaKiemKe.HasValue).Sum(m => m.NguyenGiaKiemKe);
+                sum.NguyenGieChenhLech = KiemKe.GetChenhLech(sum.NguyenGiaKeToan, sum.NguyenGiaKiemKe);
+
+                sum.GiaTriConLaiKeToan = kiemKes.Where(m => m.GiaTriConLaiKeToan.HasValue).Sum(m => m.GiaTriConLaiKeToan);
+                sum.GiaTriConLaiKiemKe = kiemKes.Where(m => m.GiaTriConLaiKiemKe.HasValue).Sum(m => m.GiaTriConLaiKiemKe);
+                sum.GiaTriConLaiChenhLech = KiemKe.GetChenhLech(sum.GiaTriConLaiKeToan, sum.GiaTriConLaiKiemKe);
+
+                fr.AddTable("sum", new List<KiemKe> { sum });
+                fr.SetValue("title", template.Item1.ToUpperInvariant());
                 fr.SetValue("pattern", pattern);
                 var xlsx = new XlsFile(true);
                 xlsx.Open(TemplateFolder + template.Item2);
@@ -187,6 +302,47 @@ namespace DK.Application
                 }
             }
         }
+
+        public void ImportKiemKe(Stream stream, Guid kiemKeId)
+        {
+            var taisans = _taiSanRepository.Find(m => true).ToList().Select(m => new { key = m.Code, value = m }).ToDictionary(x => x.key, x => x.value);
+
+            XlsFile xls = new XlsFile();
+            xls.Open(stream);
+
+            var newKiemKes = new List<KiemKe>();
+            xls.ActiveSheet = 1;
+            for (int row = 9; row <= xls.RowCount; row++)
+            {
+                var firstCell = GetCellInt(xls, row, nameof(KiemKe.No));
+                if (firstCell == null || firstCell.Value == 0) break;
+
+                var kk = new KiemKe();
+                kk.Code = GetCellString(xls, row, nameof(KiemKe.Code));
+
+                if (!taisans.ContainsKey(kk.Code))
+                {
+                    throw new Exception($"Mã tài sản '{kk.Code}' không tồn tại trong danh mục tài sản");
+                }
+                kk.KiemKeId = kiemKeId;
+                kk.Name = GetCellString(xls, row, nameof(KiemKe.Name));
+                kk.SoLuongKeToan = GetCellInt(xls, row, nameof(KiemKe.SoLuongKeToan));
+                kk.SoLuongKiemKe = GetCellInt(xls, row, nameof(KiemKe.SoLuongKiemKe));
+                kk.NguyenGiaKeToan = GetCellDecimal(xls, row, nameof(KiemKe.NguyenGiaKeToan));
+                kk.NguyenGiaKiemKe = GetCellDecimal(xls, row, nameof(KiemKe.NguyenGiaKiemKe));
+                kk.GiaTriConLaiKeToan = GetCellDecimal(xls, row, nameof(KiemKe.GiaTriConLaiKeToan));
+                kk.GiaTriConLaiKiemKe = GetCellDecimal(xls, row, nameof(KiemKe.GiaTriConLaiKiemKe));
+                kk.GhiChu = GetCellString(xls, row, nameof(KiemKe.GhiChu));
+
+                newKiemKes.Add(kk);
+            }
+            if (newKiemKes.Any())
+            {
+                _kiemKeRepository.DeleteManyAsync(nameof(KiemKe.KiemKeId), kiemKeId).GetAwaiter().GetResult();
+                _kiemKeRepository.AddRange(newKiemKes);
+            }
+        }
+
 
         private void AddNewType(List<Models.Type> types, List<Models.Type> newTypes, string name, string value)
         {

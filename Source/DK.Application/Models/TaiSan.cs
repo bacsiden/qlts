@@ -116,42 +116,38 @@ namespace DK.Application.Models
         public decimal? NguyenGiaKeToan { get; set; }
 
         [ColumnIndex(18)]
-        [Display(Name = "Số lượng kế toán")]
+        [Display(Name = "Số lượng")]
         public int? SoLuong { get; set; }
 
         [ColumnIndex(19)]
-        [Display(Name = "Nguyên giá kiểm kê")]
-        public decimal? NguyenGiaKiemKe { get; set; }
+        [Display(Name = "Khối lượng")]
+        public int? KhoiLuong { get; set; }
 
         [ColumnIndex(20)]
-        [Display(Name = "Số lượng kiểm kê")]
-        public int? SoLuongKiemKe { get; set; }
-
-        [ColumnIndex(21)]
         [Display(Name = "Hao mòn lũy kế")]
         public int? HaoMonLuyKe { get; set; }
 
-        [ColumnIndex(22)]
+        [ColumnIndex(21)]
         [Display(Name = "Giá trị còn lại")]
-        public string GiaTriConLai { get; set; }
+        public decimal? GiaTriConLai { get; set; }
 
         // filter
-        [ColumnIndex(23)]
+        [ColumnIndex(22)]
         [Display(Name = "Chất lượng")]
         public string ChatLuong { get; set; }
 
         // search contains
-        [ColumnIndex(24)]
+        [ColumnIndex(23)]
         [Display(Name = "Người sử dụng (cá nhân)")]
         public string NguoiSuDung { get; set; }
 
         // search contains
-        [ColumnIndex(25)]
+        [ColumnIndex(24)]
         [Display(Name = "Người quản lý (theo dõi chung)")]
         public string NguoiQuanLy { get; set; }
 
         // filter
-        [ColumnIndex(26)]
+        [ColumnIndex(25)]
         [Display(Name = "Phòng/Ban quản lý")]
         public string PhongQuanLy { get; set; }
 
@@ -159,7 +155,7 @@ namespace DK.Application.Models
         /// chỉ đối với phương tiện
         /// </summary>
         // filter
-        [ColumnIndex(27)]
+        [ColumnIndex(26)]
         [Display(Name = "Loại xe")]
         public string LoaiXe { get; set; }
 
@@ -167,58 +163,61 @@ namespace DK.Application.Models
         /// chỉ đối với phương tiện
         /// </summary>
         [Display(Name = "Dung tích xi lanh")]
-        [ColumnIndex(28)]
+        [ColumnIndex(27)]
         public int? DungTichXiLanh { get; set; }
 
         /// <summary>
         /// chỉ đối với phương tiện
         /// </summary>
         [Display(Name = "Số chỗ ngồi")]
-        [ColumnIndex(29)]
+        [ColumnIndex(28)]
         public int? SoChoNgoi { get; set; }
 
         /// <summary>
         /// chỉ đối với nhà đất
         /// </summary>
         [Display(Name = "Số tầng")]
-        [ColumnIndex(30)]
+        [ColumnIndex(29)]
         public int? SoTang { get; set; }
 
         /// <summary>
         /// chỉ đối với nhà đất
         /// </summary>
         [Display(Name = "Diện tích xây dựng")]
-        [ColumnIndex(31)]
+        [ColumnIndex(30)]
         public int? DienTichXayDung { get; set; }
 
         /// <summary>
         /// chỉ đối với nhà đất
         /// </summary>
         [Display(Name = "Cấp công trình")]
-        [ColumnIndex(32)]
+        [ColumnIndex(31)]
         public int? CapCongTrinh { get; set; }
 
         /// <summary>
         /// chỉ đối với nhà đất
         /// </summary>
         [Display(Name = "Địa chỉ")]
-        [ColumnIndex(33)]
+        [ColumnIndex(32)]
         public string DiaChi { get; set; }
 
         /// <summary>
         /// chỉ đối với nhà đất
         /// </summary>
         [Display(Name = "Diện tích khuôn viên")]
-        [ColumnIndex(34)]
+        [ColumnIndex(33)]
         public int? DienTichKhuonVien { get; set; }
 
         /// <summary>
         /// Multi select
         /// </summary>
-        [ColumnIndex(35)]
+        [ColumnIndex(34)]
         public List<string> Tags { get; set; } = new List<string>();
 
         public string JoinedTags { get; set; }
-        
+
+        public decimal? NganSachBo { get; set; }
+        public decimal? Khac { get; set; }
+        public decimal? TongCong { get; set; }
     }
 }

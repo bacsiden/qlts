@@ -37,7 +37,7 @@ namespace DK.Web.Controllers
 
             var pager = new Pager(list.Count(), search.PageIndex);
             if (search.pattern != null)
-                _taiSanService.ExportDataAsync(list.ToList(), search.pattern);
+                _taiSanService.ExportTaiSanAsync(list.ToList(), search.pattern);
             return new PagerViewModel
             {
                 BaseUrl = Url.Action("Index", search.ToPagingModel()),
@@ -61,7 +61,7 @@ namespace DK.Web.Controllers
         public Task GetReportAsync(TaiSanSearchModel search, string pattern)
         {
             var taiSans = _taiSanRepository.Find(search).ToList();
-            return _taiSanService.ExportDataAsync(taiSans, pattern);
+            return _taiSanService.ExportTaiSanAsync(taiSans, pattern);
         }
 
         // POST: Home/Create
