@@ -3,7 +3,16 @@
 @if (Model.Pager.EndPage > 1)
 {
     var baseUrl = Model.BaseUrl + (Model.BaseUrl.Contains("?") ? "&" : "?");
+    var pageSizeList = new int[] { 10, 50, 100, 200, 500 };
     <div class="ht-80 d-flex align-items-center justify-content-center">
+        <div class="col-md-2 col-sm-3">
+            <select name="PageSize" class="form-control" style="width:70px;">
+                @foreach (var pageSize in pageSizeList)
+                {
+                    <option value="@pageSize">@pageSize</option>
+                }
+            </select>
+        </div>
         <ul class="pagination pagination-basic mg-b-0">
             @if (Model.Pager.CurrentPage > 1)
             {
