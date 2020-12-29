@@ -5,6 +5,7 @@ using DK.Web.Core;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Mvc;
 
 namespace DK.Web.Controllers
@@ -62,6 +63,18 @@ namespace DK.Web.Controllers
         {
             var taiSans = _taiSanRepository.Find(search).ToList();
             return _taiSanService.ExportTaiSanAsync(taiSans, pattern);
+        }
+
+        public ActionResult Import()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Import(HttpPostedFileBase taisan)
+        {
+            _taiSanService.ImportTaiSan(taisan.InputStream);
+            return View();
         }
 
         // POST: Home/Create

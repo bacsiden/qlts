@@ -135,7 +135,7 @@ namespace DK.Application
             var template = ReportVariables.Templates[pattern];
             if (pattern == "data")
                 return ExportTaiSanAsync(taiSans, pattern);
-            else if (template.Item1.Contains("chi tiết"))
+            else if (template.Item1.Contains("chi tiết") || template.Item1.Contains("đánh giá lại"))
                 return ExportReportDetailsAsync(taiSans, pattern);
             else if (template.Item1.Contains("tổng hợp"))
                 return ExportReportGroupAsync(taiSans, pattern);
