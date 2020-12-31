@@ -40,6 +40,7 @@
     .table-responsive {
         overflow-x: auto;
     }
+
     .dropdown-menu.show {
         z-index: 10000;
     }
@@ -68,7 +69,6 @@
 
         <div class="d-none">
             <form action="/Home/DeleteTaiSan" method="post" id="form-delete">
-                
             </form>
         </div>
     </div>
@@ -96,6 +96,12 @@
             $("#btnSearch").click(function () {
                 $("#pattern").val(null);
                 $("#frmSearch").submit();
+            });
+            $('.print-barcode').click(function () {
+                if (confirm('Bạn chắc chắn muốn in mã vạch?')) {
+                    $("#pattern").val('barcode');
+                    $("#frmSearch").submit();
+                }
             });
             $('.report').click(function () {
                 $("#pattern").val($(this).data('pattern'));
