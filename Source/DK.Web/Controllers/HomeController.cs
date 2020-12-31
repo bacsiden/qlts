@@ -33,13 +33,6 @@ namespace DK.Web.Controllers
             return View(result);
         }
 
-        [HttpPost]
-        public Task GetReportAsync(TaiSanSearchModel search, string pattern)
-        {
-            var taiSans = _taiSanRepository.Find(search).ToList();
-            return _taiSanService.ExportTaiSanAsync(taiSans, pattern);
-        }
-
         public ActionResult Import()
         {
             return View();
@@ -145,8 +138,9 @@ namespace DK.Web.Controllers
             var list = _taiSanRepository.Find(search);
 
             var pager = new Pager(list.Count(), search.PageIndex, search.PageSize);
-            if (search.pattern != null)
-                _taiSanService.ExportTaiSanAsync(list.ToList(), search.pattern);
+            if (!string.IsNullOrWhiteSpace(search.pattern))
+                _taiSanService.ExportDataAsync(list.ToList(), search.pattern);
+            search.pattern = null;
             return new PagerViewModel
             {
                 BaseUrl = Url.Action("Index", search.ToPagingModel()),

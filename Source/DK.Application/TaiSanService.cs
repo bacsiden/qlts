@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using bpac;
 using DK.Application.Models;
 using DK.Application.Repositories;
-using FlexCel.Core;
 using FlexCel.Render;
 using FlexCel.Report;
 using FlexCel.XlsAdapter;
@@ -132,6 +131,8 @@ namespace DK.Application
 
         public Task ExportDataAsync(List<TaiSan> taiSans, string pattern)
         {
+            if (pattern == "barcode")
+                return ExportBarCodeAsync(taiSans);
             var template = ReportVariables.Templates[pattern];
             if (pattern == "data")
                 return ExportTaiSanAsync(taiSans, pattern);
@@ -145,15 +146,12 @@ namespace DK.Application
         public Task ExportTaiSanAsync(List<TaiSan> taiSans, string pattern)
         {
             var template = ReportVariables.Templates[pattern];
-            if (pattern.StartsWith("2"))
-            {
-                ExportReportDetailsAsync(taiSans, pattern);
-                return Task.CompletedTask;
-            }
             using (FlexCelReport fr = new FlexCelReport(true))
             {
+                var no = 1;
                 foreach (var item in taiSans)
                 {
+                    item.No = no++;
                     item.JoinedTags = string.Join("; ", item.Tags);
                 }
 
@@ -161,10 +159,6 @@ namespace DK.Application
                 var xlsx = new XlsFile(true);
                 xlsx.Open(TemplateFolder + template.Item2);
                 fr.Run(xlsx);
-                using (FlexCelPdfExport pdf = new FlexCelPdfExport(xlsx, true))
-                {
-                    pdf.Export($"{TemplateFolder}result.pdf");
-                }
                 using (MemoryStream XlsStream = new MemoryStream())
                 {
                     xlsx.Save(XlsStream);
@@ -343,7 +337,46 @@ namespace DK.Application
             }
         }
 
+        public Task ExportBarCodeAsync(List<TaiSan> taiSans)
+        {
+            using (FlexCelReport fr = new FlexCelReport(true))
+            {
+                var no = 1;
+                foreach (var item in taiSans)
+                {
+                    item.No = no++;
+                    item.JoinedTags = string.Join("; ", item.Tags);
+                }
 
+                fr.AddTable("row", taiSans);
+                var xlsx = new XlsFile(true);
+                xlsx.Open(TemplateFolder + "ForBarCode.xlsx");
+                fr.Run(xlsx);
+
+                bpac.DocumentClass doc = new DocumentClass();
+                if (doc.Open(TemplateFolder + "BarCode.lbx") != false)
+                {
+                    doc.StartPrint("", PrintOptionConstants.bpoHalfCut);
+                    foreach (var item in taiSans)
+                    {
+                        doc.GetObject("no").Text = item.No.ToString();
+                        //doc.GetObject("tents").Text = item.Name;
+                        doc.GetObject("barcode").Text = $"{item.Code}";
+                        //doc.GetObject("code").Text = item.Code;
+                        //doc.SetMediaById(doc.Printer.GetMediaId(), true);
+                        doc.PrintOut(1, PrintOptionConstants.bpoCutAtEnd);
+                    }
+                    doc.EndPrint();
+                    doc.Close();
+                }
+
+                using (MemoryStream XlsStream = new MemoryStream())
+                {
+                    xlsx.Save(XlsStream);
+                    return SendToBrowser(XlsStream, "application/excel", "Tài sản dán mã vạch.xlsx");
+                }
+            }
+        }
         private void AddNewType(List<Models.Type> types, List<Models.Type> newTypes, string name, string value)
         {
             if (!string.IsNullOrWhiteSpace(value) && !types.Any(m => m.Name == name && value.Equals(m.Title, StringComparison.OrdinalIgnoreCase)))
