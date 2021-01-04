@@ -42,7 +42,7 @@ namespace DK.Web.Controllers
         public ActionResult Import(HttpPostedFileBase taisan)
         {
             _taiSanService.ImportTaiSan(taisan.InputStream);
-            return View();
+            return RedirectToAction(nameof(Index));
         }
 
         public ActionResult Dashboard()

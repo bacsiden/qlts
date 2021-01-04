@@ -394,7 +394,7 @@ namespace DK.Application
         {
             var colIndex = TaiSan.GetCol(fieldName);
             int XF = -1;
-            object cell = xls.GetCellValueIndexed(row, colIndex, ref XF);
+            object cell = xls.GetCellValue(row, colIndex);
             var value = cell?.ToString()?.Trim();
             return string.IsNullOrWhiteSpace(value) ? null : value;
         }
@@ -402,7 +402,7 @@ namespace DK.Application
         {
             var colIndex = TaiSan.GetCol(fieldName);
             int XF = -1;
-            object cell = xls.GetCellValueIndexed(row, colIndex, ref XF);
+            object cell = xls.GetCellValue(row, colIndex);
             var value = cell?.ToString()?.Trim();
             return string.IsNullOrEmpty(value) ? new List<string>() : value.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries).Where(m => !string.IsNullOrWhiteSpace(m)).ToList();
         }
@@ -410,7 +410,7 @@ namespace DK.Application
         {
             var colIndex = TaiSan.GetCol(fieldName);
             int XF = -1;
-            object cell = xls.GetCellValueIndexed(row, colIndex, ref XF);
+            object cell = xls.GetCellValue(row, colIndex);
             if (decimal.TryParse(cell + "", out decimal result))
                 return result;
             return null;
@@ -419,7 +419,7 @@ namespace DK.Application
         {
             var colIndex = TaiSan.GetCol(fieldName);
             int XF = -1;
-            object cell = xls.GetCellValueIndexed(row, colIndex, ref XF);
+            object cell = xls.GetCellValue(row, colIndex);
             if (int.TryParse(cell + "", out int result))
                 return result;
             return null;

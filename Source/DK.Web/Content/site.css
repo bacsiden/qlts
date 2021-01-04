@@ -3,6 +3,10 @@
     max-height: 60px;
 }
 
+input[type="button"], input[type="submit"], button[type="submit"] {
+    cursor: pointer;
+}
+
 .table {
     -moz-box-shadow: 0 3px 0 rgba(12,12,12,0.03);
     -webkit-box-shadow: 0 3px 0 rgba(12,12,12,0.03);
