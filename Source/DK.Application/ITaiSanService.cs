@@ -8,6 +8,7 @@ namespace DK.Application
 {
     public interface ITaiSanService
     {
+        Task ExportDataAsync(List<TaiSan> taiSans, string pattern);
         Task ExportTaiSanAsync(List<TaiSan> taiSans, string pattern);
         Task ExportReportDetailsAsync(List<TaiSan> taiSans, string pattern);
         void ImportTaiSan(Stream stream);
@@ -15,5 +16,6 @@ namespace DK.Application
 
         Task ExportKiemKeAsync(List<KiemKe> kiemKes, string pattern);
         void ImportKiemKe(Stream stream, Guid kiemKeId);
+        Task ExportBarCodeAsync(List<TaiSan> taiSans);
     }
 }

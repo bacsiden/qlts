@@ -22,7 +22,11 @@ namespace DK.Application.Models
 
         public void GenerateCode(int? i = null)
         {
-            Code = $"fuck-{i}";
+            Code = $"{DanhMuc} {ChungLoai} {Name}".GetFirstChars();
+            if (Code != null && Code.Length > 7) Code = Code.Substring(0, 7);
+            Code += string.IsNullOrWhiteSpace(Serial) ? null : string.Join(null, Serial.Where(m => char.IsLetterOrDigit(m))).SubLastString(4);
+            if (i != null)
+                Code = $"{Code}-{i}";
         }
 
         public bool IsVehicle()
@@ -30,6 +34,7 @@ namespace DK.Application.Models
             var value = $"{ChungLoai}{DanhMuc}".ToLower();
             return LoaiXe != null || DungTichXiLanh != null || SoChoNgoi != null || value.Contains("phương tiện giao thông") || value.Contains("ô tô");
         }
+
         [BsonIgnore]
         public int No { get; set; }
 
