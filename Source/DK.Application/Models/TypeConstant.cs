@@ -9,5 +9,6 @@
         public const string LoaiXe = "Loại xe";
         public const string PhongBan = "Phòng, Đơn vị";
         public const string Tags = "Tags";
+        public const string KiemKe = "KiemKe";
     }
 }

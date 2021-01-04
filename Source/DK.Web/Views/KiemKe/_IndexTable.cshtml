@@ -1,0 +1,30 @@
+﻿@model IEnumerable<DK.Application.Models.Type>
+
+<table class="table mg-b-0" cellspacing="0">
+    <tr>
+        <th>STT</th>
+        <th>
+            @Html.DisplayNameFor(m => m.Title)
+        </th>
+        <th></th>
+    </tr>
+
+    @{
+        var stt = 1;
+        foreach (var item in Model)
+        {
+            <tr class="stat even">
+                <td class="ac">
+                    @(stt++)
+                </td>
+                <td>
+                    @item.Title
+                </td>
+                <td>
+                    <a href="/KiemKe/Detail/@item.Id">Chi tiết</a>
+                </td>
+            </tr>
+        }
+    }
+</table>
+

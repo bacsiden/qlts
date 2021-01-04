@@ -102,6 +102,13 @@
                 $("#frmSearch").submit();
             });
         });
+
+        function createKiemKe(e) {
+            var action = $(e).attr('href');
+            var form = $(e).closest('form');
+            form.attr('action', action);
+            form.submit();
+        }
     </script>
 }
 

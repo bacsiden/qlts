@@ -1,0 +1,22 @@
+﻿@model DK.Web.Core.PagerViewModel
+@{
+    ViewBag.Title = "Chi tiết đợt kiểm kê";
+    var kiemKe = ViewBag.KiemKe as DK.Application.Models.Type;
+}
+
+<div class="card mt-2 mb-2 shadow-base">
+    <div class="card-body pb-0">
+        @Html.Partial("_Form", kiemKe)
+    </div>
+</div>
+<div class="row mt-2">
+    <div class="col-12">
+        <div class="card shadow-base bd-0">
+            <div class="table-responsive">
+                @Html.Partial("_DetailTable", Model.Items)
+            </div>
+        </div>
+        @Html.Partial("_PagerPartial", Model)
+    </div>
+</div>
+

@@ -1,6 +1,15 @@
-﻿@{
-    ViewBag.Title = "Index";
+﻿@model DK.Web.Core.PagerViewModel
+@{
+    ViewBag.Title = "Danh sách các đợt kiểm kê";
 }
 
-<h2>Index</h2>
-
+<div class="row mt-2">
+    <div class="col-12">
+        <div class="card shadow-base bd-0">
+            <div class="table-responsive">
+                @Html.Partial("_IndexTable", Model.Items)
+            </div>
+        </div>
+        @Html.Partial("_PagerPartial", Model)
+    </div>
+</div>
