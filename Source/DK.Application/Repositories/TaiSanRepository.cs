@@ -32,6 +32,10 @@ namespace DK.Application.Repositories
             {
                 query &= filter.Eq(m => m.ChungLoai, model.ChungLoai.Trim());
             }
+            if (!string.IsNullOrWhiteSpace(model.DanhMuc))
+            {
+                query &= filter.Eq(m => m.DanhMuc, model.DanhMuc.Trim());
+            }
             if (!string.IsNullOrWhiteSpace(model.Serial))
             {
                 query &= filter.Eq(m => m.Serial, model.Serial.Trim());

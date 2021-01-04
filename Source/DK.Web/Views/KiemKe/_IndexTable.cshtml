@@ -4,7 +4,7 @@
     <tr>
         <th>STT</th>
         <th>
-            @Html.DisplayNameFor(m => m.Title)
+            Tên đợt kiểm kê
         </th>
         <th></th>
     </tr>
@@ -21,7 +21,8 @@
                     @item.Title
                 </td>
                 <td>
-                    <a href="/KiemKe/Detail/@item.Id">Chi tiết</a>
+                    <a href="/KiemKe/Detail/@item.Id">Chi tiết</a> | 
+                    <a href="/KiemKe/Delete/@item.Id" class="DeleteItem text-danger" onclick="return confirm('Bạn có chắc muốn xóa?')">Xóa</a>
                 </td>
             </tr>
         }

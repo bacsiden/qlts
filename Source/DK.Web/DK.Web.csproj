@@ -264,6 +264,7 @@
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationOAuthProvider.cs" />
+    <Compile Include="Models\DashboardModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\KiemKeModel.cs" />
     <Compile Include="Models\PagerModel.cs" />

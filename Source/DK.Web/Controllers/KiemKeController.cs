@@ -12,7 +12,7 @@ using System.Web.Mvc;
 namespace DK.Web.Controllers
 {
     [Authorize]
-    public class KiemKeController : Controller
+    public class KiemKeController : BaseController
     {
         private readonly ITaiSanRepository _taiSanRepository;
         private readonly ITypeRepository _typeRepository;
@@ -68,6 +68,27 @@ namespace DK.Web.Controllers
             _typeRepository.Update(kiemke);
 
             return RedirectToAction("Detail", new { kiemke.Id });
+        }
+
+        public async Task<ActionResult> Delete(Guid id)
+        {
+            var kiemke = await _typeRepository.GetAsync(id);
+            if (kiemke == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            try
+            {
+                await _kiemKeRepository.DeleteManyAsync(nameof(KiemKe.KiemKeId), id);
+                await _typeRepository.DeleteAsync(id);
+            }
+            catch (Exception _)
+            {
+
+            }
+
+            return RedirectToAction("Index");
         }
 
         public async Task<ActionResult> Create(TaiSanSearchModel search)
