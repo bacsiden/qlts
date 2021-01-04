@@ -354,15 +354,22 @@ namespace DK.Application
                 fr.Run(xlsx);
 
                 bpac.DocumentClass doc = new DocumentClass();
-                if (doc.Open(TemplateFolder + "BarCode.lbx") != false)
+                if (doc.Open(TemplateFolder + "BarCode1.lbx") != false)
                 {
                     doc.StartPrint("", PrintOptionConstants.bpoHalfCut);
                     foreach (var item in taiSans)
                     {
                         doc.GetObject("no").Text = item.No.ToString();
-                        //doc.GetObject("tents").Text = item.Name;
+                        doc.GetObject("donv").Text = $"Phòng: {item.PhongQuanLy}";
+                        doc.GetObject("code").Text = item.Code;
+                        doc.GetObject("name").Text = item.Name;
                         doc.GetObject("barcode").Text = $"{item.Code}";
-                        //doc.GetObject("code").Text = item.Code;
+
+
+                        //doc.GetObject("no").Text = item.No.ToString();
+                        //doc.GetObject("barcode").Text = $"{item.Code}";
+
+
                         //doc.SetMediaById(doc.Printer.GetMediaId(), true);
                         doc.PrintOut(1, PrintOptionConstants.bpoCutAtEnd);
                     }
@@ -393,7 +400,6 @@ namespace DK.Application
         private string GetCellString(XlsFile xls, int row, string fieldName)
         {
             var colIndex = TaiSan.GetCol(fieldName);
-            int XF = -1;
             object cell = xls.GetCellValue(row, colIndex);
             var value = cell?.ToString()?.Trim();
             return string.IsNullOrWhiteSpace(value) ? null : value;
@@ -401,7 +407,6 @@ namespace DK.Application
         private List<string> GetCellListString(XlsFile xls, int row, string fieldName)
         {
             var colIndex = TaiSan.GetCol(fieldName);
-            int XF = -1;
             object cell = xls.GetCellValue(row, colIndex);
             var value = cell?.ToString()?.Trim();
             return string.IsNullOrEmpty(value) ? new List<string>() : value.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries).Where(m => !string.IsNullOrWhiteSpace(m)).ToList();
@@ -409,7 +414,6 @@ namespace DK.Application
         private decimal? GetCellDecimal(XlsFile xls, int row, string fieldName)
         {
             var colIndex = TaiSan.GetCol(fieldName);
-            int XF = -1;
             object cell = xls.GetCellValue(row, colIndex);
             if (decimal.TryParse(cell + "", out decimal result))
                 return result;
@@ -418,7 +422,6 @@ namespace DK.Application
         private int? GetCellInt(XlsFile xls, int row, string fieldName)
         {
             var colIndex = TaiSan.GetCol(fieldName);
-            int XF = -1;
             object cell = xls.GetCellValue(row, colIndex);
             if (int.TryParse(cell + "", out int result))
                 return result;
