@@ -265,7 +265,7 @@ namespace DK.Application
                 {
                     item.No = no++;
                     item.SoLuongChenhLech = KiemKe.GetChenhLech(item.SoLuongKeToan, item.SoLuongKiemKe);
-                    item.NguyenGieChenhLech = KiemKe.GetChenhLech(item.NguyenGiaKeToan, item.NguyenGiaKiemKe);
+                    item.NguyenGiaChenhLech = KiemKe.GetChenhLech(item.NguyenGiaKeToan, item.NguyenGiaKiemKe);
                     item.GiaTriConLaiChenhLech = KiemKe.GetChenhLech(item.GiaTriConLaiKeToan, item.GiaTriConLaiKiemKe);
                 }
 
@@ -277,7 +277,7 @@ namespace DK.Application
 
                 sum.NguyenGiaKeToan = kiemKes.Where(m => m.NguyenGiaKeToan.HasValue).Sum(m => m.NguyenGiaKeToan);
                 sum.NguyenGiaKiemKe = kiemKes.Where(m => m.NguyenGiaKiemKe.HasValue).Sum(m => m.NguyenGiaKiemKe);
-                sum.NguyenGieChenhLech = KiemKe.GetChenhLech(sum.NguyenGiaKeToan, sum.NguyenGiaKiemKe);
+                sum.NguyenGiaChenhLech = KiemKe.GetChenhLech(sum.NguyenGiaKeToan, sum.NguyenGiaKiemKe);
 
                 sum.GiaTriConLaiKeToan = kiemKes.Where(m => m.GiaTriConLaiKeToan.HasValue).Sum(m => m.GiaTriConLaiKeToan);
                 sum.GiaTriConLaiKiemKe = kiemKes.Where(m => m.GiaTriConLaiKiemKe.HasValue).Sum(m => m.GiaTriConLaiKiemKe);
@@ -308,25 +308,25 @@ namespace DK.Application
             xls.ActiveSheet = 1;
             for (int row = 9; row <= xls.RowCount; row++)
             {
-                var firstCell = GetCellInt(xls, row, nameof(KiemKe.No));
+                var firstCell = GetCellInt(xls, row, nameof(KiemKe.No), typeof(KiemKe));
                 if (firstCell == null || firstCell.Value == 0) break;
 
                 var kk = new KiemKe();
-                kk.Code = GetCellString(xls, row, nameof(KiemKe.Code));
+                kk.Code = GetCellString(xls, row, nameof(KiemKe.Code), typeof(KiemKe));
 
                 if (!taisans.ContainsKey(kk.Code))
                 {
                     throw new Exception($"Mã tài sản '{kk.Code}' không tồn tại trong danh mục tài sản");
                 }
                 kk.KiemKeId = kiemKeId;
-                kk.Name = GetCellString(xls, row, nameof(KiemKe.Name));
-                kk.SoLuongKeToan = GetCellInt(xls, row, nameof(KiemKe.SoLuongKeToan));
-                kk.SoLuongKiemKe = GetCellInt(xls, row, nameof(KiemKe.SoLuongKiemKe));
-                kk.NguyenGiaKeToan = GetCellDecimal(xls, row, nameof(KiemKe.NguyenGiaKeToan));
-                kk.NguyenGiaKiemKe = GetCellDecimal(xls, row, nameof(KiemKe.NguyenGiaKiemKe));
-                kk.GiaTriConLaiKeToan = GetCellDecimal(xls, row, nameof(KiemKe.GiaTriConLaiKeToan));
-                kk.GiaTriConLaiKiemKe = GetCellDecimal(xls, row, nameof(KiemKe.GiaTriConLaiKiemKe));
-                kk.GhiChu = GetCellString(xls, row, nameof(KiemKe.GhiChu));
+                kk.Name = GetCellString(xls, row, nameof(KiemKe.Name), typeof(KiemKe));
+                kk.SoLuongKeToan = GetCellInt(xls, row, nameof(KiemKe.SoLuongKeToan), typeof(KiemKe));
+                kk.SoLuongKiemKe = GetCellInt(xls, row, nameof(KiemKe.SoLuongKiemKe), typeof(KiemKe));
+                kk.NguyenGiaKeToan = GetCellDecimal(xls, row, nameof(KiemKe.NguyenGiaKeToan), typeof(KiemKe));
+                kk.NguyenGiaKiemKe = GetCellDecimal(xls, row, nameof(KiemKe.NguyenGiaKiemKe), typeof(KiemKe));
+                kk.GiaTriConLaiKeToan = GetCellDecimal(xls, row, nameof(KiemKe.GiaTriConLaiKeToan), typeof(KiemKe));
+                kk.GiaTriConLaiKiemKe = GetCellDecimal(xls, row, nameof(KiemKe.GiaTriConLaiKiemKe), typeof(KiemKe));
+                kk.GhiChu = GetCellString(xls, row, nameof(KiemKe.GhiChu), typeof(KiemKe));
 
                 newKiemKes.Add(kk);
             }
@@ -397,36 +397,41 @@ namespace DK.Application
                     newTypes.Add(new Models.Type { Name = name, Title = x });
             });
         }
-        private string GetCellString(XlsFile xls, int row, string fieldName)
+        private string GetCellString(XlsFile xls, int row, string fieldName, System.Type type = null)
         {
-            var colIndex = TaiSan.GetCol(fieldName);
+            var colIndex = GetColIndex(type, fieldName);
             object cell = xls.GetCellValue(row, colIndex);
             var value = cell?.ToString()?.Trim();
             return string.IsNullOrWhiteSpace(value) ? null : value;
         }
-        private List<string> GetCellListString(XlsFile xls, int row, string fieldName)
+        private List<string> GetCellListString(XlsFile xls, int row, string fieldName, System.Type type = null)
         {
-            var colIndex = TaiSan.GetCol(fieldName);
+            var colIndex = GetColIndex(type, fieldName);
             object cell = xls.GetCellValue(row, colIndex);
             var value = cell?.ToString()?.Trim();
             return string.IsNullOrEmpty(value) ? new List<string>() : value.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries).Where(m => !string.IsNullOrWhiteSpace(m)).ToList();
         }
-        private decimal? GetCellDecimal(XlsFile xls, int row, string fieldName)
+        private decimal? GetCellDecimal(XlsFile xls, int row, string fieldName, System.Type type = null)
         {
-            var colIndex = TaiSan.GetCol(fieldName);
+            var colIndex = GetColIndex(type, fieldName);
             object cell = xls.GetCellValue(row, colIndex);
             if (decimal.TryParse(cell + "", out decimal result))
                 return result;
             return null;
         }
-        private int? GetCellInt(XlsFile xls, int row, string fieldName)
+        private int? GetCellInt(XlsFile xls, int row, string fieldName, System.Type type = null)
         {
-            var colIndex = TaiSan.GetCol(fieldName);
+            var colIndex = GetColIndex(type, fieldName);
             object cell = xls.GetCellValue(row, colIndex);
             if (int.TryParse(cell + "", out int result))
                 return result;
             return null;
         }
+        private int GetColIndex(System.Type type, string fieldName)
+        {
+            return type == null ? TaiSan.GetCol(fieldName) : KiemKe.GetCol(fieldName);
+        }
+
         public async Task SendToBrowser(Stream OutStream, string MimeType, string FileName)
         {
             var ms = new MemoryStream();

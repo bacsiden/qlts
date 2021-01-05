@@ -1,15 +1,16 @@
 ﻿@using DK.Web.Utilities
 @using DK.Application.Models
-@model DK.Web.Core.PagerViewModel
+@model Guid
 @{
-    ViewBag.Title = "Import tài sản từ excel";
+    ViewBag.Title = "Import kiểm kê từ excel";
 }
 
 <div class="row mt-2">
     <div class="col-12">
         <div class="card shadow-base bd-0">
-            @using (Html.BeginForm("Import", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            @using (Html.BeginForm("Import", "KiemKe", FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
+                @Html.Hidden("id", Model)
                 <div class="form-horizontal mt-3">
                     <div class="form-group">
                         <div class="col-md-10">

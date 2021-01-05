@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Mvc;
 
 namespace DK.Web.Controllers
@@ -119,6 +120,25 @@ namespace DK.Web.Controllers
             }
 
             return RedirectToAction("Index", "Home", search.ToPagingModel());
+        }
+
+        public ActionResult Import(Guid id)
+        {
+            return View(id);
+        }
+
+        [HttpPost]
+        public ActionResult Import(Guid id, HttpPostedFileBase taisan)
+        {
+            _taiSanService.ImportKiemKe(taisan.InputStream, id);
+            return RedirectToAction(nameof(Detail), new { id = id });
+        }
+
+        public async Task<ActionResult> Export(Guid id, string pattern)
+        {
+            var kiemKes = _kiemKeRepository.Find(m => m.KiemKeId == id).ToList();
+            await _taiSanService.ExportKiemKeAsync(kiemKes, pattern);
+            return RedirectToAction(nameof(Detail), new { id = id });
         }
 
         private IEnumerable<KiemKe> GetListKiemKes(Guid kiemKeId, IEnumerable<TaiSan> list)

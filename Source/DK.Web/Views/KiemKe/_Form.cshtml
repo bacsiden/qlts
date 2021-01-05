@@ -14,17 +14,17 @@
             <button class="btn bd bg-primary tx-white pointer" type="submit"><i class="ion-document-text"></i> Cập nhật</button>
 
             <div class="dropdown d-sm-inline-block pull-right">
-                <a class="btn bd pointer" href="/KiemKe/Create" onclick="createKiemKe(this);"><i class="fa fa-plus"></i> Button1</a>
-                <a class="btn bd pointer" href="/KiemKe/Create" onclick="createKiemKe(this);"><i class="fa fa-plus"></i> Button1</a>
-                <a class="btn bd pointer" href="/KiemKe/Create" onclick="createKiemKe(this);"><i class="fa fa-plus"></i> Button1</a>
+                <a class="btn bd pointer" href="#" ><i class="fa fa-upload"> </i> Đẩy dữ liệu vào thiết bị</a>
+                <a class="btn bd pointer" href="#" onclick="createKiemKe(this);"><i class="fa fa-deviantart"> </i> Đọc từ thiết bị</a>
+                <a class="btn bd pointer" href="/KiemKe/Import/@Model.Id" onclick="createKiemKe(this);"><i class="fa fa-file-excel-o"> </i> Đọc từ excel</a>
 
                 <a class="dropdown-toggle btn btn-primary" href="javascript:void(0)" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fa fa-download"></i> Tải file
+                    <i class="fa fa-download"></i> Xuất báo cáo
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
-                    @foreach (var item in DK.Application.Models.ReportVariables.Templates.Take(4))
+                    @foreach (var item in DK.Application.Models.ReportVariables.Templates.Where(m => m.Key.StartsWith("1")))
                     {
-                        <a class="dropdown-item report" href="javascript:void(0)" data-pattern="@item.Key">@item.Value.Item1 - @item.Key</a>
+                        <a class="dropdown-item report" href="/KiemKe/Export/@Model.Id?pattern=@item.Key" data-pattern="@item.Key">@item.Value.Item1 - @item.Key</a>
                     }
                 </div>
             </div>

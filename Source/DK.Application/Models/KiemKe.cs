@@ -1,11 +1,20 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace DK.Application.Models
 {
+    [BsonIgnoreExtraElements]
     public class KiemKe : BaseEntity
     {
+        public static int GetCol(string fieldName)
+        {
+            var property = typeof(KiemKe).GetProperty(fieldName);
+            var attribute = (ColumnIndexAttribute)property.GetCustomAttributes(typeof(ColumnIndexAttribute), true).First();
+            return attribute.Index;
+        }
+
         public static int? GetChenhLech(int? value1, int? value2)
         {
             if (value1.HasValue && value1.HasValue) return Math.Abs(value1.Value - value2.Value);
@@ -23,6 +32,7 @@ namespace DK.Application.Models
 
         public Guid KiemKeId { get; set; }
 
+        [ColumnIndex(1)]
         [BsonIgnore]
         public int No { get; set; }
 
@@ -61,7 +71,7 @@ namespace DK.Application.Models
         public decimal? NguyenGiaKiemKe { get; set; }
 
         [ColumnIndex(10)]
-        [Display(Name = "Giá trị")]
+        [Display(Name = "Giá trị còn lại")]
         public decimal? GiaTriConLaiKiemKe { get; set; }
 
         [ColumnIndex(11)]
@@ -70,7 +80,7 @@ namespace DK.Application.Models
 
         [ColumnIndex(12)]
         [Display(Name = "Nguyên giá")]
-        public decimal? NguyenGieChenhLech { get; set; }
+        public decimal? NguyenGiaChenhLech { get; set; }
 
         [ColumnIndex(13)]
         [Display(Name = "Giá trị còn lại")]

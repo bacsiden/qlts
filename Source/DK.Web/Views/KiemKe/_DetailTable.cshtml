@@ -35,7 +35,7 @@
             @Html.DisplayNameFor(m => m.SoLuongChenhLech)
         </th>
         <th>
-            @Html.DisplayNameFor(m => m.NguyenGieChenhLech)
+            @Html.DisplayNameFor(m => m.NguyenGiaChenhLech)
         </th>
         <th>
             @Html.DisplayNameFor(m => m.GiaTriConLaiChenhLech)
@@ -81,13 +81,13 @@
                 @(item.GiaTriConLaiKiemKe)
             </td>
             <td>
-                @(item.SoLuongChenhLech)
+                @(KiemKe.GetChenhLech(item.SoLuongKiemKe, item.SoLuongKeToan))
             </td>
             <td>
-                @(item.NguyenGieChenhLech)
+                @(KiemKe.GetChenhLech(item.NguyenGiaKeToan, item.NguyenGiaKiemKe))
             </td>
             <td>
-                @(item.GiaTriConLaiChenhLech)
+                @(KiemKe.GetChenhLech(item.GiaTriConLaiKeToan, item.GiaTriConLaiKiemKe))
             </td>
             <td>
                 @(item.GhiChu)
