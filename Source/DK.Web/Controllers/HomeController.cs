@@ -2,6 +2,7 @@
 using DK.Application.Models;
 using DK.Application.Repositories;
 using DK.Web.Core;
+using DK.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,12 +43,17 @@ namespace DK.Web.Controllers
         public ActionResult Import(HttpPostedFileBase taisan)
         {
             _taiSanService.ImportTaiSan(taisan.InputStream);
-            return View();
+            return RedirectToAction(nameof(Index));
         }
 
         public ActionResult Dashboard()
         {
-            return View();
+            var dashboard = new DashboardModel();
+            dashboard.TongSoTaiSan = _taiSanRepository.Find(m => true).AsEnumerable().Sum(m => m.SoLuong ?? 1);
+            dashboard.TongSoDotKiemKe = _typeRepository.Find(m => m.Name == TypeConstant.KiemKe).Count();
+            dashboard.TongSoXe = _taiSanRepository.Find(m => true).AsEnumerable().Where(m => !string.IsNullOrEmpty(m.LoaiXe)).Sum(m => (m.SoLuong ?? 1));
+            dashboard.TongNguonKinhPhi = _taiSanRepository.Find(m => true).AsEnumerable().Sum(m => m.NguyenGiaKeToan * (m.SoLuong ?? 1)) ?? 0;
+            return View(dashboard);
         }
 
         // POST: Home/Create

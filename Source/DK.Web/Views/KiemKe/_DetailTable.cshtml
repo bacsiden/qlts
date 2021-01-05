@@ -1,0 +1,99 @@
+﻿@using DK.Application.Models
+@model IEnumerable<KiemKe>
+
+<table class="table mg-b-0" cellspacing="0">
+    <tr>
+        <th>STT</th>
+        <th>
+            @Html.DisplayNameFor(m => m.Code)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.NamSuDung)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.SoLuongKeToan)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.NguyenGiaKeToan)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.GiaTriConLaiKeToan)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.SoLuongKiemKe)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.NguyenGiaKiemKe)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.GiaTriConLaiKiemKe)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.SoLuongChenhLech)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.NguyenGieChenhLech)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.GiaTriConLaiChenhLech)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.GhiChu)
+        </th>
+    </tr>
+
+    @{
+        var stt = 1;
+        foreach (var item in Model)
+        {
+        <tr class="stat even">
+            <td class="ac">
+                @(stt++)
+            </td>
+            <td>
+                @item.Code
+            </td>
+            <td>
+                @item.Name
+            </td>
+            <td>
+                @(item.NamSuDung)
+            </td>
+            <td>
+                @(item.SoLuongKeToan)
+            </td>
+            <td>
+                @(item.NguyenGiaKeToan)
+            </td>
+            <td>
+                @(item.GiaTriConLaiKeToan)
+            </td>
+            <td>
+                @(item.SoLuongKiemKe)
+            </td>
+            <td>
+                @(item.NguyenGiaKiemKe)
+            </td>
+            <td>
+                @(item.GiaTriConLaiKiemKe)
+            </td>
+            <td>
+                @(item.SoLuongChenhLech)
+            </td>
+            <td>
+                @(item.NguyenGieChenhLech)
+            </td>
+            <td>
+                @(item.GiaTriConLaiChenhLech)
+            </td>
+            <td>
+                @(item.GhiChu)
+            </td>
+        </tr>
+        }
+    }
+</table>
+

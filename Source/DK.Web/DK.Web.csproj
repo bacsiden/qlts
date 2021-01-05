@@ -264,7 +264,9 @@
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationOAuthProvider.cs" />
+    <Compile Include="Models\DashboardModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\KiemKeModel.cs" />
     <Compile Include="Models\PagerModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -436,6 +438,10 @@
     <Content Include="Views\Home\Dashboard.cshtml" />
     <Content Include="Views\KiemKe\Index.cshtml" />
     <Content Include="Views\Home\Import.cshtml" />
+    <Content Include="Views\KiemKe\Detail.cshtml" />
+    <Content Include="Views\KiemKe\_DetailTable.cshtml" />
+    <Content Include="Views\KiemKe\_Form.cshtml" />
+    <Content Include="Views\KiemKe\_IndexTable.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
