@@ -98,7 +98,7 @@ namespace DK.Web.Controllers
                 var list = _taiSanRepository.Find(search);
                 if (list.Count() == 0)
                 {
-                    return RedirectToAction("Index", "Home", search);
+                    return RedirectToAction("Index", "Home", search.ToPagingModel());
                 }
 
                 var type = new Application.Models.Type
@@ -118,7 +118,7 @@ namespace DK.Web.Controllers
 
             }
 
-            return RedirectToAction("Index", "Home", search);
+            return RedirectToAction("Index", "Home", search.ToPagingModel());
         }
 
         private IEnumerable<KiemKe> GetListKiemKes(Guid kiemKeId, IEnumerable<TaiSan> list)
