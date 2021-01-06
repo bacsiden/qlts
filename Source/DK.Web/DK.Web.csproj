@@ -283,6 +283,9 @@
     <Content Include="Content\bracket.css" />
     <Content Include="Content\font.roboto.css" />
     <Content Include="Content\images\bg-login.jpg" />
+    <Content Include="Content\lib\gritter\ie-spacer.gif" />
+    <Content Include="Content\lib\gritter\jquery.gritter.css" />
+    <Content Include="Content\lib\gritter\jquery.gritter.js" />
     <Content Include="Content\login.css" />
     <Content Include="Content\site.css" />
     <Content Include="Content\style.default.css" />

@@ -6,6 +6,7 @@
     var searchModel = ViewBag.SearchModel as DK.Application.Models.TaiSanSearchModel;
 }
 
+
 <style>
     #frmSearch input[type="date"] {
         height: 39.6px;
@@ -75,6 +76,7 @@
 </div>
 
 @section Scripts {
+    <link href="@Url.Content("~/Content/lib/select2/css/select2-bootstrap.min.css")" rel="stylesheet">
     <script src="~/Content/lib/select2/js/select2.min.js"></script>
     <script src="~/Scripts/common.js"></script>
     <script>
@@ -84,7 +86,7 @@
                 $("#searchBox .collapse-icon a i").toggleClass("ion-chevron-down ion-chevron-up");
             }
 
-            $(".select2").select2({ width: '100%' });
+            $(".select2").select2({ width: '100%', theme: "bootstrap" });
 
             $('#searchBox .collapse-icon a').click(function () {
                 $("#searchBox .collapse-icon a i").toggleClass("ion-chevron-down ion-chevron-up");

@@ -7,6 +7,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -101,8 +102,13 @@ namespace DK.Web.Controllers
         [WebAuthorize(Roles = RoleList.Manage)]
         public ActionResult Employees()
         {
-            var users = UserManager.Users.Where(m => !m.Roles.Contains(RoleList.SupperAdmin)).ToList();
-            return View(users);
+            var users = UserManager.Users.Where(m => !m.Roles.Contains(RoleList.SupperAdmin));
+            if (!User.IsInRole(RoleList.SupperAdmin))
+            {
+                users = users.Where(m => !m.Roles.Contains(RoleList.Admin));
+            }
+
+            return View(users.ToList());
         }
 
         [WebAuthorize(Roles = RoleList.Manage)]
@@ -132,7 +138,7 @@ namespace DK.Web.Controllers
                         {
                             result = await UserManager.AddToRoleAsync(user.Id, RoleList.Admin);
                         }
-                        
+
                         if (result.Succeeded)
                         {
                             ShowSuccessMessage("Add employee successfully.");
@@ -158,7 +164,6 @@ namespace DK.Web.Controllers
             return View(model);
         }
 
-
         [WebAuthorize(Roles = RoleList.Manage)]
         public ActionResult Delete(string id)
         {
@@ -173,6 +178,32 @@ namespace DK.Web.Controllers
             }
 
             return RedirectToAction("Employees");
+        }
+
+        [WebAuthorize(Roles = RoleList.Manage)]
+        public async Task<JsonResult> ToggleRole(string id)
+        {
+            try
+            {
+                var user = UserManager.FindById(id);
+                if (user.IsMember)
+                {
+                    user.Roles.Add(RoleList.Admin);
+                }
+                else
+                {
+                    user.Roles.Remove(RoleList.Admin);
+                }
+
+                await UserManager.UpdateAsync(user);
+                return Json(true, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception)
+            {
+
+            }
+
+            return Json(false, JsonRequestBehavior.AllowGet);
         }
     }
 }

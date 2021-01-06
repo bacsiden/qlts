@@ -7,9 +7,11 @@
         {TypeConstant.NguonKinhPhi, "ion-social-usd-outline"},
         {TypeConstant.ChatLuong, "ion-ios-star-half"},
         {TypeConstant.LoaiXe, "ion-model-s"},
-        {TypeConstant.PhongBan, "ion-person-stalker"},
+        {TypeConstant.PhongBan, "fa fa-building-o"},
         {TypeConstant.Tags, "ion-ios-pricetags-outline"},
     };
+
+    var canManage = RoleList.GetAll().Any(User.IsInRole);
 }
 
 <a href="/Home/Dashboard" data-href="/Home/Dashboard" class="br-menu-link">
@@ -47,9 +49,12 @@
     </a>
 }
 
-<a href="/Account/Employees" data-href="/Account/AddEmployee/" class="br-menu-link">
-    <div class="br-menu-item">
-        <i class="menu-item-icon ion-ios-cog-outline tx-20"></i>
-        <span class="menu-item-label">Quản lý user</span>
-    </div>
-</a>
+@if (canManage)
+{
+    <a href="/Account/Employees" data-href="/Account/AddEmployee/" class="br-menu-link">
+        <div class="br-menu-item">
+            <i class="menu-item-icon ion-person-stalker tx-20"></i>
+            <span class="menu-item-label">Quản lý user</span>
+        </div>
+    </a>
+}
