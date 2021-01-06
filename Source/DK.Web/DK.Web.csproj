@@ -254,6 +254,7 @@
     <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Core\Pager.cs" />
+    <Compile Include="Core\WebAuthorizeAttribute.cs" />
     <Compile Include="DependencyResolution\ControllerConvention.cs" />
     <Compile Include="DependencyResolution\DefaultRegistry.cs" />
     <Compile Include="DependencyResolution\IoC.cs" />
@@ -443,6 +444,9 @@
     <Content Include="Views\KiemKe\_Form.cshtml" />
     <Content Include="Views\KiemKe\_IndexTable.cshtml" />
     <Content Include="Views\KiemKe\Import.cshtml" />
+    <Content Include="Views\Account\ChangePassword.cshtml" />
+    <Content Include="Views\Account\AddEmployee.cshtml" />
+    <Content Include="Views\Account\Employees.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

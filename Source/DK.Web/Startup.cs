@@ -1,4 +1,5 @@
-﻿using DK.Web.DependencyResolution;
+﻿using DK.Application.Models;
+using DK.Web.DependencyResolution;
 using DK.Web.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin;
@@ -31,8 +32,12 @@ namespace DK.Web
                     LastName = "Quản lý",
                     Status = 1,
                 };
-                var result = userManager.Create(admin, "Admin@123");
-                if (!result.Succeeded) return;
+                userManager.Create(admin, "Admin@123");
+            }
+
+            if (!userManager.IsInRole(admin.Id, RoleList.SupperAdmin))
+            {
+                userManager.AddToRole(admin.Id, RoleList.SupperAdmin);
             }
         }
     }

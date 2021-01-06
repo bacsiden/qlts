@@ -28,7 +28,7 @@ namespace DK.Web.Controllers
         }
 
         // GET: Category
-        public ActionResult Index(PagerInfo pagerInfo)
+        public ActionResult Index(DefaultSearchModel pagerInfo)
         {
             var list = _typeRepository.Find(m => m.Name == TypeConstant.KiemKe);
             var pager = new Pager(list.Count(), pagerInfo.PageIndex, pagerInfo.PageSize);
@@ -43,7 +43,7 @@ namespace DK.Web.Controllers
             return View(result);
         }
 
-        public async Task<ActionResult> Detail(Guid id, PagerInfo pagerInfo)
+        public async Task<ActionResult> Detail(Guid id, DefaultSearchModel pagerInfo)
         {
             var kiemke = await _typeRepository.GetAsync(id);
             ViewBag.KiemKe = kiemke;
