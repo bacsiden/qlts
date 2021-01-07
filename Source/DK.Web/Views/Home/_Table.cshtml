@@ -1,9 +1,15 @@
 ﻿@using DK.Application.Models
 @model IEnumerable<TaiSan>
+@{
+    var canManage = DK.Application.Models.RoleList.GetAll().Any(User.IsInRole);
+}
 
 <table class="table mg-b-0" cellspacing="0">
     <tr>
-        <th><input type="checkbox" class="checkAll" /></th>
+        @if (canManage)
+        {
+            <th><input type="checkbox" class="checkAll" /></th>
+        }
         <th>STT</th>
         <th>
             @Html.DisplayNameFor(m => m.Code)
@@ -111,10 +117,13 @@
         foreach (var item in Model)
         {
             <tr class="stat even">
+                @if (canManage)
+                {
                     <td>
                         <input type="checkbox" class="checkitem" value="@item.Id" />
                     </td>
-                <td class="ac">                    
+                }
+                <td class="ac">
                     @(stt++)
                 </td>
                 <td>

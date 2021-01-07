@@ -1,7 +1,8 @@
 ﻿@model DK.Application.Models.TaiSanSearchModel
 @{
     var tags = ViewBag.Tags as IEnumerable<string> ?? new List<string>();
-    var pageSizeList = new int[] { 2, 10, 50, 100, 200, 500 };
+    var pageSizeList = new int[] { 10, 50, 100, 200, 500 };
+    var canManage = DK.Application.Models.RoleList.GetAll().Any(User.IsInRole);
 }
 
 @using (Html.BeginForm(null, null, FormMethod.Get, new { role = "form", id = "frmSearch" }))
@@ -141,9 +142,17 @@
         <div class="col search-item">
             <button id="btnSearch" class="btn  btn-sm bd bg-primary tx-white pointer" type="button"><i class="fa fa-search"></i> Tìm kiếm</button>
             <a class="btn  btn-sm bd pointer" href="/"><i class="fa fa-refresh"></i> Reset</a>
-            <button class="btn  btn-sm bd bg-primary tx-white pointer pull-right print-barcode ml-1" type="button" ><i class="fa fa-barcode"></i> In mã vạch</button>
+
+            @if (canManage)
+            {
+                <button class="btn  btn-sm bd bg-primary tx-white pointer pull-right print-barcode ml-1" type="button"><i class="fa fa-barcode"></i> In mã vạch</button>
+            }
+
             <div class="dropdown d-sm-inline-block pull-right">
-                <a class="btn  btn-sm bd pointer" href="javascript:void(0)" onclick="createKiemKe(this);"><i class="fa fa-plus"></i> Tạo kiểm kê</a>
+                @if (canManage)
+                {
+                    <a class="btn  btn-sm bd pointer" href="javascript:void(0)" onclick="createKiemKe(this);"><i class="fa fa-plus"></i> Tạo kiểm kê</a>
+                }
                 <a class="dropdown-toggle btn  btn-sm  btn-primary" href="javascript:void(0)" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fa fa-download"></i> Tải file
                 </a>
@@ -164,7 +173,10 @@
                     @Html.DropDownListFor(x => x.PageSize, new SelectList(pageSizeList), new { Class = "form-control form-control-sm" })
                 </div>
             </div>
-            <a class="btn btn-sm btn-danger pointer DeleteItem" href="/Home/DeleteTaiSan"><i class="fa fa-times"></i> Xóa</a>
+            @if (canManage)
+            {
+                <a class="btn btn-sm btn-danger pointer DeleteItem" href="/Home/DeleteTaiSan"><i class="fa fa-times"></i> Xóa</a>
+            }
         </div>
     </div>
 }

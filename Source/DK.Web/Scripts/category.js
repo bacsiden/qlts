@@ -89,3 +89,17 @@ function focusUp(e) {
 function focusDown(e) {
     $(e).parents("tr").next().find("input").focus();
 }
+
+function mergeCategory() {
+    var items = $("#post-data input.merge-item:checked");
+    if (items.length === 0) {
+        return;
+    }
+
+    var value = $(items[0]).val();
+    var modalContent = $("#modal-content").html();    
+
+    $("#modalDefault").html(modalContent);
+    $("#modalDefault").find(".new-name").val(value);
+    $("#modalDefault").modal('show');
+}

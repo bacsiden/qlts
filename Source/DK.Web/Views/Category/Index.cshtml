@@ -1,13 +1,13 @@
 ﻿@model IEnumerable<DK.Application.Models.Type>
 @{
     ViewBag.Title = ViewBag.Name;
-    var canEdit = DK.Application.Models.RoleList.GetAll().Any(User.IsInRole);
+    var canManage = DK.Application.Models.RoleList.GetAll().Any(User.IsInRole);
 }
 
 <div class="row mt-2">
     <div class="col-12">
         <form method="post">
-            <div class="card shadow-base bd-0">
+            <div class="card shadow-base bd-0 mb-2">
                 <div class="table-responsive" id="post-data">
                     <table class="table mg-b-0" cellspacing="0">
                         @if (Model != null)
@@ -16,6 +16,12 @@
                             foreach (var item in Model)
                             {
                                 <tr class="stat even">
+                                    @if (canManage)
+                                    {
+                                        <td class="ac stt text-center">
+                                            <input type="checkbox" class="merge-item" value="@item.Id" />
+                                        </td>
+                                    }
                                     <td class="ac stt text-center">
                                         @(stt++)
                                     </td>
@@ -27,7 +33,7 @@
                         }
                     </table>
                 </div>
-                @if (canEdit)
+                @if (canManage)
                 {
                     <div class="col-md-12 mt-3 mb-2">
                         <a href="javascript:void(0)" onclick="addRow()"><i class="icon ion-ios-plus"> </i>Thêm dòng</a>
@@ -35,11 +41,33 @@
                 }
                 <div id="inputElement"></div>
             </div>
-            @if (canEdit)
+            @if (canManage)
             {
-                <button class="btn btn-primary mt-2" onclick="return beforeSubmit();" type="submit">Lưu</button>
+                <button class="btn btn-primary" onclick="return beforeSubmit();" type="submit">Lưu</button>
+                <a href="javascript:void(0)" class="btn btn-primary" onclick="mergeCategory();">Hợp nhất</a>
             }
         </form>
+    </div>
+</div>
+
+<div class="d-none" id="modal-content">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <form action="/" method="post">
+                <div class="modal-header pd-y-20 pd-x-25">
+                    <h6 class="tx-14 mg-b-0 tx-uppercase tx-inverse tx-bold">Hợp nhất @ViewBag.Title.ToLower()</h6>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body pd-25">
+                    <input type="text" name="newName" class="new-name" value="" />
+                </div><!-- modal-body -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary tx-11 tx-uppercase pd-y-12 pd-x-25 tx-mont tx-medium">Cập nhật</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
@@ -62,7 +90,7 @@
 }
 
 @section Scripts {
-    @if (canEdit)
+    @if (canManage)
     {
         <script src="~/Scripts/category.js"></script>
     }

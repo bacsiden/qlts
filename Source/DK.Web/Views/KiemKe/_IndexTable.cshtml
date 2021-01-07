@@ -1,4 +1,7 @@
 ﻿@model IEnumerable<DK.Application.Models.Type>
+@{
+    var canManage = DK.Application.Models.RoleList.GetAll().Any(User.IsInRole);
+}
 
 <table class="table mg-b-0" cellspacing="0">
     <tr>
@@ -21,7 +24,10 @@
                     <a href="/KiemKe/Detail/@item.Id">@item.Title</a>
                 </td>
                 <td>
-                    <a href="/KiemKe/Delete/@item.Id" class="DeleteItem text-danger" onclick="return confirm('Bạn có chắc muốn xóa?')">Xóa</a>
+                    @if (canManage)
+                    {
+                        <a href="/KiemKe/Delete/@item.Id" class="DeleteItem text-danger" onclick="return confirm('Bạn có chắc muốn xóa?')">Xóa</a>
+                    }
                 </td>
             </tr>
         }
