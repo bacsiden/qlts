@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 
 namespace DK.Web.Controllers
@@ -13,9 +12,11 @@ namespace DK.Web.Controllers
     public class CategoryController : Controller
     {
         private readonly ITypeRepository _typeRepository;
-        public CategoryController(ITypeRepository typeRepository)
+        private readonly ITaiSanRepository _taiSanRepository;
+        public CategoryController(ITypeRepository typeRepository, ITaiSanRepository taiSanRepository)
         {
             _typeRepository = typeRepository;
+            _taiSanRepository = taiSanRepository;
         }
 
         // GET: Category
@@ -55,6 +56,101 @@ namespace DK.Web.Controllers
                 var listTypes = Enumerable.Repeat(new Application.Models.Type(), 3).ToList();
                 return View(listTypes);
             }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Merge(string categoryName, string newName, List<Guid> oldIds)
+        {
+            if (string.IsNullOrWhiteSpace(newName))
+            {
+                return RedirectToAction("Index", new { id = categoryName });
+            }
+
+            try
+            {
+                var oldTypes = _typeRepository.Find(m => m.Name == categoryName).AsEnumerable().Where(m => oldIds.Any(id => id == m.Id)).ToList();
+                var oldNames = oldTypes.Select(m => m.Title);
+
+                var taisans = new List<TaiSan>();
+
+                switch (categoryName)
+                {
+                    case TypeConstant.ChatLuong:
+                        taisans = _taiSanRepository.Find(m => true).AsEnumerable().Where(m => oldNames.Any(name => name == m.ChatLuong)).ToList();
+                        taisans.ForEach(item =>
+                        {
+                            item.ChatLuong = newName;
+                        });
+
+                        break;
+                    case TypeConstant.ChungLoai:
+                        taisans = _taiSanRepository.Find(m => true).AsEnumerable().Where(m => oldNames.Any(name => name == m.ChungLoai)).ToList();
+                        taisans.ForEach(item =>
+                        {
+                            item.ChungLoai = newName;
+                        });
+                        break;
+                    case TypeConstant.DanhMuc:
+                        taisans = _taiSanRepository.Find(m => true).AsEnumerable().Where(m => oldNames.Any(name => name == m.DanhMuc)).ToList();
+                        taisans.ForEach(item =>
+                        {
+                            item.DanhMuc = newName;
+                        });
+                        break;
+                    case TypeConstant.LoaiXe:
+                        taisans = _taiSanRepository.Find(m => true).AsEnumerable().Where(m => oldNames.Any(name => name == m.LoaiXe)).ToList();
+                        taisans.ForEach(item =>
+                        {
+                            item.LoaiXe = newName;
+                        });
+                        break;
+                    case TypeConstant.NguonKinhPhi:
+                        taisans = _taiSanRepository.Find(m => true).AsEnumerable().Where(m => oldNames.Any(name => name == m.NguonKinhPhi)).ToList();
+                        taisans.ForEach(item =>
+                        {
+                            item.NguonKinhPhi = newName;
+                        });
+                        break;
+                    case TypeConstant.PhongBan:
+                        taisans = _taiSanRepository.Find(m => true).AsEnumerable().Where(m => oldNames.Any(name => name == m.PhongQuanLy)).ToList();
+                        taisans.ForEach(item =>
+                        {
+                            item.PhongQuanLy = newName;
+                        });
+                        break;
+                    case TypeConstant.Tags:
+                        taisans = _taiSanRepository.Find(m => true).AsEnumerable().Where(m => oldNames.Any(name => m.Tags.Any(tag => tag == name))).ToList();
+                        taisans.ForEach(item =>
+                        {
+                            var count = item.Tags.Count;
+                            item.Tags = item.Tags.Where(tag => oldNames.Any(name => name == tag)).ToList();
+                            if (item.Tags.Count < count)
+                                item.Tags.Add(newName);
+                        });
+                        break;
+                }
+
+                foreach (var item in taisans)
+                {
+                    await _taiSanRepository.UpdateAsync(item);
+                }
+
+                foreach (var id in oldIds)
+                {
+                    await _typeRepository.DeleteAsync(id);
+                }
+
+                await _typeRepository.AddAsync(new Application.Models.Type
+                {
+                    Name = categoryName,
+                    Title = newName.Trim()
+                });
+            }
+            catch (Exception ex)
+            {
+            }
+
+            return RedirectToAction("Index", new { id = categoryName });
         }
     }
 }

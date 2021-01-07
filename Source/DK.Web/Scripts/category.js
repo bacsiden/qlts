@@ -97,9 +97,15 @@ function mergeCategory() {
     }
 
     var value = $(items[0]).val();
-    var modalContent = $("#modal-content").html();    
+    var modalContent = $("#modal-content").html();
 
     $("#modalDefault").html(modalContent);
+    var oldNamesHtml = "";
+    $.each(items, function (index, item) {
+        oldNamesHtml += '<input type="hidden" name="oldIds[' + index + ']" value="' + $(item).data("id") + '" /> ';
+    });
+
+    $("#modalDefault").find(".old-ids").html(oldNamesHtml);
     $("#modalDefault").find(".new-name").val(value);
     $("#modalDefault").modal('show');
 }

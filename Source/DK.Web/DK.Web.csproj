@@ -283,9 +283,13 @@
     <Content Include="Content\bracket.css" />
     <Content Include="Content\font.roboto.css" />
     <Content Include="Content\images\bg-login.jpg" />
-    <Content Include="Content\lib\gritter\ie-spacer.gif" />
-    <Content Include="Content\lib\gritter\jquery.gritter.css" />
-    <Content Include="Content\lib\gritter\jquery.gritter.js" />
+    <Content Include="Content\lib\gritter\css\jquery.gritter.css" />
+    <Content Include="Content\lib\gritter\images\error.png" />
+    <Content Include="Content\lib\gritter\images\gritter.png" />
+    <Content Include="Content\lib\gritter\images\ie-spacer.gif" />
+    <Content Include="Content\lib\gritter\images\success.png" />
+    <Content Include="Content\lib\gritter\js\jquery.gritter.js" />
+    <Content Include="Content\lib\select2\css\select2-bootstrap.min.css" />
     <Content Include="Content\login.css" />
     <Content Include="Content\site.css" />
     <Content Include="Content\style.default.css" />
