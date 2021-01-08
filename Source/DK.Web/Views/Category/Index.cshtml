@@ -109,6 +109,9 @@
             $("#LeftMenu a").each((_, item) => {
                 if ($(item).attr('href').indexOf('@Html.Raw(ViewBag.Name)') === -1) {
                     $(item).removeClass('active');
+                } else {
+                    $(item).closest('ul').show();
+                    $(item).closest('ul').prev().addClass("active show-sub");
                 }
             });
         }

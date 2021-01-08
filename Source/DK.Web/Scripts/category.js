@@ -92,7 +92,7 @@ function focusDown(e) {
 
 function mergeCategory() {
     var items = $("#post-data input.merge-item:checked");
-    if (items.length === 0) {
+    if (items.length < 2) {
         return;
     }
 
@@ -108,4 +108,7 @@ function mergeCategory() {
     $("#modalDefault").find(".old-ids").html(oldNamesHtml);
     $("#modalDefault").find(".new-name").val(value);
     $("#modalDefault").modal('show');
+    $('#modalDefault').on('shown.bs.modal', function (e) {
+        $('#modalDefault').find(".new-name").focus();
+    });
 }
