@@ -17,7 +17,7 @@ namespace DK.Application.Repositories
         public IEnumerable<TaiSan> Find(TaiSanSearchModel model)
         {
             var filter = Builders<TaiSan>.Filter;
-            var query = model.IsApproved ? filter.Eq(m => m.IsApproved, model.IsApproved) : FilterDefinition<TaiSan>.Empty;
+            var query = filter.Eq(m => m.IsApproved, model.IsApproved);
 
             #region Search equals
             if (!string.IsNullOrEmpty(model.CreatedBy))

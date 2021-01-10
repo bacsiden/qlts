@@ -114,12 +114,12 @@
         var stt = 1;
         foreach (var item in Model)
         {
-            BindData(stt, item, canManage, searchModel.IsApproved, true);
+            @BindData(stt, item, canManage, searchModel.IsApproved, true);
 
             var childStt = 1;
             foreach (var child in item.Children)
             {
-                BindData(childStt, child, canManage, searchModel.IsApproved, false);
+                @BindData(childStt, child, canManage, searchModel.IsApproved, false);
                 childStt++;
             }
             stt++;
@@ -128,126 +128,129 @@
 </table>
 
 
-@{
-    @helper BindData(int stt, TaiSan item, bool canManage, bool isApproved, bool isParent)
-    {
-        <tr class="stat even">
+@helper BindData(int stt, TaiSan item, bool canManage, bool isApproved, bool isParent)
+{
+    <tr class="stat even">
+        @if (isParent && (canManage || !isApproved))
+        {
+            <td>
+                <input type="checkbox" class="checkitem" value="@item.Id" />
+            </td>
+        }
+
+        @if (!isParent)
+        {
+            <td></td>
+        }
+        <td class="ac">
+            @if (isParent)
+            {
+                @(stt)
+            }
+        </td>
+        <td>
             @if (isParent && (canManage || !isApproved))
             {
-                <td>
-                    <input type="checkbox" class="checkitem" value="@item.Id" />
-                </td>
+                <a href="javascript:void(0)" onclick="editTaiSan('@item.Id')">@item.Code</a>
             }
-            <td class="ac">
-                @if (isParent)
-                {
-                    @(stt)
-                }
-            </td>
-            <td>
-                @if (isParent && (canManage || !isApproved))
-                {
-                    <a href="javascript:void(0)" onclick="editTaiSan('@item.Id')">@item.Code</a>
-                }
-                else
-                {
-                    @item.Code
-                }
-            </td>
-            <td>
-                @item.Name
-            </td>
-            <td>
-                @item.GroupName
-            </td>
-            <td>
-                @item.ChungLoai
-            </td>
-            <td>
-                @item.NhanHieu
-            </td>
-            <td>
-                @item.Serial
-            </td>
-            <td>
-                @item.XuatXu
-            </td>
-            <td>
-                @item.ThuocHopDong
-            </td>
-            <td>
-                @item.ThuocGoiThau
-            </td>
-            <td>
-                @item.NguonKinhPhi
-            </td>
-            <td>
-                @item.NganSachNam
-            </td>
-            <td>
-                @item.NamSanXuat
-            </td>
-            <td>
-                @item.NamSuDung
-            </td>
-            <td>
-                @item.NguyenGiaKeToan
-            </td>
-            <td>
-                @item.SoLuong
-            </td>
-            <td>
-                @item.KhoiLuong
-            </td>
-            <td>
-                @item.ChatLuong
-            </td>
-            <td>
-                @item.HaoMonLuyKe
-            </td>
-            <td>
-                @item.GiaTriConLai
-            </td>
-            <td>
-                @item.NguoiSuDung
-            </td>
-            <td>
-                @item.NguoiQuanLy
-            </td>
-            <td>
-                @item.PhongQuanLy
-            </td>
-            <td>
-                @item.LoaiXe
-            </td>
-            <td>
-                @item.BienSo
-            </td>
-            <td>
-                @item.DungTichXiLanh
-            </td>
-            <td>
-                @item.SoChoNgoi
-            </td>
-            <td>
-                @item.SoTang
-            </td>
-            <td>
-                @item.DienTichXayDung
-            </td>
-            <td>
-                @item.CapCongTrinh
-            </td>
-            <td>
-                @item.DiaChi
-            </td>
-            <td>
-                @item.DienTichKhuonVien
-            </td>
-            <td>
-                @string.Join("<br />", item.Tags)
-            </td>
-        </tr>
-    }
+            else
+            {
+                @item.Code
+            }
+        </td>
+        <td>
+            @item.Name
+        </td>
+        <td>
+            @item.GroupName
+        </td>
+        <td>
+            @item.ChungLoai
+        </td>
+        <td>
+            @item.NhanHieu
+        </td>
+        <td>
+            @item.Serial
+        </td>
+        <td>
+            @item.XuatXu
+        </td>
+        <td>
+            @item.ThuocHopDong
+        </td>
+        <td>
+            @item.ThuocGoiThau
+        </td>
+        <td>
+            @item.NguonKinhPhi
+        </td>
+        <td>
+            @item.NganSachNam
+        </td>
+        <td>
+            @item.NamSanXuat
+        </td>
+        <td>
+            @item.NamSuDung
+        </td>
+        <td>
+            @item.NguyenGiaKeToan
+        </td>
+        <td>
+            @item.SoLuong
+        </td>
+        <td>
+            @item.KhoiLuong
+        </td>
+        <td>
+            @item.ChatLuong
+        </td>
+        <td>
+            @item.HaoMonLuyKe
+        </td>
+        <td>
+            @item.GiaTriConLai
+        </td>
+        <td>
+            @item.NguoiSuDung
+        </td>
+        <td>
+            @item.NguoiQuanLy
+        </td>
+        <td>
+            @item.PhongQuanLy
+        </td>
+        <td>
+            @item.LoaiXe
+        </td>
+        <td>
+            @item.BienSo
+        </td>
+        <td>
+            @item.DungTichXiLanh
+        </td>
+        <td>
+            @item.SoChoNgoi
+        </td>
+        <td>
+            @item.SoTang
+        </td>
+        <td>
+            @item.DienTichXayDung
+        </td>
+        <td>
+            @item.CapCongTrinh
+        </td>
+        <td>
+            @item.DiaChi
+        </td>
+        <td>
+            @item.DienTichKhuonVien
+        </td>
+        <td>
+            @string.Join("<br />", item.Tags)
+        </td>
+    </tr>
 }
 
