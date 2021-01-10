@@ -458,6 +458,9 @@
     <Content Include="Views\Account\Employees.cshtml" />
     <Content Include="Views\Home\TaisanUnApproved.cshtml" />
     <Content Include="Views\Home\NewOrEditAsset.cshtml" />
+    <Content Include="Views\Home\_NewOrEditAssetForm.cshtml" />
+    <Content Include="Views\Home\_TableChild.cshtml" />
+    <Content Include="Views\Home\_TableChildRow.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
