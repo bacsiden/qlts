@@ -114,16 +114,25 @@
         var stt = 1;
         foreach (var item in Model)
         {
-            @BindData(stt, item, canManage, searchModel.IsApproved, true);
-
-            var childStt = 1;
-            foreach (var child in item.Children)
+            var includeSubStr = Request.Params["IncludeSub"];
+            bool includeSub = false;
+            if (!string.IsNullOrWhiteSpace(includeSubStr))
             {
-                @BindData(childStt, child, canManage, searchModel.IsApproved, false);
-                childStt++;
+                includeSub = bool.Parse(includeSubStr.Split(',')[0]);
+            }
+            @BindData(stt, item, canManage, searchModel.IsApproved, true);
+            if (includeSub)
+            {
+                var childStt = 1;
+                foreach (var child in item.Children)
+                {
+                    @BindData(childStt, child, canManage, searchModel.IsApproved, false);
+                    childStt++;
+                }
             }
             stt++;
         }
+    }
     }
 </table>
 

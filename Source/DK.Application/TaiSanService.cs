@@ -132,13 +132,13 @@ namespace DK.Application
                 _typeRepository.AddRange(newTypes);
         }
 
-        public Task ExportDataAsync(List<TaiSan> taiSans, string pattern)
+        public Task ExportDataAsync(List<TaiSan> taiSans, string pattern, bool includeSub = false)
         {
             if (pattern == "barcode")
                 return ExportBarCodeAsync(taiSans);
             var template = ReportVariables.Templates[pattern];
             if (pattern == "data")
-                return ExportTaiSanAsync(taiSans, pattern);
+                return ExportTaiSanAsync(taiSans, pattern, includeSub);
             else if (template.Item1.Contains("chi tiết") || template.Item1.Contains("đánh giá lại"))
                 return ExportReportDetailsAsync(taiSans, pattern);
             else if (template.Item1.Contains("tổng hợp"))
@@ -146,7 +146,7 @@ namespace DK.Application
             return Task.CompletedTask;
         }
 
-        public Task ExportTaiSanAsync(List<TaiSan> taiSans, string pattern)
+        public Task ExportTaiSanAsync(List<TaiSan> taiSans, string pattern, bool includeSub = false)
         {
             var template = ReportVariables.Templates[pattern];
             var lst = new List<TaiSan>();
@@ -158,7 +158,7 @@ namespace DK.Application
                     item.No = no++;
                     item.JoinedTags = string.Join("; ", item.Tags);
                     lst.Add(item);
-                    if (item.Children.Any())
+                    if (includeSub && item.Children.Any())
                     {
                         foreach (var ts in item.Children)
                         {
@@ -384,17 +384,28 @@ namespace DK.Application
                     {
                         doc.GetObject("no").Text = item.No.ToString();
                         doc.GetObject("donv").Text = $"Phòng: {item.PhongQuanLy}";
-                        doc.GetObject("code").Text = item.Code;
+                        doc.GetObject("code").Text = $"Mã tài sản: {item.Code}";
                         doc.GetObject("name").Text = item.Name;
                         doc.GetObject("barcode").Text = $"{item.Code}";
-
-
+                        doc.PrintOut(1, PrintOptionConstants.bpoCutAtEnd);
+                        if (item.Children.Any())
+                        {
+                            foreach (var sub in item.Children)
+                            {
+                                doc.GetObject("no").Text = item.No.ToString();
+                                doc.GetObject("donv").Text = $"Phòng: {item.PhongQuanLy}";
+                                doc.GetObject("code").Text = $"Mã tài sản: {sub.Code} - {item.Code}";
+                                doc.GetObject("name").Text = sub.Name;
+                                doc.GetObject("barcode").Text = $"{sub.Code}";
+                                doc.PrintOut(1, PrintOptionConstants.bpoCutAtEnd);
+                            }
+                        }
                         //doc.GetObject("no").Text = item.No.ToString();
                         //doc.GetObject("barcode").Text = $"{item.Code}";
 
 
                         //doc.SetMediaById(doc.Printer.GetMediaId(), true);
-                        doc.PrintOut(1, PrintOptionConstants.bpoCutAtEnd);
+
                     }
                     doc.EndPrint();
                     doc.Close();
