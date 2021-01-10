@@ -33,7 +33,7 @@ namespace DK.Application.Models
         public int PageSize { get; set; } = 10;
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
-        public bool IncludeSub { get; set; }
+        public bool IncludeSub { get; set; } = true;
         public object ToPagingModel()
         {
             return new

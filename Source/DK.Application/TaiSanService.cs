@@ -392,7 +392,7 @@ namespace DK.Application
                         {
                             foreach (var sub in item.Children)
                             {
-                                doc.GetObject("no").Text = sub.No.ToString();
+                                doc.GetObject("no").Text = item.No.ToString();
                                 doc.GetObject("donv").Text = $"Phòng: {item.PhongQuanLy}";
                                 doc.GetObject("code").Text = $"Mã tài sản: {sub.Code} - {item.Code}";
                                 doc.GetObject("name").Text = sub.Name;
