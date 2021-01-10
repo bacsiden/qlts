@@ -35,7 +35,7 @@
             listID += "<input type='hidden' name='ids[" + index + "]' value='" + $(this).val() + "' />";
         });
         if (listID !== "") {
-            $("#form-delete").html(listID);
+            $("#form-delete .form-content").html(listID);
             $("#form-delete").submit();
         } else {
             alert('Warring!');

@@ -29,6 +29,30 @@
     });
 });
 
+// Event click with button Edit & Delete
+$(".ApproveItem").click(function () {
+    var items = $(".checkitem:checked");
+    if (items.length === 0) {
+        return false;
+    }
+
+    if (!confirm("Bạn có chắc muốn phê duyệt " + items.length + " tài sản?")) {
+        return false;
+    }
+
+    var listID = "";
+    $('input.checkitem:checkbox:checked').each(function (index, item) {
+        listID += "<input type='hidden' name='ids[" + index + "]' value='" + $(this).val() + "' />";
+    });
+    if (listID !== "") {
+        $("#form-approve").html(listID);
+        $("#form-approve").submit();
+    } else {
+        alert('Warring!');
+    }
+    return false;
+});
+
 function createKiemKe(e) {
     $("#frmSearch").attr('action', '/KiemKe/Create');
     $("#frmSearch").submit();

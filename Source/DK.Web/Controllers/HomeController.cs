@@ -116,7 +116,7 @@ namespace DK.Web.Controllers
 
         // POST: Home/Delete/5
         [HttpPost]
-        public async Task<ActionResult> DeleteTaiSan(Guid[] ids)
+        public async Task<ActionResult> DeleteTaiSan(bool isApproved, Guid[] ids)
         {
             try
             {
@@ -124,13 +124,42 @@ namespace DK.Web.Controllers
                 {
                     await _taiSanRepository.DeleteAsync(id);
                 }
-
-                return RedirectToAction("Index");
             }
             catch
             {
-                return RedirectToAction("Index");
             }
+
+            if (isApproved)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            return RedirectToAction(nameof(TaisanUnApproved));
+        }
+
+        // POST: Home/AppoveTaiSan/5
+        [HttpPost]
+        public async Task<ActionResult> AppoveTaiSan(Guid[] ids)
+        {
+            try
+            {
+                var taisans = _taiSanRepository.Find(m => true).AsEnumerable().Where(m => ids.Contains(m.Id));
+                foreach (var ts in taisans)
+                {
+                    ts.IsApproved = true;
+                    foreach (var item in ts.Children)
+                    {
+                        item.IsApproved = true;
+                    }
+
+                    await _taiSanRepository.UpdateAsync(ts);
+                }
+            }
+            catch
+            {
+            }
+
+            return RedirectToAction(nameof(TaisanUnApproved));
         }
 
         private PagerViewModel SearchTaiSan(TaiSanSearchModel search)
