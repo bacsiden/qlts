@@ -49,50 +49,52 @@
         var stt = 1;
         foreach (var item in Model)
         {
-        <tr class="stat even">
-            <td class="ac">
-                @(stt++)
-            </td>
-            <td>
-                @item.Code
-            </td>
-            <td>
-                @item.Name
-            </td>
-            <td>
-                @(item.NamSuDung)
-            </td>
-            <td>
-                @(item.SoLuongKeToan)
-            </td>
-            <td>
-                @(item.NguyenGiaKeToan)
-            </td>
-            <td>
-                @(item.GiaTriConLaiKeToan)
-            </td>
-            <td>
-                @(item.SoLuongKiemKe)
-            </td>
-            <td>
-                @(item.NguyenGiaKiemKe)
-            </td>
-            <td>
-                @(item.GiaTriConLaiKiemKe)
-            </td>
-            <td>
-                @(KiemKe.GetChenhLech(item.SoLuongKiemKe, item.SoLuongKeToan))
-            </td>
-            <td>
-                @(KiemKe.GetChenhLech(item.NguyenGiaKeToan, item.NguyenGiaKiemKe))
-            </td>
-            <td>
-                @(KiemKe.GetChenhLech(item.GiaTriConLaiKeToan, item.GiaTriConLaiKiemKe))
-            </td>
-            <td>
-                @(item.GhiChu)
-            </td>
-        </tr>
+            var nguyenGiaCL = KiemKe.GetChenhLech(item.NguyenGiaKeToan, item.NguyenGiaKiemKe);
+            var giaTriConLaiCL = KiemKe.GetChenhLech(item.GiaTriConLaiKeToan, item.GiaTriConLaiKiemKe);
+            <tr class="stat even">
+                <td class="ac">
+                    @(stt++)
+                </td>
+                <td>
+                    @item.Code
+                </td>
+                <td>
+                    @item.Name
+                </td>
+                <td>
+                    @(item.NamSuDung)
+                </td>
+                <td>
+                    @(item.SoLuongKeToan)
+                </td>
+                <td>
+                    @(item.NguyenGiaKeToan.HasValue? item.NguyenGiaKeToan.Value.ToString("N0") : null)
+                </td>
+                <td>
+                    @(item.GiaTriConLaiKeToan.HasValue? item.GiaTriConLaiKeToan.Value.ToString("N0") : null)
+                </td>
+                <td>
+                    @(item.SoLuongKiemKe)
+                </td>
+                <td>
+                    @(item.NguyenGiaKiemKe.HasValue? item.NguyenGiaKiemKe.Value.ToString("N0") : null)
+                </td>
+                <td>
+                    @(item.GiaTriConLaiKiemKe.HasValue? item.GiaTriConLaiKiemKe.Value.ToString("N0") : null)
+                </td>
+                <td>
+                    @(KiemKe.GetChenhLech(item.SoLuongKiemKe, item.SoLuongKeToan))
+                </td>
+                <td>
+                    @(nguyenGiaCL.HasValue ? nguyenGiaCL.Value.ToString("N0") : null)
+                </td>
+                <td>
+                    @(giaTriConLaiCL.HasValue ? giaTriConLaiCL.Value.ToString("N0") : null)
+                </td>
+                <td>
+                    @(item.GhiChu)
+                </td>
+            </tr>
         }
     }
 </table>
