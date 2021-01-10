@@ -24,8 +24,8 @@ namespace DK.Application.Models
         }
         public static decimal? GetChenhLech(decimal? value1, decimal? value2)
         {
-            if (value1.HasValue && value1.HasValue) return Math.Abs(value1.Value - value2.Value);
-            if (value1.HasValue) return value1.Value;
+            if (value1.HasValue && value2.HasValue) return Math.Abs(value1.Value - value2.Value);
+            if (value1.HasValue) return value1.Value;   
             if (value2.HasValue) return value2.Value;
             return null;
         }
