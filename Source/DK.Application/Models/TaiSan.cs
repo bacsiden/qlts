@@ -224,5 +224,7 @@ namespace DK.Application.Models
         public decimal? NganSachBo { get; set; }
         public decimal? Khac { get; set; }
         public decimal? TongCong { get; set; }
+
+        public bool IsApproved { get; set; }
     }
 }

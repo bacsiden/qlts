@@ -291,6 +291,7 @@
     <Content Include="Content\lib\gritter\js\jquery.gritter.js" />
     <Content Include="Content\lib\select2\css\select2-bootstrap.min.css" />
     <Content Include="Content\login.css" />
+    <Content Include="Content\asset-management.css" />
     <Content Include="Content\site.css" />
     <Content Include="Content\style.default.css" />
     <Content Include="Core\Compression\Snappy\lib\win\snappy32.dll" />
@@ -379,6 +380,7 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\bracket.js" />
+    <Content Include="Scripts\asset-management.js" />
     <Content Include="Scripts\common.js" />
     <Content Include="Scripts\dist\jquery.js" />
     <Content Include="Scripts\dist\jquery.min.js" />
@@ -454,6 +456,8 @@
     <Content Include="Views\Account\ChangePassword.cshtml" />
     <Content Include="Views\Account\AddEmployee.cshtml" />
     <Content Include="Views\Account\Employees.cshtml" />
+    <Content Include="Views\Home\TaisanUnApproved.cshtml" />
+    <Content Include="Views\Home\_EditForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

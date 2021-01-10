@@ -3,6 +3,7 @@ using DK.Application.Models;
 using DK.Application.Repositories;
 using DK.Web.Core;
 using DK.Web.Models;
+using StructureMap.Query;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,9 +25,23 @@ namespace DK.Web.Controllers
             _typeRepository = typeRepository;
             _taiSanService = taiSanService;
         }
-        // GET: Home
+        // GET: Tài sản đã phê duyệt
         public ActionResult Index(TaiSanSearchModel search)
         {
+            search.IsApproved = true;
+
+            CreateDropDownViewBag();
+            ViewBag.SearchModel = search;
+
+            var result = SearchTaiSan(search);
+            return View(result);
+        }
+
+        // GET: Tài sản chưa phê duyệt
+        public ActionResult TaisanUnApproved(TaiSanSearchModel search)
+        {
+            search.IsApproved = false;
+
             CreateDropDownViewBag();
             ViewBag.SearchModel = search;
 
@@ -56,48 +71,36 @@ namespace DK.Web.Controllers
             return View(dashboard);
         }
 
-        // POST: Home/Create
+        public ActionResult EditAsset(Guid id)
+        {
+            CreateDropDownViewBag();
+            var taisan = _taiSanRepository.Get(id);
+            if (taisan == null)
+            {
+                // Temp
+                taisan = new TaiSan();
+            }
+            return PartialView("_EditForm", taisan);
+        }
+
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult EditAsset(TaiSan taisan)
         {
-            try
+            if (!ModelState.IsValid)
             {
-                // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
+                CreateDropDownViewBag();
+                return PartialView("_EditForm", taisan);
             }
-            catch
+            
+            var currentAsset = _taiSanRepository.Get(taisan.Id);
+            if (currentAsset != null)
             {
-                return View();
+                _taiSanRepository.Update(taisan);
+                return Content("<script>location.reload();</script>");
             }
-        }
 
-        // GET: Home/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: Home/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Home/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
+            ModelState.AddModelError("", "Không tìm thấy tài sản");
+            return PartialView("_EditForm", taisan);
         }
 
         // POST: Home/Delete/5
@@ -118,26 +121,6 @@ namespace DK.Web.Controllers
                 return RedirectToAction("Index");
             }
         }
-
-        private void FakeData()
-        {
-            _taiSanRepository.DeleteManyAsync("GroupCode", "").GetAwaiter().GetResult();
-
-            var list = new List<TaiSan>();
-            for (int i = 0; i < 100; i++)
-            {
-                list.Add(new TaiSan
-                {
-                    Code = $"Code {i}",
-                    Name = $"Name {i}",
-                    ChungLoai = "Chủng loại 1",
-                    Tags = new List<string> { "Tag 1" }
-                });
-            }
-
-            _taiSanRepository.AddRangeAsync(list);
-        }
-
 
         private PagerViewModel SearchTaiSan(TaiSanSearchModel search)
         {
