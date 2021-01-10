@@ -132,13 +132,13 @@ namespace DK.Application
                 _typeRepository.AddRange(newTypes);
         }
 
-        public Task ExportDataAsync(List<TaiSan> taiSans, string pattern)
+        public Task ExportDataAsync(List<TaiSan> taiSans, string pattern, bool includeSub = false)
         {
             if (pattern == "barcode")
                 return ExportBarCodeAsync(taiSans);
             var template = ReportVariables.Templates[pattern];
             if (pattern == "data")
-                return ExportTaiSanAsync(taiSans, pattern);
+                return ExportTaiSanAsync(taiSans, pattern, includeSub);
             else if (template.Item1.Contains("chi tiết") || template.Item1.Contains("đánh giá lại"))
                 return ExportReportDetailsAsync(taiSans, pattern);
             else if (template.Item1.Contains("tổng hợp"))
@@ -146,7 +146,7 @@ namespace DK.Application
             return Task.CompletedTask;
         }
 
-        public Task ExportTaiSanAsync(List<TaiSan> taiSans, string pattern)
+        public Task ExportTaiSanAsync(List<TaiSan> taiSans, string pattern, bool includeSub = false)
         {
             var template = ReportVariables.Templates[pattern];
             var lst = new List<TaiSan>();
@@ -158,7 +158,7 @@ namespace DK.Application
                     item.No = no++;
                     item.JoinedTags = string.Join("; ", item.Tags);
                     lst.Add(item);
-                    if (item.Children.Any())
+                    if (includeSub && item.Children.Any())
                     {
                         foreach (var ts in item.Children)
                         {

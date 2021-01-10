@@ -132,6 +132,8 @@
     </div>
     <div class="row">
         <div class="col search-item">
+            @Html.CheckBoxFor(x => x.IncludeSub)
+            <label>Tài sản con</label>
             <button id="btnSearch" class="btn  btn-sm bd bg-primary tx-white pointer" type="button"><i class="fa fa-search"></i> Tìm kiếm</button>
             <a class="btn  btn-sm bd pointer" href="/Home/Index"><i class="fa fa-refresh"></i> Reset</a>
             @if (Model.IsApproved)

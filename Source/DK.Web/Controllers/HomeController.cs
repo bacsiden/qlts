@@ -173,7 +173,7 @@ namespace DK.Web.Controllers
 
             var pager = new Pager(list.Count(), search.PageIndex, search.PageSize);
             if (!string.IsNullOrWhiteSpace(search.pattern))
-                _taiSanService.ExportDataAsync(list.ToList(), search.pattern);
+                _taiSanService.ExportDataAsync(list.ToList(), search.pattern, search.IncludeSub);
             search.pattern = null;
             return new PagerViewModel
             {

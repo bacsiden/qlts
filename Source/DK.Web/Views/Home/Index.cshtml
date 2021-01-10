@@ -11,13 +11,6 @@
     <link href="@Url.Content("~/Content/asset-management.css")" rel="stylesheet">
 }
 
-@section Button {
-    @if (canManage)
-    {
-        <a href="@Url.Action("Import")" class="btn btn-primary btn-sm pull-right"><i class="fa fa-upload"></i> Import</a>
-    }
-}
-
 <div class="card mt-2 mb-2 shadow-base" id="searchBox">
     <div class="card-body pb-0">
         @Html.Partial("_SearchForm", searchModel)
