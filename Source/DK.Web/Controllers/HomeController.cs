@@ -42,8 +42,13 @@ namespace DK.Web.Controllers
         // GET: Tài sản chưa phê duyệt
         public ActionResult TaisanUnApproved(TaiSanSearchModel search)
         {
+            var canManage = RoleList.GetAll().Any(User.IsInRole);
             search.IsApproved = false;
-            search.CreatedBy = User.Identity.Name;
+
+            if (!canManage)
+            {
+                search.CreatedBy = User.Identity.Name;
+            }
 
             CreateDropDownViewBag();
             ViewBag.SearchModel = search;
