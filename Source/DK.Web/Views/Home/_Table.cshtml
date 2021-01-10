@@ -2,11 +2,12 @@
 @model IEnumerable<TaiSan>
 @{
     var canManage = DK.Application.Models.RoleList.GetAll().Any(User.IsInRole);
+    var searchModel = ViewBag.SearchModel as DK.Application.Models.TaiSanSearchModel;
 }
 
 <table class="table mg-b-0" cellspacing="0">
     <tr>
-        @if (canManage)
+        @if (canManage || !searchModel.IsApproved)
         {
             <th><input type="checkbox" class="checkAll" /></th>
         }
@@ -111,7 +112,7 @@
         foreach (var item in Model)
         {
             <tr class="stat even">
-                @if (canManage)
+                @if (canManage || !searchModel.IsApproved)
                 {
                     <td>
                         <input type="checkbox" class="checkitem" value="@item.Id" />

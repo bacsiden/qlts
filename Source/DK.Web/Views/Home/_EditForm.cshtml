@@ -35,11 +35,6 @@
                         @Html.LabelFor(m => m.ChungLoai)
                         @Html.DropDownListFor(x => x.ChungLoai, new SelectList(ViewBag.ChungLoai), "Tất cả", new { Class = "form-control form-control-sm" })
                     </div>
-                    @*TODO:*@
-                    <div class="col-md-4 col-sm-6 search-item">
-                        @Html.LabelFor(m => m.DanhMuc)
-                        @Html.DropDownListFor(x => x.DanhMuc, new SelectList(ViewBag.DanhMuc), "Tất cả", new { Class = "form-control form-control-sm" })
-                    </div>
                     <div class="col-md-4 col-sm-6 search-item">
                         @Html.LabelFor(m => m.NhanHieu)
                         @Html.TextBoxFor(m => m.NhanHieu, new { Class = "form-control form-control-sm" })

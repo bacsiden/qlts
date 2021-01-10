@@ -13,10 +13,7 @@
 }
 
 @section Button {
-    @if (canManage)
-    {
-        <a href="@Url.Action("Import")" class="btn btn-primary btn-sm pull-right"><i class="fa fa-upload"></i> Import</a>
-    }
+    <a href="@Url.Action("Import")" class="btn btn-primary btn-sm pull-right"><i class="fa fa-upload"></i> Import</a>
 }
 
 <div class="card mt-2 mb-2 shadow-base" id="searchBox">
@@ -42,8 +39,6 @@
         </div>
     </div>
 </div>
-
-<button onclick="editTaiSan('41711478-9089-4ea1-bbcd-ef9f7c1e935d')">temp</button>
 
 @section Scripts {
     <link href="@Url.Content("~/Content/lib/select2/css/select2-bootstrap.min.css")" rel="stylesheet">

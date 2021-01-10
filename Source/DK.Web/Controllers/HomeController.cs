@@ -3,6 +3,7 @@ using DK.Application.Models;
 using DK.Application.Repositories;
 using DK.Web.Core;
 using DK.Web.Models;
+using Microsoft.AspNet.Identity;
 using StructureMap.Query;
 using System;
 using System.Collections.Generic;
@@ -29,6 +30,7 @@ namespace DK.Web.Controllers
         public ActionResult Index(TaiSanSearchModel search)
         {
             search.IsApproved = true;
+            search.CreatedBy = string.Empty;
 
             CreateDropDownViewBag();
             ViewBag.SearchModel = search;
@@ -41,6 +43,7 @@ namespace DK.Web.Controllers
         public ActionResult TaisanUnApproved(TaiSanSearchModel search)
         {
             search.IsApproved = false;
+            search.CreatedBy = User.Identity.Name;
 
             CreateDropDownViewBag();
             ViewBag.SearchModel = search;
@@ -59,14 +62,14 @@ namespace DK.Web.Controllers
         {
             try
             {
-                _taiSanService.ImportTaiSan(taisan.InputStream);
+                _taiSanService.ImportTaiSan(User.Identity.Name, taisan.InputStream);
             }
             catch (Exception e)
             {
                 ViewBag.Error = e.Message;
                 return View();
             }
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(TaisanUnApproved));
         }
 
         public ActionResult Dashboard()
@@ -99,7 +102,7 @@ namespace DK.Web.Controllers
                 CreateDropDownViewBag();
                 return PartialView("_EditForm", taisan);
             }
-            
+
             var currentAsset = _taiSanRepository.Get(taisan.Id);
             if (currentAsset != null)
             {

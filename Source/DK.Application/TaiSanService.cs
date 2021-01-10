@@ -27,7 +27,7 @@ namespace DK.Application
             _kiemKeRepository = kiemKeRepository;
         }
 
-        public void ImportTaiSan(Stream stream)
+        public void ImportTaiSan(string userName, Stream stream)
         {
             var taisans = _taiSanRepository.Find(m => true).ToList().Select(m => new { key = m.Code, value = m }).ToDictionary(x => x.key, x => x.value);
             var types = _typeRepository.Find(m => true).ToList();
@@ -43,7 +43,7 @@ namespace DK.Application
             xls.ActiveSheet = 1;  //we'll read sheet1. We could loop over the existing sheets by using xls.SheetCount and xls.ActiveSheet 
             for (int row = 3; row <= xls.RowCount; row++)
             {
-                var ts = new TaiSan();
+                var ts = new TaiSan() { CreatedBy = userName };
                 var no = GetCellInt(xls, row, nameof(TaiSan.No));
                 if (!no.HasValue) throw new Exception($"Lỗi dữ liệu tại dòng {row}. Cột STT phải có dữ liệu");
                 ts.No = no.Value;
