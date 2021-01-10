@@ -49,6 +49,8 @@ namespace DK.Application
                 ts.No = no.Value;
 
                 ts.Code = GetCellString(xls, row, nameof(TaiSan.Code));
+                if (!string.IsNullOrWhiteSpace(ts.Code)) throw new Exception($"Lỗi dữ liệu tại dòng {row}. Không được nhập mã tài sản. Mã tài sản sẽ được tự sinh");
+
                 ts.Name = GetCellString(xls, row, nameof(TaiSan.Name));
                 ts.GroupName = GetCellString(xls, row, nameof(TaiSan.GroupName));
 
@@ -84,6 +86,8 @@ namespace DK.Application
                 ts.PhongQuanLy = GetCellString(xls, row, nameof(TaiSan.PhongQuanLy));
                 AddNewType(types, newTypes, TypeConstant.PhongBan, ts.PhongQuanLy);
 
+                ts.LoaiXe = GetCellString(xls, row, nameof(TaiSan.LoaiXe));
+                ts.BienSo = GetCellString(xls, row, nameof(TaiSan.BienSo));
                 ts.DungTichXiLanh = GetCellInt(xls, row, nameof(TaiSan.DungTichXiLanh));
                 ts.SoChoNgoi = GetCellInt(xls, row, nameof(TaiSan.SoChoNgoi));
                 ts.SoTang = GetCellInt(xls, row, nameof(TaiSan.SoTang));
@@ -94,31 +98,28 @@ namespace DK.Application
                 ts.Tags = GetCellListString(xls, row, nameof(TaiSan.Tags));
                 AddNewType(types, newTypes, TypeConstant.Tags, ts.Tags);
 
-                if (ts.Code == null)
+                var i = 1;
+                ts.GenerateCode();
+                while (taisans.ContainsKey(ts.Code))
                 {
-                    var i = 1;
-                    ts.GenerateCode();
-                    while (taisans.ContainsKey(ts.Code))
-                    {
-                        ts.GenerateCode(i++);
-                    }
-                    taisans.Add(ts.Code, ts);
-
-                    if (lastNo == -1 || lastNo == ts.No)
-                    {
-                        cluster.Add(ts);
-                    }
-                    else
-                    {
-                        var ts11 = cluster.First();
-                        cluster.RemoveAt(0);
-                        ts11.Children = cluster;
-                        newTaiSans.Add(ts11);
-
-                        cluster = new List<TaiSan> { ts };
-                    }
-                    lastNo = ts.No;
+                    ts.GenerateCode(i++);
                 }
+                taisans.Add(ts.Code, ts);
+
+                if (lastNo == -1 || lastNo == ts.No)
+                {
+                    cluster.Add(ts);
+                }
+                else
+                {
+                    var ts11 = cluster.First();
+                    cluster.RemoveAt(0);
+                    ts11.Children = cluster;
+                    newTaiSans.Add(ts11);
+
+                    cluster = new List<TaiSan> { ts };
+                }
+                lastNo = ts.No;
             }
             var ts1 = cluster.First();
             cluster.RemoveAt(0);
