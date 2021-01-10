@@ -384,17 +384,28 @@ namespace DK.Application
                     {
                         doc.GetObject("no").Text = item.No.ToString();
                         doc.GetObject("donv").Text = $"Phòng: {item.PhongQuanLy}";
-                        doc.GetObject("code").Text = item.Code;
+                        doc.GetObject("code").Text = $"Mã tài sản: {item.Code}";
                         doc.GetObject("name").Text = item.Name;
                         doc.GetObject("barcode").Text = $"{item.Code}";
-
-
+                        doc.PrintOut(1, PrintOptionConstants.bpoCutAtEnd);
+                        if (item.Children.Any())
+                        {
+                            foreach (var sub in item.Children)
+                            {
+                                doc.GetObject("no").Text = sub.No.ToString();
+                                doc.GetObject("donv").Text = $"Phòng: {item.PhongQuanLy}";
+                                doc.GetObject("code").Text = $"Mã tài sản: {sub.Code} - {item.Code}";
+                                doc.GetObject("name").Text = sub.Name;
+                                doc.GetObject("barcode").Text = $"{sub.Code}";
+                                doc.PrintOut(1, PrintOptionConstants.bpoCutAtEnd);
+                            }
+                        }
                         //doc.GetObject("no").Text = item.No.ToString();
                         //doc.GetObject("barcode").Text = $"{item.Code}";
 
 
                         //doc.SetMediaById(doc.Printer.GetMediaId(), true);
-                        doc.PrintOut(1, PrintOptionConstants.bpoCutAtEnd);
+
                     }
                     doc.EndPrint();
                     doc.Close();
