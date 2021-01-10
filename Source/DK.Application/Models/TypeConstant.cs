@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace DK.Application.Models
@@ -14,6 +15,11 @@ namespace DK.Application.Models
         public const string Tags = "Tags";
         public const string KiemKe = "KiemKe";
 
+        public const string GQuanLy = "Tài sản phục vụ công tác quản lý";
+        public const string GDacBiet = "Tài sản đặc biệt";
+        public const string GChuyenDung = "Tài sản chuyên dùng";
+
+        public static List<string> Groups = new List<string> { GQuanLy, GDacBiet, GChuyenDung };
 
         public static string GetFirstChars(this string input)
         {
@@ -35,5 +41,7 @@ namespace DK.Application.Models
             while (output.Length < length) output = $"0{output}";
             return output;
         }
+
+
     }
 }

@@ -18,20 +18,12 @@
             @Html.TextBoxFor(m => m.Name, new { Class = "form-control form-control-sm" })
         </div>
         <div class="col-md-2 col-sm-3 search-item">
-            @Html.LabelFor(m => m.GroupCode)
-            @Html.TextBoxFor(m => m.GroupCode, new { Class = "form-control form-control-sm" })
-        </div>
-        <div class="col-md-2 col-sm-3 search-item">
             @Html.LabelFor(m => m.GroupName)
-            @Html.TextBoxFor(m => m.GroupName, new { Class = "form-control form-control-sm" })
+            @Html.DropDownListFor(x => x.GroupName, new SelectList(ViewBag.GroupName), "Tất cả", new { Class = "form-control form-control-sm" })
         </div>
         <div class="col-md-2 col-sm-3 search-item">
             @Html.LabelFor(m => m.ChungLoai)
             @Html.DropDownListFor(x => x.ChungLoai, new SelectList(ViewBag.ChungLoai), "Tất cả", new { Class = "form-control form-control-sm" })
-        </div>
-        <div class="col-md-2 col-sm-3 search-item">
-            @Html.LabelFor(m => m.DanhMuc)
-            @Html.DropDownListFor(x => x.DanhMuc, new SelectList(ViewBag.DanhMuc), "Tất cả", new { Class = "form-control form-control-sm" })
         </div>
     </div>
     <div class="collapse py-2" id="collapseExample">
@@ -141,7 +133,7 @@
     <div class="row">
         <div class="col search-item">
             <button id="btnSearch" class="btn  btn-sm bd bg-primary tx-white pointer" type="button"><i class="fa fa-search"></i> Tìm kiếm</button>
-            <a class="btn  btn-sm bd pointer" href="/"><i class="fa fa-refresh"></i> Reset</a>
+            <a class="btn  btn-sm bd pointer" href="/Home/Index"><i class="fa fa-refresh"></i> Reset</a>
 
             <button class="btn  btn-sm bd bg-primary tx-white pointer pull-right print-barcode ml-1" type="button"><i class="fa fa-barcode"></i> In mã vạch</button>
 

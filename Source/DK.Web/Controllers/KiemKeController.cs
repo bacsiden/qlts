@@ -130,7 +130,16 @@ namespace DK.Web.Controllers
         [HttpPost]
         public ActionResult Import(Guid id, HttpPostedFileBase taisan)
         {
-            _taiSanService.ImportKiemKe(taisan.InputStream, id);
+            try
+            {
+                _taiSanService.ImportKiemKe(taisan.InputStream, id);
+            }
+            catch (Exception e)
+            {
+                ViewBag.Error = e.Message;
+                return View();
+            }
+            
             return RedirectToAction(nameof(Detail), new { id = id });
         }
 

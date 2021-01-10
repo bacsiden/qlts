@@ -40,10 +40,8 @@ namespace DK.Application.Models
             {
                 Code,
                 Name,
-                GroupCode,
                 GroupName,
                 ChungLoai,
-                DanhMuc,
                 NhanHieu,
                 Serial,
                 XuatXu,
@@ -59,7 +57,7 @@ namespace DK.Application.Models
                 PhongQuanLy,
                 LoaiXe,
                 PageSize,
-                Tags = string.Join(",", Tags)
+                Tags = string.Join(", ", Tags)
             };
         }
 

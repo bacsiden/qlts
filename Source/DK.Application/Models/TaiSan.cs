@@ -22,7 +22,7 @@ namespace DK.Application.Models
 
         public void GenerateCode(int? i = null)
         {
-            Code = $"{DanhMuc} {ChungLoai} {Name}".GetFirstChars();
+            Code = $"{ChungLoai} {Name}".GetFirstChars();
             if (Code != null && Code.Length > 7) Code = Code.Substring(0, 7);
             Code += string.IsNullOrWhiteSpace(Serial) ? null : string.Join(null, Serial.Where(m => char.IsLetterOrDigit(m))).SubLastString(4);
             if (i != null)
@@ -31,11 +31,12 @@ namespace DK.Application.Models
 
         public bool IsVehicle()
         {
-            var value = $"{ChungLoai}{DanhMuc}".ToLower();
+            var value = $"{ChungLoai}".ToLower();
             return LoaiXe != null || DungTichXiLanh != null || SoChoNgoi != null || value.Contains("phương tiện giao thông") || value.Contains("ô tô");
         }
 
         [BsonIgnore]
+        [ColumnIndex(1)]
         public int No { get; set; }
 
         // search chính xác
@@ -48,13 +49,11 @@ namespace DK.Application.Models
         [Display(Name = "Tên tài sản")]
         public string Name { get; set; }
 
-        // search chính xác
-        [ColumnIndex(4)]
         [Display(Name = "Mã nhóm tài sản")]
         public string GroupCode { get; set; }
 
         // search contains
-        [ColumnIndex(5)]
+        [ColumnIndex(4)]
         [Display(Name = "Tên nhóm tài sản")]
         public string GroupName { get; set; }
 
@@ -62,97 +61,97 @@ namespace DK.Application.Models
         /// Lấy từ bảng chúng loại
         /// </summary>
         // filter
-        [ColumnIndex(6)]
+        [ColumnIndex(5)]
         [Display(Name = "Chủng loại")]
         public string ChungLoai { get; set; }
 
-        // filter
-        [ColumnIndex(7)]
-        [Display(Name = "Danh mục")]
-        public string DanhMuc { get; set; }
-
         // search contains
-        [ColumnIndex(8)]
+        [ColumnIndex(6)]
         [Display(Name = "Nhãn hiệu")]
         public string NhanHieu { get; set; }
 
         // search chính xác
-        [ColumnIndex(9)]
+        [ColumnIndex(7)]
         [Display(Name = "Serial (số khung/số máy)")]
         public string Serial { get; set; }
 
         // search contains
-        [ColumnIndex(10)]
+        [ColumnIndex(8)]
         [Display(Name = "Xuất xứ")]
         public string XuatXu { get; set; }
 
         // search chính xác
-        [ColumnIndex(11)]
+        [ColumnIndex(9)]
         [Display(Name = "Thuộc hợp đồng")]
         public string ThuocHopDong { get; set; }
 
         // search contains
-        [ColumnIndex(12)]
+        [ColumnIndex(10)]
         [Display(Name = "Thuộc gói thầu")]
         public string ThuocGoiThau { get; set; }
 
         // filter
-        [ColumnIndex(13)]
-        [Display(Name = "Nguồn kinh phí")]
+        [ColumnIndex(11)]
+        [Display(Name = "Nguồn kinh phí bộ")]
         public string NguonKinhPhi { get; set; }
 
         // search chính xác
-        [ColumnIndex(14)]
+        [ColumnIndex(12)]
+        [Display(Name = "Ngân sách khác")]
+        public string NganSachKhac { get; set; }
+
+        // search chính xác
+        [ColumnIndex(13)]
         [Display(Name = "Ngân sách năm")]
         public int? NganSachNam { get; set; }
 
         // search chính xác
-        [ColumnIndex(15)]
+        [ColumnIndex(14)]
         [Display(Name = "Năm sản xuất")]
         public int? NamSanXuat { get; set; }
 
         // search chính xác
-        [ColumnIndex(16)]
+        [ColumnIndex(15)]
         [Display(Name = "Năm sử dụng")]
         public int? NamSuDung { get; set; }
 
-        [ColumnIndex(17)]
+        [ColumnIndex(16)]
         [Display(Name = "Nguyên giá kế toán")]
         public decimal? NguyenGiaKeToan { get; set; }
 
-        [ColumnIndex(18)]
+        [ColumnIndex(17)]
         [Display(Name = "Số lượng")]
         public int? SoLuong { get; set; }
 
-        [ColumnIndex(19)]
+        [ColumnIndex(18)]
         [Display(Name = "Khối lượng")]
         public int? KhoiLuong { get; set; }
 
-        [ColumnIndex(20)]
+        [ColumnIndex(19)]
         [Display(Name = "Hao mòn lũy kế")]
         public int? HaoMonLuyKe { get; set; }
 
-        [ColumnIndex(21)]
+        [ColumnIndex(20)]
         [Display(Name = "Giá trị còn lại")]
         public decimal? GiaTriConLai { get; set; }
 
         // filter
-        [ColumnIndex(22)]
+        [ColumnIndex(21)]
         [Display(Name = "Chất lượng")]
         public string ChatLuong { get; set; }
 
         // search contains
-        [ColumnIndex(23)]
+        [ColumnIndex(22)]
         [Display(Name = "Người sử dụng (cá nhân)")]
         public string NguoiSuDung { get; set; }
 
         // search contains
-        [ColumnIndex(24)]
+        [ColumnIndex(23)]
         [Display(Name = "Người quản lý (theo dõi chung)")]
         public string NguoiQuanLy { get; set; }
 
         // filter
-        [ColumnIndex(25)]
+        [ColumnIndex(24)]
         [Display(Name = "Phòng/Ban quản lý")]
         public string PhongQuanLy { get; set; }
 
@@ -160,7 +159,7 @@ namespace DK.Application.Models
         /// chỉ đối với phương tiện
         /// </summary>
         // filter
-        [ColumnIndex(26)]
+        [ColumnIndex(25)]
         [Display(Name = "Loại xe")]
         public string LoaiXe { get; set; }
 
@@ -168,55 +167,55 @@ namespace DK.Application.Models
         /// chỉ đối với phương tiện
         /// </summary>
         [Display(Name = "Dung tích xi lanh")]
-        [ColumnIndex(27)]
+        [ColumnIndex(26)]
         public int? DungTichXiLanh { get; set; }
 
         /// <summary>
         /// chỉ đối với phương tiện
         /// </summary>
         [Display(Name = "Số chỗ ngồi")]
-        [ColumnIndex(28)]
+        [ColumnIndex(27)]
         public int? SoChoNgoi { get; set; }
 
         /// <summary>
         /// chỉ đối với nhà đất
         /// </summary>
         [Display(Name = "Số tầng")]
-        [ColumnIndex(29)]
+        [ColumnIndex(28)]
         public int? SoTang { get; set; }
 
         /// <summary>
         /// chỉ đối với nhà đất
         /// </summary>
         [Display(Name = "Diện tích xây dựng")]
-        [ColumnIndex(30)]
+        [ColumnIndex(29)]
         public int? DienTichXayDung { get; set; }
 
         /// <summary>
         /// chỉ đối với nhà đất
         /// </summary>
         [Display(Name = "Cấp công trình")]
-        [ColumnIndex(31)]
+        [ColumnIndex(30)]
         public int? CapCongTrinh { get; set; }
 
         /// <summary>
         /// chỉ đối với nhà đất
         /// </summary>
         [Display(Name = "Địa chỉ")]
-        [ColumnIndex(32)]
+        [ColumnIndex(31)]
         public string DiaChi { get; set; }
 
         /// <summary>
         /// chỉ đối với nhà đất
         /// </summary>
         [Display(Name = "Diện tích khuôn viên")]
-        [ColumnIndex(33)]
+        [ColumnIndex(32)]
         public int? DienTichKhuonVien { get; set; }
 
         /// <summary>
         /// Multi select
         /// </summary>
-        [ColumnIndex(34)]
+        [ColumnIndex(33)]
         public List<string> Tags { get; set; } = new List<string>();
 
         public string JoinedTags { get; set; }
@@ -224,5 +223,7 @@ namespace DK.Application.Models
         public decimal? NganSachBo { get; set; }
         public decimal? Khac { get; set; }
         public decimal? TongCong { get; set; }
+
+        public List<TaiSan> Children = new List<TaiSan>();
     }
 }

@@ -24,17 +24,9 @@ namespace DK.Application.Repositories
             {
                 query &= filter.Eq(m => m.Code, model.Code.Trim());
             }
-            if (!string.IsNullOrWhiteSpace(model.GroupCode))
-            {
-                query &= filter.Eq(m => m.GroupCode, model.GroupCode.Trim());
-            }
             if (!string.IsNullOrWhiteSpace(model.ChungLoai))
             {
                 query &= filter.Eq(m => m.ChungLoai, model.ChungLoai.Trim());
-            }
-            if (!string.IsNullOrWhiteSpace(model.DanhMuc))
-            {
-                query &= filter.Eq(m => m.DanhMuc, model.DanhMuc.Trim());
             }
             if (!string.IsNullOrWhiteSpace(model.Serial))
             {
@@ -110,7 +102,7 @@ namespace DK.Application.Repositories
                 query &= filter.AnyIn(m => m.Tags, model.Tags);
             }
 
-            return _collection.Find(query).Sort(Builders<TaiSan>.Sort.Ascending(m => m.Name)).ToEnumerable();
+            return _collection.Find(query).ToEnumerable();
         }
     }
 }

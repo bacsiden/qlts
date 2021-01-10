@@ -90,13 +90,6 @@ namespace DK.Web.Controllers
                             item.ChungLoai = newName;
                         });
                         break;
-                    case TypeConstant.DanhMuc:
-                        taisans = _taiSanRepository.Find(m => true).AsEnumerable().Where(m => oldNames.Any(name => name == m.DanhMuc)).ToList();
-                        taisans.ForEach(item =>
-                        {
-                            item.DanhMuc = newName;
-                        });
-                        break;
                     case TypeConstant.LoaiXe:
                         taisans = _taiSanRepository.Find(m => true).AsEnumerable().Where(m => oldNames.Any(name => name == m.LoaiXe)).ToList();
                         taisans.ForEach(item =>

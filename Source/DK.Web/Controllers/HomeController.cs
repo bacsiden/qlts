@@ -42,7 +42,15 @@ namespace DK.Web.Controllers
         [HttpPost]
         public ActionResult Import(HttpPostedFileBase taisan)
         {
-            _taiSanService.ImportTaiSan(taisan.InputStream);
+            try
+            {
+                _taiSanService.ImportTaiSan(taisan.InputStream);
+            }
+            catch (Exception e)
+            {
+                ViewBag.Error = e.Message;
+                return View();
+            }
             return RedirectToAction(nameof(Index));
         }
 
@@ -158,6 +166,7 @@ namespace DK.Web.Controllers
         private void CreateDropDownViewBag()
         {
             var types = _typeRepository.Find(m => true).ToList();
+            ViewBag.GroupName = TypeConstant.Groups;
             ViewBag.ChungLoai = types.Where(m => m.Name == TypeConstant.ChungLoai).Select(m => m.Title);
             ViewBag.DanhMuc = types.Where(m => m.Name == TypeConstant.DanhMuc).Select(m => m.Title);
             ViewBag.NguonKinhPhi = types.Where(m => m.Name == TypeConstant.NguonKinhPhi).Select(m => m.Title);

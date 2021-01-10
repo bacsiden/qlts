@@ -36,22 +36,29 @@ namespace DK.Application
             XlsFile xls = new XlsFile();
             xls.Open(stream);
             var newTaiSans = new List<TaiSan>();
+            var cluster = new List<TaiSan>();
             var oldTaiSans = new List<TaiSan>();
+            int lastNo = -1;
 
             xls.ActiveSheet = 1;  //we'll read sheet1. We could loop over the existing sheets by using xls.SheetCount and xls.ActiveSheet 
             for (int row = 3; row <= xls.RowCount; row++)
             {
                 var ts = new TaiSan();
+                var no = GetCellInt(xls, row, nameof(TaiSan.No));
+                if (!no.HasValue) throw new Exception($"Lỗi dữ liệu tại dòng {row}. Cột STT phải có dữ liệu");
+                ts.No = no.Value;
+
                 ts.Code = GetCellString(xls, row, nameof(TaiSan.Code));
                 ts.Name = GetCellString(xls, row, nameof(TaiSan.Name));
-                ts.GroupCode = GetCellString(xls, row, nameof(TaiSan.GroupCode));
                 ts.GroupName = GetCellString(xls, row, nameof(TaiSan.GroupName));
+
+                if (!TypeConstant.Groups.Any(m => m.Equals(ts.GroupName, StringComparison.OrdinalIgnoreCase)))
+                {
+                    throw new Exception($"Lỗi dữ liệu tại dòng {row}. Tên nhóm tài sản phải là: {TypeConstant.GDacBiet}, {TypeConstant.GChuyenDung}, {TypeConstant.GQuanLy}");
+                }
+
                 ts.ChungLoai = GetCellString(xls, row, nameof(TaiSan.ChungLoai));
                 AddNewType(types, newTypes, TypeConstant.ChungLoai, ts.ChungLoai);
-
-                ts.DanhMuc = GetCellString(xls, row, nameof(TaiSan.DanhMuc));
-                AddNewType(types, newTypes, TypeConstant.DanhMuc, ts.DanhMuc);
-
                 ts.NhanHieu = GetCellString(xls, row, nameof(TaiSan.NhanHieu));
                 ts.Serial = GetCellString(xls, row, nameof(TaiSan.Serial));
                 ts.XuatXu = GetCellString(xls, row, nameof(TaiSan.XuatXu));
@@ -59,6 +66,7 @@ namespace DK.Application
                 ts.ThuocGoiThau = GetCellString(xls, row, nameof(TaiSan.ThuocGoiThau));
                 ts.NguonKinhPhi = GetCellString(xls, row, nameof(TaiSan.NguonKinhPhi));
                 AddNewType(types, newTypes, TypeConstant.NguonKinhPhi, ts.NguonKinhPhi);
+                ts.NganSachKhac = GetCellString(xls, row, nameof(TaiSan.NganSachKhac));
 
                 ts.NganSachNam = GetCellInt(xls, row, nameof(TaiSan.NganSachNam));
                 ts.NamSanXuat = GetCellInt(xls, row, nameof(TaiSan.NamSanXuat));
@@ -94,37 +102,31 @@ namespace DK.Application
                     {
                         ts.GenerateCode(i++);
                     }
-
-                    newTaiSans.Add(ts);
                     taisans.Add(ts.Code, ts);
-                }
-                else
-                {
-                    if (taisans.ContainsKey(ts.Code))
+
+                    if (lastNo == -1 || lastNo == ts.No)
                     {
-                        var taisan = taisans[ts.Code];
-                        if (taisan.Id != Guid.Empty)
-                        {
-                            ts.Id = taisan.Id;
-                            oldTaiSans.Add(ts);
-                        }
-                        else throw new Exception($"Dữ liệu bị lỗi tại dòng {row}. Vui lòng không sửa mã tài sản khi import dữ liệu từ file excel");
-                    }
-                    else if (ts.IsVehicle())
-                    {
-                        newTaiSans.Add(ts);
-                        taisans.Add(ts.Code, ts);
+                        cluster.Add(ts);
                     }
                     else
-                        throw new Exception($"Dữ liệu bị lỗi tại dòng {row}. Vui lòng không nhập mã tài sản khi import dữ liệu từ file excel");
+                    {
+                        var ts11 = cluster.First();
+                        cluster.RemoveAt(0);
+                        ts11.Children = cluster;
+                        newTaiSans.Add(ts11);
+
+                        cluster = new List<TaiSan> { ts };
+                    }
+                    lastNo = ts.No;
                 }
             }
+            var ts1 = cluster.First();
+            cluster.RemoveAt(0);
+            ts1.Children = cluster;
+            newTaiSans.Add(ts1);
+
             if (newTaiSans.Any())
                 _taiSanRepository.AddRange(newTaiSans);
-            foreach (var item in oldTaiSans)
-            {
-                _taiSanRepository.Update(item);
-            }
             if (newTypes.Any())
                 _typeRepository.AddRange(newTypes);
         }
@@ -146,6 +148,7 @@ namespace DK.Application
         public Task ExportTaiSanAsync(List<TaiSan> taiSans, string pattern)
         {
             var template = ReportVariables.Templates[pattern];
+            var lst = new List<TaiSan>();
             using (FlexCelReport fr = new FlexCelReport(true))
             {
                 var no = 1;
@@ -153,9 +156,19 @@ namespace DK.Application
                 {
                     item.No = no++;
                     item.JoinedTags = string.Join("; ", item.Tags);
+                    lst.Add(item);
+                    if (item.Children.Any())
+                    {
+                        foreach (var ts in item.Children)
+                        {
+                            ts.No = item.No;
+                            ts.JoinedTags = string.Join("; ", ts.Tags);
+                            lst.Add(ts);
+                        }
+                    }
                 }
 
-                fr.AddTable("row", taiSans);
+                fr.AddTable("row", lst);
                 var xlsx = new XlsFile(true);
                 xlsx.Open(TemplateFolder + template.Item2);
                 fr.Run(xlsx);
@@ -175,8 +188,7 @@ namespace DK.Application
                 var no = 1;
                 foreach (var item in taiSans)
                 {
-                    item.JoinedTags = string.Join("; ", item.Tags);
-
+                    item.No = no++;
                 }
 
                 fr.AddTable("row", taiSans);
@@ -196,27 +208,36 @@ namespace DK.Application
 
         public Task ExportReportGroupAsync(List<TaiSan> taiSans, string pattern)
         {
+            foreach (var item in taiSans)
+            {
+                item.NganSachBo = string.IsNullOrWhiteSpace(item.NguonKinhPhi) ? null : item.NguyenGiaKeToan;
+                item.Khac = item.NganSachBo == null ? item.NguyenGiaKeToan : null;
+            }
             var template = ReportVariables.Templates[pattern];
-            var groups = taiSans.Where(m => !string.IsNullOrWhiteSpace(m.GroupName)).Select(m => m.GroupName).Distinct();
-            var reportData = taiSans.Where(m => string.IsNullOrWhiteSpace(m.GroupName)).ToList();
+            // nhóm theo chủng loại
+            var groups = taiSans.Where(m => !string.IsNullOrWhiteSpace(m.ChungLoai)).Select(m => m.ChungLoai).Distinct();
+            var reportData = taiSans.Where(m => string.IsNullOrWhiteSpace(m.ChungLoai)).ToList();
             foreach (var item in groups)
             {
-                var groupTaiSans = taiSans.Where(m => m.GroupName == item).ToList();
+                var groupTaiSans = taiSans.Where(m => m.ChungLoai == item).ToList();
                 var sum = BuildSumTaiSan(groupTaiSans);
-                sum.GroupName = item;
+                sum.ChungLoai = item;
                 reportData.Add(sum);
             }
-            var sumAll = BuildSumTaiSan(reportData);
 
             var no = 1;
+            var lst = new List<TaiSan>();
             foreach (var item in reportData)
             {
-                item.No = no++;
+                var ts = BuildSumTaiSan(new List<TaiSan> { item });
+                ts.No = no++;
+                lst.Add(ts);
             }
 
+            var sumAll = BuildSumTaiSan(lst);
             using (FlexCelReport fr = new FlexCelReport(true))
             {
-                fr.AddTable("row", reportData);
+                fr.AddTable("row", lst);
                 fr.AddTable("sum", new List<TaiSan> { sumAll });
                 fr.SetValue("title", template.Item1.ToUpperInvariant());
                 fr.SetValue("pattern", pattern);
@@ -234,7 +255,7 @@ namespace DK.Application
         private string GetReportName(string pattern)
         {
             var template = ReportVariables.Templates[pattern];
-            return $"{pattern}.xlsx";
+            return $"{pattern} {template.Item1}.xlsx";
         }
 
         private TaiSan BuildSumTaiSan(List<TaiSan> taiSans)
@@ -245,13 +266,14 @@ namespace DK.Application
             sum.NguyenGiaKeToan = taiSans.Where(m => m.NguyenGiaKeToan.HasValue).Sum(m => m.NguyenGiaKeToan);
             sum.HaoMonLuyKe = taiSans.Where(m => m.HaoMonLuyKe.HasValue).Sum(m => m.HaoMonLuyKe);
             sum.GiaTriConLai = taiSans.Where(m => m.GiaTriConLai.HasValue).Sum(m => m.GiaTriConLai);
+
             sum.DienTichXayDung = taiSans.Where(m => m.DienTichXayDung.HasValue).Sum(m => m.DienTichXayDung);
             sum.DienTichKhuonVien = taiSans.Where(m => m.DienTichKhuonVien.HasValue).Sum(m => m.DienTichKhuonVien);
 
             sum.NganSachBo = taiSans.Where(m => m.NganSachBo.HasValue).Sum(m => m.NganSachBo);
             sum.Khac = taiSans.Where(m => m.Khac.HasValue).Sum(m => m.Khac);
             sum.TongCong = sum.NganSachBo + sum.Khac;
-
+            sum.GiaTriConLai = sum.TongCong - sum.HaoMonLuyKe;
             return sum;
         }
 
