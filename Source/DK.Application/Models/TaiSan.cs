@@ -224,6 +224,8 @@ namespace DK.Application.Models
         public decimal? Khac { get; set; }
         public decimal? TongCong { get; set; }
 
+        public bool IsApproved { get; set; }
+
         public List<TaiSan> Children = new List<TaiSan>();
     }
 }

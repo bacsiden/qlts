@@ -18,7 +18,7 @@
                                 <tr class="stat even">
                                     @if (canManage)
                                     {
-                                        <td class="ac stt text-center">
+                                        <td class="ac checkboxItem text-center">
                                             <input type="checkbox" class="merge-item" value="@item.Title" data-id="@item.Id" />
                                         </td>
                                     }
@@ -61,8 +61,9 @@
                     </button>
                 </div>
                 <div class="modal-body pd-25">
-                    <input type="hidden" name="categoryName" value="@ViewBag.Title" />
+                    <input type="hidden" name="categoryName" class="categoryName" value="@ViewBag.Title" />
                     <input type="text" name="newName" class="form-control new-name" value="" />
+                    <p class="text-warning mt-1">Có <span class="affectedRecords">10</span> tài sản bị ảnh hưởng</p>
                     <div class="d-none old-ids">
 
                     </div>
@@ -82,7 +83,7 @@
             padding-bottom: 0px;
         }
 
-        td.ac.stt {
+        td.ac.stt, td.checkboxItem {
             width: 50px;
             vertical-align: middle;
         }

@@ -121,7 +121,14 @@
                     @(stt++)
                 </td>
                 <td>
-                    @item.Code
+                    @if (canManage)
+                    {
+                        <a href="javascript:void(0)" onclick="editTaiSan('@item.Id')">@item.Code</a>
+                    }
+                    else
+                    {
+                        @item.Code
+                    }
                 </td>
                 <td>
                     @item.Name

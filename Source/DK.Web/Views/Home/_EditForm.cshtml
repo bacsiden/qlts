@@ -1,0 +1,159 @@
+﻿@model DK.Application.Models.TaiSan
+
+<div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+        @using (Html.BeginForm(null, null, FormMethod.Post, new { role = "form", id = "frmAsset" }))
+        {
+            <div class="modal-header pd-y-20 pd-x-25">
+                <h6 class="tx-14 mg-b-0 tx-uppercase tx-inverse tx-bold">Chỉnh sửa tài sản</h6>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body pd-25">
+                @Html.HiddenFor(m => m.Id)
+                @Html.HiddenFor(m => m.IsApproved)
+                @Html.ValidationSummary(true)
+                <div class="row mb-2">
+                    <div class="col-md-4 col-sm-6 search-item">
+                        @Html.LabelFor(m => m.Code)
+                        @Html.TextBoxFor(m => m.Code, new { Class = "form-control form-control-sm" })
+                    </div>
+                    <div class="col-md-4 col-sm-6 search-item">
+                        @Html.LabelFor(m => m.Name)
+                        @Html.TextBoxFor(m => m.Name, new { Class = "form-control form-control-sm" })
+                    </div>
+                    <div class="col-md-4 col-sm-6 search-item">
+                        @Html.LabelFor(m => m.GroupCode)
+                        @Html.TextBoxFor(m => m.GroupCode, new { Class = "form-control form-control-sm" })
+                    </div>
+                    <div class="col-md-4 col-sm-6 search-item">
+                        @Html.LabelFor(m => m.GroupName)
+                        @Html.TextBoxFor(m => m.GroupName, new { Class = "form-control form-control-sm" })
+                    </div>
+                    <div class="col-md-4 col-sm-6 search-item">
+                        @Html.LabelFor(m => m.ChungLoai)
+                        @Html.DropDownListFor(x => x.ChungLoai, new SelectList(ViewBag.ChungLoai), "Tất cả", new { Class = "form-control form-control-sm" })
+                    </div>
+                    @*TODO:*@
+                    <div class="col-md-4 col-sm-6 search-item">
+                        @Html.LabelFor(m => m.DanhMuc)
+                        @Html.DropDownListFor(x => x.DanhMuc, new SelectList(ViewBag.DanhMuc), "Tất cả", new { Class = "form-control form-control-sm" })
+                    </div>
+                    <div class="col-md-4 col-sm-6 search-item">
+                        @Html.LabelFor(m => m.NhanHieu)
+                        @Html.TextBoxFor(m => m.NhanHieu, new { Class = "form-control form-control-sm" })
+                    </div>
+                    <div class="col-md-4 col-sm-6 search-item">
+                        @Html.Label("Serial ")
+                        @Html.TextBoxFor(m => m.Serial, new { Class = "form-control form-control-sm", placeholder = "Số khung/Số máy" })
+                    </div>
+                    <div class="col-md-4 col-sm-6 search-item">
+                        @Html.LabelFor(m => m.XuatXu)
+                        @Html.TextBoxFor(m => m.XuatXu, new { Class = "form-control form-control-sm" })
+                    </div>
+                    <div class="col-md-4 col-sm-6 search-item">
+                        @Html.LabelFor(m => m.ThuocHopDong)
+                        @Html.TextBoxFor(m => m.ThuocHopDong, new { Class = "form-control form-control-sm" })
+                    </div>
+                    <div class="col-md-4 col-sm-6 search-item">
+                        @Html.LabelFor(m => m.ThuocGoiThau)
+                        @Html.TextBoxFor(m => m.ThuocGoiThau, new { Class = "form-control form-control-sm" })
+                    </div>
+                    <div class="col-md-4 col-sm-6 search-item">
+                        @Html.LabelFor(m => m.NguonKinhPhi)
+                        @Html.DropDownListFor(x => x.NguonKinhPhi, new SelectList(ViewBag.NguonKinhPhi), "Tất cả", new { Class = "form-control form-control-sm" })
+                    </div>
+                    <div class="col-md-4 col-sm-6 search-item">
+                        @Html.LabelFor(m => m.NganSachNam)
+                        @Html.TextBoxFor(m => m.NganSachNam, new { Class = "form-control form-control-sm price" })
+                    </div>
+                    <div class="col-md-4 col-sm-6 search-item">
+                        @Html.LabelFor(m => m.NamSanXuat)
+                        @Html.TextBoxFor(m => m.NamSanXuat, new { Class = "form-control form-control-sm price" })
+                    </div>
+                    <div class="col-md-4 col-sm-6 search-item">
+                        @Html.LabelFor(m => m.NamSuDung)
+                        @Html.TextBoxFor(m => m.NamSuDung, new { Class = "form-control form-control-sm price" })
+                    </div>
+                    <div class="col-md-4 col-sm-6 search-item">
+                        @Html.LabelFor(m => m.NguyenGiaKeToan)
+                        @Html.TextBoxFor(m => m.NguyenGiaKeToan, new { Class = "form-control form-control-sm price" })
+                    </div>
+                    <div class="col-md-4 col-sm-6 search-item">
+                        @Html.LabelFor(m => m.SoLuong)
+                        @Html.TextBoxFor(m => m.SoLuong, new { Class = "form-control form-control-sm price" })
+                    </div>
+                    <div class="col-md-4 col-sm-6 search-item">
+                        @Html.LabelFor(m => m.KhoiLuong)
+                        @Html.TextBoxFor(m => m.KhoiLuong, new { Class = "form-control form-control-sm price" })
+                    </div>
+                    <div class="col-md-4 col-sm-6 search-item">
+                        @Html.LabelFor(m => m.HaoMonLuyKe)
+                        @Html.TextBoxFor(m => m.HaoMonLuyKe, new { Class = "form-control form-control-sm price" })
+                    </div>
+                    <div class="col-md-4 col-sm-6 search-item">
+                        @Html.LabelFor(m => m.GiaTriConLai)
+                        @Html.TextBoxFor(m => m.GiaTriConLai, new { Class = "form-control form-control-sm price" })
+                    </div>
+                    <div class="col-md-4 col-sm-6 search-item">
+                        @Html.LabelFor(m => m.ChatLuong)
+                        @Html.DropDownListFor(x => x.ChatLuong, new SelectList(ViewBag.ChatLuong), "Tất cả", new { Class = "form-control form-control-sm" })
+                    </div>
+                    <div class="col-md-4 col-sm-6 search-item">
+                        @Html.Label("Người sử dụng")
+                        @Html.TextBoxFor(m => m.NguoiSuDung, new { Class = "form-control form-control-sm", placeholder = "Cá nhân" })
+                    </div>
+                    <div class="col-md-4 col-sm-6 search-item">
+                        @Html.Label("Người quản lý")
+                        @Html.TextBoxFor(m => m.NguoiQuanLy, new { Class = "form-control form-control-sm", placeholder = "Theo dõi chung" })
+                    </div>
+                    <div class="col-md-4 col-sm-6 search-item">
+                        @Html.LabelFor(m => m.PhongQuanLy)
+                        @Html.DropDownListFor(x => x.PhongQuanLy, new SelectList(ViewBag.PhongBan), "Tất cả", new { Class = "form-control form-control-sm" })
+                    </div>
+                    <div class="col-md-4 col-sm-6 search-item">
+                        @Html.LabelFor(m => m.LoaiXe)
+                        @Html.DropDownListFor(x => x.LoaiXe, new SelectList(ViewBag.LoaiXe), "Tất cả", new { Class = "form-control form-control-sm" })
+                    </div>
+                    <div class="col-md-4 col-sm-6 search-item">
+                        @Html.LabelFor(m => m.DungTichXiLanh)
+                        @Html.TextBoxFor(m => m.DungTichXiLanh, new { Class = "form-control form-control-sm price" })
+                    </div>
+                    <div class="col-md-4 col-sm-6 search-item">
+                        @Html.LabelFor(m => m.SoChoNgoi)
+                        @Html.TextBoxFor(m => m.SoChoNgoi, new { Class = "form-control form-control-sm price" })
+                    </div>
+                    <div class="col-md-4 col-sm-6 search-item">
+                        @Html.LabelFor(m => m.SoTang)
+                        @Html.TextBoxFor(m => m.SoTang, new { Class = "form-control form-control-sm price" })
+                    </div>
+                    <div class="col-md-4 col-sm-6 search-item">
+                        @Html.LabelFor(m => m.DienTichXayDung)
+                        @Html.TextBoxFor(m => m.DienTichXayDung, new { Class = "form-control form-control-sm price" })
+                    </div>
+                    <div class="col-md-4 col-sm-6 search-item">
+                        @Html.LabelFor(m => m.CapCongTrinh)
+                        @Html.TextBoxFor(m => m.CapCongTrinh, new { Class = "form-control form-control-sm price" })
+                    </div>
+                    <div class="col-md-4 col-sm-6 search-item">
+                        @Html.LabelFor(m => m.DiaChi)
+                        @Html.TextBoxFor(m => m.DiaChi, new { Class = "form-control form-control-sm" })
+                    </div>
+                    <div class="col-md-4 col-sm-6 search-item">
+                        @Html.LabelFor(m => m.DienTichKhuonVien)
+                        @Html.TextBoxFor(m => m.DienTichKhuonVien, new { Class = "form-control form-control-sm price" })
+                    </div>
+
+                    <div class="col-md-4 col-sm-6 search-item">
+                        @Html.LabelFor(m => m.Tags)
+                        @Html.TextBoxFor(m => m.DienTichKhuonVien, new { Class = "form-control form-control-sm price" })
+                    </div>
+                </div>
+            </div><!-- modal-body -->
+            <div class="modal-footer">
+                <button class="btn  btn-sm bd bg-primary tx-white pointer" onclick="return submitEditAsset();"><i class="fa fa-save"></i> Lưu lại</button>
+            </div>
+        }
+    </div>
+</div>

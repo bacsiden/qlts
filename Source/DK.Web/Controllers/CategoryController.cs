@@ -145,5 +145,42 @@ namespace DK.Web.Controllers
 
             return RedirectToAction("Index", new { id = categoryName });
         }
+
+        public ActionResult CountAffectedAssets(string categoryName, List<string> categories)
+        {
+            if (categories == null || categories.Count == 0)
+            {
+                return Json(0, JsonRequestBehavior.AllowGet);
+            }
+
+            var count = 0;
+            switch (categoryName)
+            {
+                case TypeConstant.ChatLuong:
+                    count = _taiSanRepository.Find(m => true).AsEnumerable().Count(m => categories.Any(name => name == m.ChatLuong));
+
+                    break;
+                case TypeConstant.ChungLoai:
+                    count = _taiSanRepository.Find(m => true).AsEnumerable().Count(m => categories.Any(name => name == m.ChungLoai));
+                    break;
+                case TypeConstant.DanhMuc:
+                    count = _taiSanRepository.Find(m => true).AsEnumerable().Count(m => categories.Any(name => name == m.DanhMuc));
+                    break;
+                case TypeConstant.LoaiXe:
+                    count = _taiSanRepository.Find(m => true).AsEnumerable().Count(m => categories.Any(name => name == m.LoaiXe));
+                    break;
+                case TypeConstant.NguonKinhPhi:
+                    count = _taiSanRepository.Find(m => true).AsEnumerable().Count(m => categories.Any(name => name == m.NguonKinhPhi));
+                    break;
+                case TypeConstant.PhongBan:
+                    count = _taiSanRepository.Find(m => true).AsEnumerable().Count(m => categories.Any(name => name == m.PhongQuanLy));
+                    break;
+                case TypeConstant.Tags:
+                    count = _taiSanRepository.Find(m => true).AsEnumerable().Count(m => categories.Any(name => m.Tags.Any(tag => tag == name)));
+                    break;
+            }
+
+            return Json(count, JsonRequestBehavior.AllowGet);
+        }
     }
 }
