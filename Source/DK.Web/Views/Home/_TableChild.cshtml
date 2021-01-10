@@ -1,0 +1,118 @@
+﻿@using DK.Application.Models
+@model IEnumerable<TaiSan>
+
+<table class="table mg-b-0" cellspacing="0">
+    <tr>
+        <th><input type="checkbox" class="checkAll" /></th>
+        <th>STT</th>
+        <th>
+            @Html.DisplayNameFor(m => m.Code)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.GroupName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.ChungLoai)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.NhanHieu)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.Serial)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.XuatXu)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.ThuocHopDong)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.ThuocGoiThau)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.NguonKinhPhi)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.NganSachNam)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.NamSanXuat)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.NamSuDung)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.NguyenGiaKeToan)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.SoLuong)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.KhoiLuong)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.ChatLuong)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.HaoMonLuyKe)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.GiaTriConLai)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.NguoiSuDung)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.NguoiQuanLy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.PhongQuanLy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.LoaiXe)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.BienSo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.DungTichXiLanh)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.SoChoNgoi)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.SoTang)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.DienTichXayDung)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.CapCongTrinh)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.DiaChi)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m => m.DienTichKhuonVien)
+        </th>
+        <th>
+            Tags
+        </th>
+    </tr>
+
+    @{
+        var stt = 0;
+        foreach (var item in Model)
+        {
+            item.No = stt;
+            @Html.Partial("_TableChildRow", item)
+            stt++;
+        }
+    }
+</table>
+
+
+

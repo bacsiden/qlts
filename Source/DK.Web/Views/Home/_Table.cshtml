@@ -150,7 +150,7 @@
         <td>
             @if (isParent && (canManage || !isApproved))
             {
-                <a href="javascript:void(0)" onclick="editTaiSan('@item.Id')">@item.Code</a>
+                <a href="@Url.Action("NewOrEditAsset", new { item.Id, isApproved})">@item.Code</a>
             }
             else
             {
@@ -158,7 +158,14 @@
             }
         </td>
         <td>
-            @item.Name
+            @if (isParent && (canManage || !isApproved))
+            {
+                <a href="@Url.Action("NewOrEditAsset", new { item.Id, isApproved})">@item.Name</a>
+            }
+            else
+            {
+                @item.Name
+            }
         </td>
         <td>
             @item.GroupName

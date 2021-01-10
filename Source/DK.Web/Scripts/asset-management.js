@@ -65,19 +65,19 @@ function editTaiSan(id) {
     });
 }
 
-function submitEditAsset() {
-    //Serialize the form datas.   
-    var valdata = $("#frmAsset").serialize();
-    $.ajax({
-        url: $("#frmAsset").attr('action'),
-        type: "POST",
-        dataType: 'json',
-        contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-        data: valdata
-    }).done(function (response) {
-        alert(response);
-        $('#modalDefault').html(response);
-        $("#modalDefault").modal('show');
-    });
-    return false;
-}
+//function submitEditAsset() {
+//    //Serialize the form datas.   
+//    var valdata = $("#frmAsset").serialize();
+//    $.ajax({
+//        url: $("#frmAsset").attr('action'),
+//        type: "POST",
+//        dataType: 'json',
+//        contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+//        data: valdata
+//    }).done(function (response) {
+//        alert(response);
+//        $('#modalDefault').html(response);
+//        $("#modalDefault").modal('show');
+//    });
+//    return false;
+//}

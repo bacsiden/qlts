@@ -86,36 +86,46 @@ namespace DK.Web.Controllers
             return View(dashboard);
         }
 
-        public ActionResult EditAsset(Guid id)
+        public ActionResult NewOrEditAsset(Guid? id = null, bool isApproved = false)
         {
             CreateDropDownViewBag();
-            var taisan = _taiSanRepository.Get(id);
-            if (taisan == null)
+            TaiSan taiSan = null;
+            if (id.HasValue)
             {
-                // Temp
-                taisan = new TaiSan();
+                taiSan = _taiSanRepository.Get(id.Value);
             }
-            return PartialView("_EditForm", taisan);
+
+            if (taiSan == null)
+            {
+                taiSan = new TaiSan
+                {
+                    IsApproved = isApproved
+                };
+            }
+            return View(taiSan);
         }
 
         [HttpPost]
-        public ActionResult EditAsset(TaiSan taisan)
+        public ActionResult NewOrEditAsset(TaiSan taisan)
         {
             if (!ModelState.IsValid)
             {
                 CreateDropDownViewBag();
-                return PartialView("_EditForm", taisan);
+                return View(taisan);
             }
 
             var currentAsset = _taiSanRepository.Get(taisan.Id);
             if (currentAsset != null)
             {
                 _taiSanRepository.Update(taisan);
-                return Content("<script>location.reload();</script>");
+                if (taisan.IsApproved)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                return RedirectToAction(nameof(TaisanUnApproved));
             }
 
-            ModelState.AddModelError("", "Không tìm thấy tài sản");
-            return PartialView("_EditForm", taisan);
+            return NotFound();
         }
 
         // POST: Home/Delete/5
@@ -193,7 +203,7 @@ namespace DK.Web.Controllers
             ViewBag.LoaiXe = types.Where(m => m.Name == TypeConstant.LoaiXe).Select(m => m.Title);
             ViewBag.PhongBan = types.Where(m => m.Name == TypeConstant.PhongBan).Select(m => m.Title);
             ViewBag.Tags = types.Where(m => m.Name == TypeConstant.Tags).Select(m => m.Title);
-            ViewBag.Members = UserManager.Users.Where(m => m.Roles.Count == 0).Select(m => m.UserName);
+            ViewBag.Members = UserManager.Users.Select(m => m.UserName);
         }
     }
 }
