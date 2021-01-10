@@ -22,7 +22,7 @@ namespace DK.Application.Models
 
         public void GenerateCode(int? i = null)
         {
-            Code = $"{ChungLoai} {Name}".GetFirstChars();
+            Code = $"{ChungLoai} {Name}".RemoveDiacritics().GetFirstChars();
             if (Code != null && Code.Length > 7) Code = Code.Substring(0, 7);
             Code += string.IsNullOrWhiteSpace(Serial) ? null : string.Join(null, Serial.Where(m => char.IsLetterOrDigit(m))).SubLastString(4);
             if (i != null)
@@ -166,57 +166,68 @@ namespace DK.Application.Models
         /// <summary>
         /// chỉ đối với phương tiện
         /// </summary>
-        [Display(Name = "Dung tích xi lanh")]
+        // filter
         [ColumnIndex(26)]
+        [Display(Name = "Biển số")]
+        public string BienSo { get; set; }
+
+        /// <summary>
+        /// chỉ đối với phương tiện
+        /// </summary>
+        [Display(Name = "Dung tích xi lanh")]
+        [ColumnIndex(27)]
         public int? DungTichXiLanh { get; set; }
 
         /// <summary>
         /// chỉ đối với phương tiện
         /// </summary>
         [Display(Name = "Số chỗ ngồi")]
-        [ColumnIndex(27)]
+        [ColumnIndex(28)]
         public int? SoChoNgoi { get; set; }
 
         /// <summary>
         /// chỉ đối với nhà đất
         /// </summary>
         [Display(Name = "Số tầng")]
-        [ColumnIndex(28)]
+        [ColumnIndex(29)]
         public int? SoTang { get; set; }
 
         /// <summary>
         /// chỉ đối với nhà đất
         /// </summary>
         [Display(Name = "Diện tích xây dựng")]
-        [ColumnIndex(29)]
+        [ColumnIndex(30)]
         public int? DienTichXayDung { get; set; }
 
         /// <summary>
         /// chỉ đối với nhà đất
         /// </summary>
         [Display(Name = "Cấp công trình")]
-        [ColumnIndex(30)]
+        [ColumnIndex(31)]
         public int? CapCongTrinh { get; set; }
 
         /// <summary>
         /// chỉ đối với nhà đất
         /// </summary>
         [Display(Name = "Địa chỉ")]
-        [ColumnIndex(31)]
+        [ColumnIndex(32)]
         public string DiaChi { get; set; }
 
         /// <summary>
         /// chỉ đối với nhà đất
         /// </summary>
         [Display(Name = "Diện tích khuôn viên")]
-        [ColumnIndex(32)]
+        [ColumnIndex(33)]
         public int? DienTichKhuonVien { get; set; }
 
         /// <summary>
         /// Multi select
         /// </summary>
-        [ColumnIndex(33)]
+        [ColumnIndex(34)]
         public List<string> Tags { get; set; } = new List<string>();
+
+        [BsonIgnore]
+        public string GhiChu { get; set; }
 
         public string JoinedTags { get; set; }
 
