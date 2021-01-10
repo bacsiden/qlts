@@ -30,7 +30,6 @@ namespace DK.Web.Controllers
         public ActionResult Index(TaiSanSearchModel search)
         {
             search.IsApproved = true;
-            search.CreatedBy = string.Empty;
 
             CreateDropDownViewBag();
             ViewBag.SearchModel = search;
@@ -194,6 +193,7 @@ namespace DK.Web.Controllers
             ViewBag.LoaiXe = types.Where(m => m.Name == TypeConstant.LoaiXe).Select(m => m.Title);
             ViewBag.PhongBan = types.Where(m => m.Name == TypeConstant.PhongBan).Select(m => m.Title);
             ViewBag.Tags = types.Where(m => m.Name == TypeConstant.Tags).Select(m => m.Title);
+            ViewBag.Members = UserManager.Users.Where(m => m.Roles.Count == 0).Select(m => m.UserName);
         }
     }
 }

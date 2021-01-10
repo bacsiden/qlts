@@ -123,6 +123,13 @@
                     }
                 </select>
             </div>
+            @if (Model.IsApproved || canManage)
+            {
+                <div class="col-md-2 col-sm-3 search-item">
+                    @Html.Label("Người tạo")
+                    @Html.DropDownListFor(x => x.CreatedBy, new SelectList(ViewBag.Members), "Tất cả", new { Class = "form-control form-control-sm" })
+                </div>
+            }
         </div>
     </div>
     <div class="text-center collapse-icon">
