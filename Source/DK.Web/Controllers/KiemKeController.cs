@@ -96,6 +96,8 @@ namespace DK.Web.Controllers
         {
             try
             {
+                search.IsApproved = true;
+
                 var list = _taiSanRepository.Find(search);
                 if (list.Count() == 0)
                 {

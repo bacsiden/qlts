@@ -20,6 +20,10 @@ namespace DK.Application.Repositories
             var query = model.IsApproved ? filter.Eq(m => m.IsApproved, model.IsApproved) : FilterDefinition<TaiSan>.Empty;
 
             #region Search equals
+            if (!string.IsNullOrEmpty(model.CreatedBy))
+            {
+                query &= filter.Eq(m => m.CreatedBy, model.CreatedBy);
+            }
             if (!string.IsNullOrWhiteSpace(model.Code))
             {
                 query &= filter.Eq(m => m.Code, model.Code.Trim());
@@ -64,16 +68,16 @@ namespace DK.Application.Repositories
             {
                 query &= filter.Eq(m => m.LoaiXe, model.LoaiXe.Trim());
             }
+            if (!string.IsNullOrWhiteSpace(model.GroupName))
+            {
+                query &= filter.Eq(m => m.GroupName, model.GroupName.Trim());
+            }
             #endregion
 
             #region Search Contains
             if (!string.IsNullOrWhiteSpace(model.Name))
             {
                 query &= filter.Regex(m => m.Name, BsonRegularExpression.Create(new Regex(model.Name, RegexOptions.IgnoreCase)));
-            }
-            if (!string.IsNullOrWhiteSpace(model.GroupName))
-            {
-                query &= filter.Regex(m => m.GroupName, BsonRegularExpression.Create(new Regex(model.GroupName, RegexOptions.IgnoreCase)));
             }
             if (!string.IsNullOrWhiteSpace(model.NhanHieu))
             {

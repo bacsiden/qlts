@@ -11,7 +11,7 @@ namespace DK.Application
         Task ExportDataAsync(List<TaiSan> taiSans, string pattern);
         Task ExportTaiSanAsync(List<TaiSan> taiSans, string pattern);
         Task ExportReportDetailsAsync(List<TaiSan> taiSans, string pattern);
-        void ImportTaiSan(Stream stream);
+        void ImportTaiSan(string userName, Stream stream);
         Task SendToBrowser(Stream OutStream, string MimeType, string FileName);
 
         Task ExportKiemKeAsync(List<KiemKe> kiemKes, string pattern);

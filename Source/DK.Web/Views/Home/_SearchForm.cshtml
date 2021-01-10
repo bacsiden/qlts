@@ -134,18 +134,31 @@
         <div class="col search-item">
             <button id="btnSearch" class="btn  btn-sm bd bg-primary tx-white pointer" type="button"><i class="fa fa-search"></i> Tìm kiếm</button>
             <a class="btn  btn-sm bd pointer" href="/Home/Index"><i class="fa fa-refresh"></i> Reset</a>
-
-            <button class="btn  btn-sm bd bg-primary tx-white pointer pull-right print-barcode ml-1" type="button"><i class="fa fa-barcode"></i> In mã vạch</button>
+            @if (Model.IsApproved)
+            {
+                <button class="btn  btn-sm bd bg-primary tx-white pointer pull-right print-barcode ml-1" type="button"><i class="fa fa-barcode"></i> In mã vạch</button>
+            }
 
             <div class="dropdown d-sm-inline-block pull-right">
-                <a class="btn  btn-sm bd pointer" href="javascript:void(0)" onclick="createKiemKe(this);"><i class="fa fa-plus"></i> Tạo kiểm kê</a>
+                @if (Model.IsApproved)
+                {
+                    <a class="btn  btn-sm bd pointer" href="javascript:void(0)" onclick="createKiemKe(this);"><i class="fa fa-plus"></i> Tạo kiểm kê</a>
+                }
                 <a class="dropdown-toggle btn  btn-sm  btn-primary" href="javascript:void(0)" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fa fa-download"></i> Tải file
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
-                    @foreach (var item in DK.Application.Models.ReportVariables.Templates.Where(m => !m.Key.StartsWith("1")))
-                    {
-                        <a class="dropdown-item report" href="javascript:void(0)" data-pattern="@item.Key">@item.Value.Item1 - @item.Key</a>
+                    @{
+                        var reportTemplates = DK.Application.Models.ReportVariables.Templates.Where(m => !m.Key.StartsWith("1"));
+                        if (!Model.IsApproved)
+                        {
+                            reportTemplates = reportTemplates.Where(m => m.Key == "data");
+                        }
+
+                        foreach (var item in reportTemplates)
+                        {
+                            <a class="dropdown-item report" href="javascript:void(0)" data-pattern="@item.Key">@item.Value.Item1 - @item.Key</a>
+                        }
                     }
                 </div>
             </div>
@@ -159,7 +172,7 @@
                     @Html.DropDownListFor(x => x.PageSize, new SelectList(pageSizeList), new { Class = "form-control form-control-sm" })
                 </div>
             </div>
-            @if (canManage)
+            @if (canManage || !Model.IsApproved)
             {
                 <a class="btn btn-sm btn-danger pointer DeleteItem" href="/Home/DeleteTaiSan"><i class="fa fa-times"></i> Xóa</a>
             }

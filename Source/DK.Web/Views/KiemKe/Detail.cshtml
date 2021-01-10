@@ -1,8 +1,14 @@
 ﻿@model DK.Web.Core.PagerViewModel
 @{
-    ViewBag.Title = "Chi tiết đợt kiểm kê";
+    ViewBag.Title = "";
     var kiemKe = ViewBag.KiemKe as DK.Application.Models.Type;
 }
+
+    <style>
+        .table tr th {
+            vertical-align: middle;
+        }
+    </style>
 
 <div class="card mt-2 mb-2 shadow-base">
     <div class="card-body pb-0">
