@@ -21,7 +21,7 @@ namespace DK.Application.Models
 
         public Guid ParentId { get; set; }
 
-        public static List<string> MenuCategories = new List<string> { TypeConstant.ChungLoai, TypeConstant.DanhMuc,
+        public static List<string> MenuCategories = new List<string> { TypeConstant.ChungLoai,
             TypeConstant.NguonKinhPhi, TypeConstant.ChatLuong, TypeConstant.LoaiXe, TypeConstant.PhongBan, TypeConstant.Tags };
     }
 }

@@ -118,5 +118,13 @@ namespace DK.Web.Controllers
             else
                 return Redirect(returnUrl);
         }
+
+        public void AddErrors(IdentityResult result)
+        {
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError("", error);
+            }
+        }
     }
 }

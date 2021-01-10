@@ -4,13 +4,14 @@
     var icons = new Dictionary<string, string>
 {
         {TypeConstant.ChungLoai, "ion-ios-color-filter-outline"},
-        {TypeConstant.DanhMuc, "ion-ios-folder-outline"},
         {TypeConstant.NguonKinhPhi, "ion-social-usd-outline"},
         {TypeConstant.ChatLuong, "ion-ios-star-half"},
         {TypeConstant.LoaiXe, "ion-model-s"},
-        {TypeConstant.PhongBan, "ion-person-stalker"},
+        {TypeConstant.PhongBan, "fa fa-building-o"},
         {TypeConstant.Tags, "ion-ios-pricetags-outline"},
     };
+
+    var canManage = RoleList.GetAll().Any(User.IsInRole);
 }
 
 <a href="/Home/Dashboard" data-href="/Home/Dashboard" class="br-menu-link">
@@ -34,16 +35,37 @@
     </div>
 </a>
 
-@foreach (var item in listMenu)
-{
-    var icon = "";
-    icons.TryGetValue(item, out icon);
-    icon = !string.IsNullOrEmpty(icon) ? icon : "ion-ios-folder-outline";
+<a href="#" class="br-menu-link">
+    <div class="br-menu-item">
+        <i class="menu-item-icon icon ion-ios-filing-outline tx-24"></i>
+        <span class="menu-item-label">Danh mục</span>
+        <i class="menu-item-arrow fa fa-angle-down"></i>
+    </div><!-- menu-item -->
+</a>
+<ul class="br-menu-sub nav flex-column">
+    @foreach (var item in listMenu)
+    {
+        var icon = "";
+        icons.TryGetValue(item, out icon);
+        icon = !string.IsNullOrEmpty(icon) ? icon : "ion-ios-folder-outline";
 
-    <a href="/Category/Index/@item" data-href="Index/Category/NewOrEdit" class="br-menu-link">
+        <li class="nav-item">
+            <a href="/Category/Index/@item" data-href="Index/Category/NewOrEdit" class="nav-link">
+                <i class="menu-item-icon icon @icon tx-20 mr-1"></i>
+                @item
+            </a>
+        </li>
+    }
+</ul>
+
+
+
+@if (canManage)
+{
+    <a href="/Account/Employees" data-href="/Account/AddEmployee/" class="br-menu-link">
         <div class="br-menu-item">
-            <i class="menu-item-icon icon @icon tx-20"></i>
-            <span class="menu-item-label">@item</span>
+            <i class="menu-item-icon ion-person-stalker tx-20"></i>
+            <span class="menu-item-label">Quản lý user</span>
         </div>
     </a>
 }

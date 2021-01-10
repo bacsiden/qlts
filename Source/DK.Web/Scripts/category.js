@@ -89,3 +89,26 @@ function focusUp(e) {
 function focusDown(e) {
     $(e).parents("tr").next().find("input").focus();
 }
+
+function mergeCategory() {
+    var items = $("#post-data input.merge-item:checked");
+    if (items.length < 2) {
+        return;
+    }
+
+    var value = $(items[0]).val();
+    var modalContent = $("#modal-content").html();
+
+    $("#modalDefault").html(modalContent);
+    var oldNamesHtml = "";
+    $.each(items, function (index, item) {
+        oldNamesHtml += '<input type="hidden" name="oldIds[' + index + ']" value="' + $(item).data("id") + '" /> ';
+    });
+
+    $("#modalDefault").find(".old-ids").html(oldNamesHtml);
+    $("#modalDefault").find(".new-name").val(value);
+    $("#modalDefault").modal('show');
+    $('#modalDefault').on('shown.bs.modal', function (e) {
+        $('#modalDefault').find(".new-name").focus();
+    });
+}

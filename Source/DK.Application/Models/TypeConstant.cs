@@ -28,5 +28,12 @@ namespace DK.Application.Models
             if (input.Length <= length) return input;
             return input.Substring(input.Length - length, length);
         }
+
+        public static string AddZeroFrefix(this int input, int length)
+        {
+            var output = input.ToString();
+            while (output.Length < length) output = $"0{output}";
+            return output;
+        }
     }
 }

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DK.Application.Models
 {
-    public class TaiSanSearchModel : TaiSan
+    public class TaiSanSearchModel : TaiSan, ISearchModel
     {
         [Display(Name = "Ngân sách năm")]
         public int? NganSachNamSearch { get; set; }
@@ -28,7 +28,7 @@ namespace DK.Application.Models
 
         [Display(Name = "Giá kiểm kê đến")]
         public decimal? GiaKiemKeDen { get; set; }
-
+        public string SearchText { get; set; }
         public int PageIndex { get; set; } = 1;
         public int PageSize { get; set; } = 10;
         public DateTime? StartDate { get; set; }

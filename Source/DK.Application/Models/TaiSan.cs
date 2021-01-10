@@ -26,7 +26,7 @@ namespace DK.Application.Models
             if (Code != null && Code.Length > 7) Code = Code.Substring(0, 7);
             Code += string.IsNullOrWhiteSpace(Serial) ? null : string.Join(null, Serial.Where(m => char.IsLetterOrDigit(m))).SubLastString(4);
             if (i != null)
-                Code = $"{Code}-{i}";
+                Code = $"{Code}{i.Value.AddZeroFrefix(3)}";
         }
 
         public bool IsVehicle()

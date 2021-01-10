@@ -1,0 +1,66 @@
+﻿@model IEnumerable<DK.Web.Models.ApplicationUser>
+@{
+    ViewBag.Title = "Danh sách tài khoản";
+}
+
+@section Button {
+    <a href="@Url.Action("AddEmployee")" class="btn btn-primary btn-sm pull-right"><i class="fa fa-plus"></i> Thêm</a>
+}
+
+<div class="row mt-2">
+    <div class="col-12">
+        <div class="card shadow-base bd-0">
+            <div class="table-responsive">
+                <div class="table-responsive mt10">
+                    <table id="all" class="table" cellspacing="0">
+                        <thead id="report-top">
+                            <tr>
+                                <th class="ac skinny">
+                                    STT
+                                </th>
+                                <th> Tài khoản</th>
+                                <th> Vai trò</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="pagingBody">
+                            @{
+                                var stt = 1;
+                                foreach (var item in Model)
+                                {
+                                    <tr class="stat even">
+                                        <td class="ac">
+                                            @(stt++)
+                                        </td>
+                                        <td>
+                                            @item.UserName
+                                        </td>
+                                        <td>
+                                            <select onchange="changeRole('@item.Id')">
+                                                <option @(item.IsMember ? "selected" : "")>Nhân viên</option>
+                                                <option @(!item.IsMember ? "selected" : "")>Admin</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <a href="@Url.Action("Delete", new { id = item.Id })" onclick="return confirm('Bạn có chắc chắn muốn xóa?')" class="text-danger">Xóa</a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div><!-- table-responsive -->
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        function changeRole(id) {
+            $.getJSON('@Url.Action("ToggleRole")/' + id, function (result) {
+                alertSuccess("Cập nhật thành công!")
+            });
+        }
+    </script>
+}

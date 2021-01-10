@@ -4,6 +4,7 @@
 @{
     ViewBag.Title = "Danh sách tài sản";
     var searchModel = ViewBag.SearchModel as DK.Application.Models.TaiSanSearchModel;
+    var canManage = DK.Application.Models.RoleList.GetAll().Any(User.IsInRole);
 }
 
 <style>
@@ -47,7 +48,10 @@
 </style>
 
 @section Button {
-    <a href="@Url.Action("Import")" class="btn btn-primary btn-sm pull-right"><i class="fa fa-upload"></i> Import</a>
+    @if (canManage)
+    {
+        <a href="@Url.Action("Import")" class="btn btn-primary btn-sm pull-right"><i class="fa fa-upload"></i> Import</a>
+    }
 }
 
 <div class="card mt-2 mb-2 shadow-base" id="searchBox">
@@ -75,6 +79,7 @@
 </div>
 
 @section Scripts {
+    <link href="@Url.Content("~/Content/lib/select2/css/select2-bootstrap.min.css")" rel="stylesheet">
     <script src="~/Content/lib/select2/js/select2.min.js"></script>
     <script src="~/Scripts/common.js"></script>
     <script>
@@ -84,7 +89,7 @@
                 $("#searchBox .collapse-icon a i").toggleClass("ion-chevron-down ion-chevron-up");
             }
 
-            $(".select2").select2({ width: '100%' });
+            $(".select2").select2({ width: '100%', theme: "bootstrap" });
 
             $('#searchBox .collapse-icon a').click(function () {
                 $("#searchBox .collapse-icon a i").toggleClass("ion-chevron-down ion-chevron-up");

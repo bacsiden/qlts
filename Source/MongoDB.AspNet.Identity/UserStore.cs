@@ -16,12 +16,13 @@ namespace MongoDB.AspNet.Identity
     /// <typeparam name="TUser">The type of the t user.</typeparam>
     public class UserStore<TUser> :
         IUserStore<TUser>,
-        IUserLoginStore<TUser>, 
-        IUserClaimStore<TUser>, 
+        IUserLoginStore<TUser>,
+        IUserClaimStore<TUser>,
         IUserRoleStore<TUser>,
-        IUserPasswordStore<TUser>, 
+        IUserPasswordStore<TUser>,
         IUserSecurityStampStore<TUser>,
         IUserEmailStore<TUser>,
+        IQueryableUserStore<TUser>,
         IUserLockoutStore<TUser, string>,
         IUserTwoFactorStore<TUser, string>
         where TUser : IdentityUser
@@ -42,6 +43,14 @@ namespace MongoDB.AspNet.Identity
         /// The AspNetUsers collection name
         /// </summary>
         private const string collectionName = "AspNetUsers";
+
+        public IQueryable<TUser> Users
+        {
+            get
+            {
+                return db.GetCollection<TUser>(collectionName).AsQueryable();
+            }
+        }
 
         /// <summary>
         ///     Gets the database from connection string.
@@ -237,9 +246,9 @@ namespace MongoDB.AspNet.Identity
 
             db.GetCollection<TUser>(collectionName)
                 .FindOneAndReplaceAsync(
-                Builders<TUser>.Filter.Eq("_id", ObjectId.Parse(user.Id)), 
-                user, 
-                new FindOneAndReplaceOptions<TUser> {IsUpsert = true});
+                Builders<TUser>.Filter.Eq("_id", ObjectId.Parse(user.Id)),
+                user,
+                new FindOneAndReplaceOptions<TUser> { IsUpsert = true });
 
             return Task.FromResult(user);
         }

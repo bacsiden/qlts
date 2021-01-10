@@ -15,6 +15,7 @@
     <link href="@Url.Content("~/Content/lib/jquery-switchbutton/jquery.switchButton.css")" rel="stylesheet">
     <link href="@Url.Content("~/Content/lib/rickshaw/rickshaw.min.css")" rel="stylesheet">
     <link href="@Url.Content("~/Content/lib/select2/css/select2.min.css")" rel="stylesheet">
+    <link href="@Url.Content("~/Content/lib/gritter/css/jquery.gritter.css")" rel="stylesheet">
 
     <!-- Bracket CSS -->
     <link rel="stylesheet" href="@Url.Content("~/Content/bracket.css")">
@@ -111,6 +112,7 @@
     <script src="~/Content/lib/jquery.sparkline.bower/jquery.sparkline.min.js"></script>
     <script src="~/Content/lib/d3/d3.js"></script>
     <script src="~/Content/lib/rickshaw/rickshaw.min.js"></script>
+    <script src="~/Content/lib/gritter/js/jquery.gritter.js"></script>
 
     <script src="~/Scripts/bracket.js"></script>
     <script src="~/Scripts/ResizeSensor.js"></script>
@@ -152,7 +154,7 @@
                 title: 'Thông báo',
                 text: mess,
                 class_name: 'growl-success',
-                image: '/images/screen.png',
+                image: '/Content/lib/gritter/images/success.png',
                 sticky: false,
                 time: '10000'
             });
@@ -162,7 +164,7 @@
                 title: 'Thông báo lỗi',
                 text: mess,
                 class_name: 'growl-danger',
-                image: '/images/screen.png',
+                image: '/Content/lib/gritter/images/error.png',
                 sticky: false,
                 time: '10000'
             });
