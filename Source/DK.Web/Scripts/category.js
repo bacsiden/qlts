@@ -100,15 +100,32 @@ function mergeCategory() {
     var modalContent = $("#modal-content").html();
 
     $("#modalDefault").html(modalContent);
+    var values = [];
     var oldNamesHtml = "";
     $.each(items, function (index, item) {
         oldNamesHtml += '<input type="hidden" name="oldIds[' + index + ']" value="' + $(item).data("id") + '" /> ';
+        values.push($(item).val());
     });
 
     $("#modalDefault").find(".old-ids").html(oldNamesHtml);
     $("#modalDefault").find(".new-name").val(value);
+
+    var categoryName = $("#modalDefault").find(".categoryName").val();
+    countAffectedAssets(categoryName, values);
+
     $("#modalDefault").modal('show');
     $('#modalDefault').on('shown.bs.modal', function (e) {
         $('#modalDefault').find(".new-name").focus();
     });
+}
+
+function countAffectedAssets(categoryName, categories, callback) {
+    var path = "";
+    for (var i = 0; i < categories.length; i++) {
+        path += "&categories[" + i + "]=" + categories[i];
+    }
+
+    $.getJSON('/Category/CountAffectedAssets?categoryName=' + categoryName + path, function (response) {
+        $('#modalDefault').find(".affectedRecords").html(response);
+    })
 }
