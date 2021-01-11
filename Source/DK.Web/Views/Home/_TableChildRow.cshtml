@@ -1,143 +1,41 @@
 ﻿@using DK.Application.Models
 @model TaiSan
 <tr class="stat even">
-    <td>
-        <input type="checkbox" class="checkitem" value="@Model.Id" />
-        <input type="hidden" name="Children[@Model.No].Id" value="@Model.Id" />
-    </td>
     <td class="ac">
         @(Model.No + 1)
     </td>
     <td>
-        <a href="javascript:void(0)" onclick="showNewOrEditTaiSanConModal('@Model.No')">@Model.Code</a>
-        <input type="hidden" name="Children[@Model.No].Code" value="@Model.Code" />
+        <a href="@Url.Action("NewOrEditChildAsset", "Home", new { parentId = ViewBag.ParentId, Code = Model.Code, returnUrl = Request.RawUrl })" >@Model.Code</a>
     </td>
     <td>
-        <a href="javascript:void(0)" onclick="showNewOrEditTaiSanConModal('@Model.No')">@Model.Name</a>
-        <input type="hidden" name="Children[@Model.No].Name" value="@Model.Name" />
-    </td>
-    <td>
-        @Model.GroupName
-        <input type="hidden" name="Children[@Model.No].GroupName" value="@Model.GroupName" />
-    </td>
-    <td>
-        @Model.ChungLoai
-        <input type="hidden" name="Children[@Model.No].ChungLoai" value="@Model.ChungLoai" />
+        <a href="@Url.Action("NewOrEditChildAsset", "Home", new { parentId = ViewBag.ParentId, Code = Model.Code, returnUrl = Request.RawUrl })">@Model.Name</a>
     </td>
     <td>
         @Model.NhanHieu
-        <input type="hidden" name="Children[@Model.No].NhanHieu" value="@Model.NhanHieu" />
     </td>
     <td>
         @Model.Serial
-        <input type="hidden" name="Children[@Model.No].Serial" value="@Model.Serial" />
     </td>
     <td>
         @Model.XuatXu
-        <input type="hidden" name="Children[@Model.No].XuatXu" value="@Model.XuatXu" />
-    </td>
-    <td>
-        @Model.ThuocHopDong
-        <input type="hidden" name="Children[@Model.No].ThuocHopDong" value="@Model.ThuocHopDong" />
-    </td>
-    <td>
-        @Model.ThuocGoiThau
-        <input type="hidden" name="Children[@Model.No].ThuocGoiThau" value="@Model.ThuocGoiThau" />
-    </td>
-    <td>
-        @Model.NguonKinhPhi
-        <input type="hidden" name="Children[@Model.No].NguonKinhPhi" value="@Model.NguonKinhPhi" />
-    </td>
-    <td>
-        @Model.NganSachNam
-        <input type="hidden" name="Children[@Model.No].NganSachNam" value="@Model.NganSachNam" />
     </td>
     <td>
         @Model.NamSanXuat
-        <input type="hidden" name="Children[@Model.No].NamSanXuat" value="@Model.NamSanXuat" />
     </td>
     <td>
         @Model.NamSuDung
-        <input type="hidden" name="Children[@Model.No].NamSuDung" value="@Model.NamSuDung" />
-    </td>
-    <td>
-        @Model.NguyenGiaKeToan
-        <input type="hidden" name="Children[@Model.No].NguyenGiaKeToan" value="@Model.NguyenGiaKeToan" />
     </td>
     <td>
         @Model.SoLuong
-        <input type="hidden" name="Children[@Model.No].SoLuong" value="@Model.SoLuong" />
     </td>
     <td>
         @Model.KhoiLuong
-        <input type="hidden" name="Children[@Model.No].KhoiLuong" value="@Model.KhoiLuong" />
     </td>
     <td>
         @Model.ChatLuong
-        <input type="hidden" name="Children[@Model.No].ChatLuong" value="@Model.ChatLuong" />
     </td>
     <td>
-        @Model.HaoMonLuyKe
-        <input type="hidden" name="Children[@Model.No].HaoMonLuyKe" value="@Model.HaoMonLuyKe" />
-    </td>
-    <td>
-        @Model.GiaTriConLai
-        <input type="hidden" name="Children[@Model.No].GiaTriConLai" value="@Model.GiaTriConLai" />
-    </td>
-    <td>
-        @Model.NguoiSuDung
-        <input type="hidden" name="Children[@Model.No].NguoiSuDung" value="@Model.NguoiSuDung" />
-    </td>
-    <td>
-        @Model.NguoiQuanLy
-        <input type="hidden" name="Children[@Model.No].NguoiQuanLy" value="@Model.NguoiQuanLy" />
-    </td>
-    <td>
-        @Model.PhongQuanLy
-        <input type="hidden" name="Children[@Model.No].PhongQuanLy" value="@Model.PhongQuanLy" />
-    </td>
-    <td>
-        @Model.LoaiXe
-        <input type="hidden" name="Children[@Model.No].LoaiXe" value="@Model.LoaiXe" />
-    </td>
-    <td>
-        @Model.BienSo
-        <input type="hidden" name="Children[@Model.No].BienSo" value="@Model.BienSo" />
-    </td>
-    <td>
-        @Model.DungTichXiLanh
-        <input type="hidden" name="Children[@Model.No].DungTichXiLanh" value="@Model.DungTichXiLanh" />
-    </td>
-    <td>
-        @Model.SoChoNgoi
-        <input type="hidden" name="Children[@Model.No].SoChoNgoi" value="@Model.SoChoNgoi" />
-    </td>
-    <td>
-        @Model.SoTang
-        <input type="hidden" name="Children[@Model.No].SoTang" value="@Model.SoTang" />
-    </td>
-    <td>
-        @Model.DienTichXayDung
-        <input type="hidden" name="Children[@Model.No].DienTichXayDung" value="@Model.DienTichXayDung" />
-    </td>
-    <td>
-        @Model.CapCongTrinh
-        <input type="hidden" name="Children[@Model.No].CapCongTrinh" value="@Model.CapCongTrinh" />
-    </td>
-    <td>
-        @Model.DiaChi
-        <input type="hidden" name="Children[@Model.No].DiaChi" value="@Model.DiaChi" />
-    </td>
-    <td>
-        @Model.DienTichKhuonVien
-        <input type="hidden" name="Children[@Model.No].DienTichKhuonVien" value="@Model.DienTichKhuonVien" />
-    </td>
-    <td>
-        @string.Join("<br />", Model.Tags)
-        @for (int i = 0; i < Model.Tags.Count; i++)
-        {
-            <input type="hidden" name="Children[@Model.No].Tags[@i]" value="@Model.Tags.ElementAt(i)" />
-        }
+        <a class="text-danger" onclick="return removeTaiSanChild()" href="@Url.Action("DeleteChildAsset", "Home", new { parentId = ViewBag.ParentId, Code = Model.Code, returnUrl = Request.RawUrl })">Xóa</a>
     </td>
 </tr>
 

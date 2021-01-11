@@ -3,6 +3,7 @@
 @{
     ViewBag.Title = Model.Id != Guid.Empty ? "Chỉnh sửa tài sản" : "Thêm mới tài sản";
     var canManage = DK.Application.Models.RoleList.GetAll().Any(User.IsInRole);
+    ViewBag.ParentId = Model.Id;
 }
 
 <style>
@@ -23,26 +24,32 @@
 
 @using (Html.BeginForm(null, null, FormMethod.Post, new { role = "form" }))
 {
+    <button class="btn btn-sm bd bg-primary tx-white pointer"><i class="fa fa-save"></i> Lưu lại</button>
+    <a class="btn btn-sm bd pointer bg-white" href="@Request.Params["returnUrl"]"><i class="fa fa-arrow-left"></i> Quay lại</a>
     <div class="card mt-2 mb-2 shadow-base">
         <div class="card-body">
             @Html.Partial("_NewOrEditAssetForm", Model)
         </div>
     </div>
+    <button class="btn btn-sm bd bg-primary tx-white pointer"><i class="fa fa-save"></i> Lưu lại</button>
+    <a class="btn btn-sm bd pointer bg-white" href="@Request.Params["returnUrl"]"><i class="fa fa-arrow-left"></i> Quay lại</a>
+
+
+}
+@if (Model.Id != Guid.Empty)
+{
     <h4 class="mt-3">
         Danh sách tài sản con
     </h4>
     <div class="mb-1">
-        <a href="javascript:void(0)" onclick="addNewTaiSanCon();" class="btn btn-primary btn-sm mr-1"><i class="fa fa-plus"></i> Thêm tài sản con</a>
-        <a class="btn btn-sm btn-danger pointer" onclick="removeTaiSanChild();" href="javascript:void(0)"><i class="fa fa-times"></i> Xóa tài sản con</a>
+        <a href="@Url.Action("NewOrEditChildAsset", "Home", new { parentId = Model.Id, Code = "", returnUrl = Request.RawUrl })" class="btn btn-primary btn-sm mr-1"><i class="fa fa-plus"></i> Thêm</a>
     </div>
     <div class="card shadow-base mb-2 bd-0" id="children-asset">
         <div class="table-responsive">
             @Html.Partial("_TableChild", Model.Children)
         </div>
     </div>
-    <button class="btn btn-sm bd bg-primary tx-white pointer" onclick="return submitEditAsset();"><i class="fa fa-save"></i> Lưu lại</button>
 }
-
 
 @section Scripts {
     <link href="@Url.Content("~/Content/lib/select2/css/select2-bootstrap.min.css")" rel="stylesheet">
@@ -58,49 +65,8 @@
             $("#LeftMenu a.asset").removeClass('active');
             $("#LeftMenu a." + activeClass).addClass('active');
         }
-
         function removeTaiSanChild() {
-            if ($(".checkitem:checked").length === 0) {
-                return false;
-            }
-
-            if (!confirm("Bạn có chắc muốn xóa?")) {
-                return false;
-            }
-
-            $(".checkitem:checked").closest("tr").remove();
-            resetTableNumber();
-            return false;
-        }
-
-        function resetTableNumber() {
-            $(".checkitem").each(function (index, item) {
-                $(item).closest("td").next().html(index + 1);
-            });
-        }
-
-        function addNewTaiSanCon() {
-            var no = $(".checkitem").length;
-            showNewOrEditTaiSanConModal(no);
-        }
-
-        function showNewOrEditTaiSanConModal(index) {
-            var id = "@Model.Id";
-            $.get('/Home/NewOrEditChildAsset/' + id + "?no=" + index, function (response) {
-                $('#modalDefault').html(response);
-                $("#modalDefault").modal('show');
-            });
-        }
-
-        function submitNewOrEditTaiSanCon() {
-            //Serialize the form datas.
-            var valdata = $("#frmAsset").serialize();
-            $.get('/Home/GetChildAssetTableRow', valdata, function (response) {
-                $('#children-asset table').append(response);
-                $("#modalDefault").modal('hide');
-                resetTableNumber();
-            });
-            return false;
+            return confirm("Bạn có chắc muốn xóa?");
         }
     </script>
 }

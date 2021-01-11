@@ -1,35 +1,29 @@
 ﻿@model DK.Application.Models.TaiSan
 
+@Html.Hidden("returnUrl", Request.Params["returnUrl"])
 @Html.HiddenFor(m => m.Id)
+@Html.HiddenFor(m => m.Code)
 @Html.HiddenFor(m => m.IsApproved)
 @Html.ValidationSummary(true)
 <div class="row mb-2">
-    <div class="col-md-4 col-sm-6 search-item">
-        @Html.LabelFor(m => m.Code)
-        @Html.TextBoxFor(m => m.Code, new { Class = "form-control form-control-sm" })
-    </div>
     <div class="col-md-4 col-sm-6 search-item">
         @Html.LabelFor(m => m.Name)
         @Html.TextBoxFor(m => m.Name, new { Class = "form-control form-control-sm" })
     </div>
     <div class="col-md-4 col-sm-6 search-item">
-        @Html.LabelFor(m => m.GroupCode)
-        @Html.TextBoxFor(m => m.GroupCode, new { Class = "form-control form-control-sm" })
-    </div>
-    <div class="col-md-4 col-sm-6 search-item">
         @Html.LabelFor(m => m.GroupName)
-        @Html.TextBoxFor(m => m.GroupName, new { Class = "form-control form-control-sm" })
+        @Html.DropDownListFor(x => x.GroupName, new SelectList(ViewBag.GroupName), "-:-", new { Class = "form-control form-control-sm" })
     </div>
     <div class="col-md-4 col-sm-6 search-item">
         @Html.LabelFor(m => m.ChungLoai)
-        @Html.DropDownListFor(x => x.ChungLoai, new SelectList(ViewBag.ChungLoai), "Tất cả", new { Class = "form-control form-control-sm" })
+        @Html.DropDownListFor(x => x.ChungLoai, new SelectList(ViewBag.ChungLoai), "-:-", new { Class = "form-control form-control-sm" })
     </div>
     <div class="col-md-4 col-sm-6 search-item">
         @Html.LabelFor(m => m.NhanHieu)
         @Html.TextBoxFor(m => m.NhanHieu, new { Class = "form-control form-control-sm" })
     </div>
     <div class="col-md-4 col-sm-6 search-item">
-        @Html.Label("Serial ")
+        @Html.LabelFor(m => m.Serial)
         @Html.TextBoxFor(m => m.Serial, new { Class = "form-control form-control-sm", placeholder = "Số khung/Số máy" })
     </div>
     <div class="col-md-4 col-sm-6 search-item">
@@ -46,27 +40,31 @@
     </div>
     <div class="col-md-4 col-sm-6 search-item">
         @Html.LabelFor(m => m.NguonKinhPhi)
-        @Html.DropDownListFor(x => x.NguonKinhPhi, new SelectList(ViewBag.NguonKinhPhi), "Tất cả", new { Class = "form-control form-control-sm" })
+        @Html.DropDownListFor(x => x.NguonKinhPhi, new SelectList(ViewBag.NguonKinhPhi), "-:-", new { Class = "form-control form-control-sm" })
+    </div>
+    <div class="col-md-4 col-sm-6 search-item">
+        @Html.LabelFor(m => m.NganSachKhac)
+        @Html.TextBoxFor(m => m.NganSachKhac, new { Class = "form-control form-control-sm" })
     </div>
     <div class="col-md-4 col-sm-6 search-item">
         @Html.LabelFor(m => m.NganSachNam)
-        @Html.TextBoxFor(m => m.NganSachNam, new { Class = "form-control form-control-sm price" })
+        @Html.TextBoxFor(m => m.NganSachNam, new { type = "number", Class = "form-control form-control-sm price" })
     </div>
     <div class="col-md-4 col-sm-6 search-item">
         @Html.LabelFor(m => m.NamSanXuat)
-        @Html.TextBoxFor(m => m.NamSanXuat, new { Class = "form-control form-control-sm price" })
+        @Html.TextBoxFor(m => m.NamSanXuat, new { type = "number", Class = "form-control form-control-sm price" })
     </div>
     <div class="col-md-4 col-sm-6 search-item">
         @Html.LabelFor(m => m.NamSuDung)
-        @Html.TextBoxFor(m => m.NamSuDung, new { Class = "form-control form-control-sm price" })
+        @Html.TextBoxFor(m => m.NamSuDung, new { type = "number", Class = "form-control form-control-sm price" })
     </div>
     <div class="col-md-4 col-sm-6 search-item">
         @Html.LabelFor(m => m.NguyenGiaKeToan)
-        @Html.TextBoxFor(m => m.NguyenGiaKeToan, new { Class = "form-control form-control-sm price" })
+        @Html.TextBoxFor(m => m.NguyenGiaKeToan, new { type = "number", Class = "form-control form-control-sm price" })
     </div>
     <div class="col-md-4 col-sm-6 search-item">
         @Html.LabelFor(m => m.SoLuong)
-        @Html.TextBoxFor(m => m.SoLuong, new { Class = "form-control form-control-sm price" })
+        @Html.TextBoxFor(m => m.SoLuong, new { type = "number", Class = "form-control form-control-sm price" })
     </div>
     <div class="col-md-4 col-sm-6 search-item">
         @Html.LabelFor(m => m.BienSo)
@@ -74,19 +72,19 @@
     </div>
     <div class="col-md-4 col-sm-6 search-item">
         @Html.LabelFor(m => m.KhoiLuong)
-        @Html.TextBoxFor(m => m.KhoiLuong, new { Class = "form-control form-control-sm price" })
+        @Html.TextBoxFor(m => m.KhoiLuong, new { type = "number", Class = "form-control form-control-sm price" })
     </div>
     <div class="col-md-4 col-sm-6 search-item">
         @Html.LabelFor(m => m.HaoMonLuyKe)
-        @Html.TextBoxFor(m => m.HaoMonLuyKe, new { Class = "form-control form-control-sm price" })
+        @Html.TextBoxFor(m => m.HaoMonLuyKe, new { type = "number", Class = "form-control form-control-sm price" })
     </div>
     <div class="col-md-4 col-sm-6 search-item">
         @Html.LabelFor(m => m.GiaTriConLai)
-        @Html.TextBoxFor(m => m.GiaTriConLai, new { Class = "form-control form-control-sm price" })
+        @Html.TextBoxFor(m => m.GiaTriConLai, new { type = "number", Class = "form-control form-control-sm price" })
     </div>
     <div class="col-md-4 col-sm-6 search-item">
         @Html.LabelFor(m => m.ChatLuong)
-        @Html.DropDownListFor(x => x.ChatLuong, new SelectList(ViewBag.ChatLuong), "Tất cả", new { Class = "form-control form-control-sm" })
+        @Html.DropDownListFor(x => x.ChatLuong, new SelectList(ViewBag.ChatLuong), "-:-", new { Class = "form-control form-control-sm" })
     </div>
     <div class="col-md-4 col-sm-6 search-item">
         @Html.Label("Người sử dụng")
@@ -98,27 +96,27 @@
     </div>
     <div class="col-md-4 col-sm-6 search-item">
         @Html.LabelFor(m => m.PhongQuanLy)
-        @Html.DropDownListFor(x => x.PhongQuanLy, new SelectList(ViewBag.PhongBan), "Tất cả", new { Class = "form-control form-control-sm" })
+        @Html.DropDownListFor(x => x.PhongQuanLy, new SelectList(ViewBag.PhongBan), "-:-", new { Class = "form-control form-control-sm" })
     </div>
     <div class="col-md-4 col-sm-6 search-item">
         @Html.LabelFor(m => m.LoaiXe)
-        @Html.DropDownListFor(x => x.LoaiXe, new SelectList(ViewBag.LoaiXe), "Tất cả", new { Class = "form-control form-control-sm" })
+        @Html.DropDownListFor(x => x.LoaiXe, new SelectList(ViewBag.LoaiXe), "-:-", new { Class = "form-control form-control-sm" })
     </div>
     <div class="col-md-4 col-sm-6 search-item">
         @Html.LabelFor(m => m.DungTichXiLanh)
-        @Html.TextBoxFor(m => m.DungTichXiLanh, new { Class = "form-control form-control-sm price" })
+        @Html.TextBoxFor(m => m.DungTichXiLanh, new { type = "number", Class = "form-control form-control-sm price" })
     </div>
     <div class="col-md-4 col-sm-6 search-item">
         @Html.LabelFor(m => m.SoChoNgoi)
-        @Html.TextBoxFor(m => m.SoChoNgoi, new { Class = "form-control form-control-sm price" })
+        @Html.TextBoxFor(m => m.SoChoNgoi, new { type = "number", Class = "form-control form-control-sm price" })
     </div>
     <div class="col-md-4 col-sm-6 search-item">
         @Html.LabelFor(m => m.SoTang)
-        @Html.TextBoxFor(m => m.SoTang, new { Class = "form-control form-control-sm price" })
+        @Html.TextBoxFor(m => m.SoTang, new { type = "number", Class = "form-control form-control-sm price" })
     </div>
     <div class="col-md-4 col-sm-6 search-item">
         @Html.LabelFor(m => m.DienTichXayDung)
-        @Html.TextBoxFor(m => m.DienTichXayDung, new { Class = "form-control form-control-sm price" })
+        @Html.TextBoxFor(m => m.DienTichXayDung, new { type = "number", Class = "form-control form-control-sm price" })
     </div>
     <div class="col-md-4 col-sm-6 search-item">
         @Html.LabelFor(m => m.CapCongTrinh)
@@ -130,11 +128,11 @@
     </div>
     <div class="col-md-4 col-sm-6 search-item">
         @Html.LabelFor(m => m.DienTichKhuonVien)
-        @Html.TextBoxFor(m => m.DienTichKhuonVien, new { Class = "form-control form-control-sm price" })
+        @Html.TextBoxFor(m => m.DienTichKhuonVien, new { type = "number", Class = "form-control form-control-sm price" })
     </div>
 
     <div class="col-md-4 col-sm-6 search-item">
-        @Html.LabelFor(m => m.Tags)
-        @Html.TextBoxFor(m => m.DienTichKhuonVien, new { Class = "form-control form-control-sm price" })
+        <label>Tags, cách nhau bằng dấu ;. Ví dụ a;b</label>
+        @Html.TextBoxFor(m => m.JoinedTags, new { Class = "form-control form-control-sm price" })
     </div>
 </div>

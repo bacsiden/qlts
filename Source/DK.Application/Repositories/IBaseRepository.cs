@@ -16,12 +16,13 @@ namespace DK.Application.Repositories
         Task<T> GetAsync(Expression<Func<T, bool>> predicate);
 
         IMongoQueryable<T> Find(Expression<Func<T, bool>> predicate);
-
+        T Add(T model);
         Task<T> AddAsync(T model);
 
         Task AddRangeAsync(IEnumerable<T> list);
         void AddRange(IEnumerable<T> list);
         Task<T> UpsertAsync(T model);
+        T Upsert(T model);
 
         Task<T> UpdateAsync(T model);
         T Update(T model);

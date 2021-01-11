@@ -282,7 +282,8 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bracket.css" />
     <Content Include="Content\font.roboto.css" />
-    <Content Include="Content\images\bg-login.jpg" />
+    <Content Include="Content\images\login-bg.jpg" />
+    <Content Include="Content\images\user.png" />
     <Content Include="Content\lib\gritter\css\jquery.gritter.css" />
     <Content Include="Content\lib\gritter\images\error.png" />
     <Content Include="Content\lib\gritter\images\gritter.png" />
@@ -352,11 +353,6 @@
     <Content Include="Content\lib\spectrum\spectrum.js" />
     <Content Include="Content\lib\summernote\summernote-bs4.css" />
     <Content Include="Content\lib\summernote\summernote-bs4.min.js" />
-    <Content Include="ReportTemplates\TimeLine.xlsx" />
-    <Content Include="ReportTemplates\Points.xlsx" />
-    <Content Include="ReportTemplates\ChungNhan.docx" />
-    <Content Include="ReportTemplates\Students.docx" />
-    <Content Include="ReportTemplates\BookBorrow.docx" />
     <Content Include="Content\lib\bootstrap\dist\css\bootstrap-grid.css.map" />
     <Content Include="Content\lib\bootstrap\dist\css\bootstrap-grid.min.css.map" />
     <Content Include="Content\lib\bootstrap\dist\css\bootstrap-reboot.css.map" />
@@ -376,6 +372,7 @@
     <Content Include="Content\lib\jquery-validation\LICENSE.md" />
     <Content Include="Content\lib\jquery\dist\jquery.min.map" />
     <Content Include="Content\lib\summernote\font\summernote.woff" />
+    <None Include="Properties\PublishProfiles\containerts - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\file system.pubxml" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -385,6 +382,21 @@
     <Content Include="Scripts\dist\jquery.js" />
     <Content Include="Scripts\dist\jquery.min.js" />
     <Content Include="Scripts\DK.js" />
+    <Content Include="ReportTemplates\1ABC.xlsx" />
+    <Content Include="ReportTemplates\2ABC.xlsx" />
+    <Content Include="ReportTemplates\3AB.xlsx" />
+    <Content Include="ReportTemplates\3C.xlsx" />
+    <Content Include="ReportTemplates\4ABC.xlsx" />
+    <Content Include="ReportTemplates\5ABC.xlsx" />
+    <Content Include="ReportTemplates\6A7BC.xlsx" />
+    <Content Include="ReportTemplates\6BC.xlsx" />
+    <Content Include="ReportTemplates\7A8BC.xlsx" />
+    <Content Include="ReportTemplates\BarCode.lbx" />
+    <Content Include="ReportTemplates\BarCode1.lbx" />
+    <Content Include="ReportTemplates\data ex.xlsx" />
+    <Content Include="ReportTemplates\ForBarCode.xlsx" />
+    <Content Include="ReportTemplates\ImportForm.xlsx" />
+    <Content Include="ReportTemplates\zia06580" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <None Include="Scripts\jquery-3.1.1-vsdoc.js" />
     <Content Include="Scripts\jquery-3.1.1.js" />
@@ -461,7 +473,7 @@
     <Content Include="Views\Home\_NewOrEditAssetForm.cshtml" />
     <Content Include="Views\Home\_TableChild.cshtml" />
     <Content Include="Views\Home\_TableChildRow.cshtml" />
-    <Content Include="Views\Home\_NewOrEditAssetChild.cshtml" />
+    <Content Include="Views\Home\NewOrEditChildAsset.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

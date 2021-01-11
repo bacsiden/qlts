@@ -29,7 +29,7 @@ namespace DK.Application
 
         public void ImportTaiSan(string userName, Stream stream)
         {
-            var taisans = _taiSanRepository.Find(m => true).ToList().Select(m => new { key = m.Code, value = m }).ToDictionary(x => x.key, x => x.value);
+            var taisans = GetExistingCodes();
             var types = _typeRepository.Find(m => true).ToList();
             var newTypes = new List<Models.Type>();
 
@@ -92,19 +92,13 @@ namespace DK.Application
                 ts.SoChoNgoi = GetCellInt(xls, row, nameof(TaiSan.SoChoNgoi));
                 ts.SoTang = GetCellInt(xls, row, nameof(TaiSan.SoTang));
                 ts.DienTichXayDung = GetCellInt(xls, row, nameof(TaiSan.DienTichXayDung));
-                ts.CapCongTrinh = GetCellInt(xls, row, nameof(TaiSan.CapCongTrinh));
+                ts.CapCongTrinh = GetCellString(xls, row, nameof(TaiSan.CapCongTrinh));
                 ts.DiaChi = GetCellString(xls, row, nameof(TaiSan.DiaChi));
                 ts.DienTichKhuonVien = GetCellInt(xls, row, nameof(TaiSan.DienTichKhuonVien));
                 ts.Tags = GetCellListString(xls, row, nameof(TaiSan.Tags));
                 AddNewType(types, newTypes, TypeConstant.Tags, ts.Tags);
 
-                var i = 1;
-                ts.GenerateCode();
-                while (taisans.ContainsKey(ts.Code))
-                {
-                    ts.GenerateCode(i++);
-                }
-                taisans.Add(ts.Code, ts);
+                ts.GenerateCode(taisans);
 
                 if (lastNo == -1 || lastNo == ts.No)
                 {
@@ -418,6 +412,16 @@ namespace DK.Application
                 }
             }
         }
+
+        public Dictionary<string, int> GetExistingCodes()
+        {
+            var allTs = _taiSanRepository.Find(m => true).ToList();
+            var taisans = allTs.Select(m => new { key = m.Code, value = 1 }).ToDictionary(x => x.key, x => x.value);
+            var subTs = allTs.SelectMany(m => m.Children).Select(m => new { key = m.Code, value = 1 }).ToDictionary(x => x.key, x => x.value);
+
+            return taisans.Union(subTs).ToDictionary(k => k.Key, v => v.Value);
+        }
+
         private void AddNewType(List<Models.Type> types, List<Models.Type> newTypes, string name, string value)
         {
             if (!string.IsNullOrWhiteSpace(value) && !types.Any(m => m.Name == name && value.Equals(m.Title, StringComparison.OrdinalIgnoreCase)))

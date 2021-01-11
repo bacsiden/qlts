@@ -34,6 +34,12 @@ namespace DK.Application.Repositories
             return model;
         }
 
+        public virtual T Add(T model)
+        {
+            _collection.InsertOne(model);
+            return model;
+        }
+
         public virtual Task AddRangeAsync(IEnumerable<T> list) => _collection.InsertManyAsync(list);
         public void AddRange(IEnumerable<T> list) => _collection.InsertMany(list);
         public virtual Task<T> UpsertAsync(T model)
@@ -43,6 +49,15 @@ namespace DK.Application.Repositories
             else
                 return UpdateAsync(model);
         }
+
+        public virtual T Upsert(T model)
+        {
+            if ((Guid)typeof(T).GetProperty("Id").GetValue(model) == Guid.Empty)
+                return Add(model);
+            else
+                return Update(model);
+        }
+
 
         public virtual async Task<T> UpdateAsync(T model)
         {

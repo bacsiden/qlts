@@ -20,11 +20,21 @@ namespace DK.Application.Models
             return attribute.Index;
         }
 
+        public void GenerateCode(Dictionary<string, int> existingCodes)
+        {
+            var i = 1;
+            GenerateCode();
+            while (existingCodes.ContainsKey(Code))
+            {
+                GenerateCode(i++);
+            }
+            existingCodes.Add(Code, 1);
+        }
         public void GenerateCode(int? i = null)
         {
             Code = $"{ChungLoai} {Name}".RemoveDiacritics().GetFirstChars();
             if (Code != null && Code.Length > 7) Code = Code.Substring(0, 7);
-            Code += string.IsNullOrWhiteSpace(Serial) ? null : string.Join(null, Serial.Where(m => char.IsLetterOrDigit(m))).SubLastString(4);
+            Code += string.IsNullOrWhiteSpace(Serial) ? null : string.Join(null, Serial.RemoveDiacritics().Where(m => char.IsLetterOrDigit(m))).SubLastString(4);
             if (i != null)
                 Code = $"{Code}{i.Value.AddZeroFrefix(3)}";
         }
@@ -34,6 +44,8 @@ namespace DK.Application.Models
             var value = $"{ChungLoai}".ToLower();
             return LoaiXe != null || DungTichXiLanh != null || SoChoNgoi != null || value.Contains("phương tiện giao thông") || value.Contains("ô tô");
         }
+
+        public Guid ParentId { get; set; }
 
         [BsonIgnore]
         [ColumnIndex(1)]
@@ -124,7 +136,7 @@ namespace DK.Application.Models
         public int? SoLuong { get; set; }
 
         [ColumnIndex(18)]
-        [Display(Name = "Khối lượng")]
+        [Display(Name = "Khối lượng (kg)")]
         public int? KhoiLuong { get; set; }
 
         [ColumnIndex(19)]
@@ -195,7 +207,7 @@ namespace DK.Application.Models
         /// <summary>
         /// chỉ đối với nhà đất
         /// </summary>
-        [Display(Name = "Diện tích xây dựng")]
+        [Display(Name = "Diện tích xây dựng (m2)")]
         [ColumnIndex(30)]
         public int? DienTichXayDung { get; set; }
 
@@ -204,7 +216,7 @@ namespace DK.Application.Models
         /// </summary>
         [Display(Name = "Cấp công trình")]
         [ColumnIndex(31)]
-        public int? CapCongTrinh { get; set; }
+        public string CapCongTrinh { get; set; }
 
         /// <summary>
         /// chỉ đối với nhà đất
@@ -216,7 +228,7 @@ namespace DK.Application.Models
         /// <summary>
         /// chỉ đối với nhà đất
         /// </summary>
-        [Display(Name = "Diện tích khuôn viên")]
+        [Display(Name = "Diện tích khuôn viên (m2)")]
         [ColumnIndex(33)]
         public int? DienTichKhuonVien { get; set; }
 

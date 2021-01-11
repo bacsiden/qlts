@@ -114,14 +114,8 @@
         var stt = 1;
         foreach (var item in Model)
         {
-            var includeSubStr = Request.Params["IncludeSub"];
-            bool includeSub = false;
-            if (!string.IsNullOrWhiteSpace(includeSubStr))
-            {
-                includeSub = bool.Parse(includeSubStr.Split(',')[0]);
-            }
             @BindData(stt, item, canManage, searchModel.IsApproved, true);
-            if (includeSub)
+            if (((TaiSanSearchModel)ViewBag.SearchModel).IncludeSub)
             {
                 var childStt = 1;
                 foreach (var child in item.Children)
@@ -158,7 +152,7 @@
         <td>
             @if (isParent && (canManage || !isApproved))
             {
-                <a href="@Url.Action("NewOrEditAsset", new { item.Id, isApproved})">@item.Code</a>
+                <a href="@Url.Action("NewOrEditAsset", new { item.Id, isApproved, returnUrl = Request.RawUrl})">@item.Code</a>
             }
             else
             {
@@ -168,7 +162,7 @@
         <td>
             @if (isParent && (canManage || !isApproved))
             {
-                <a href="@Url.Action("NewOrEditAsset", new { item.Id, isApproved})">@item.Name</a>
+                <a href="@Url.Action("NewOrEditAsset", new { item.Id, isApproved, returnUrl = Request.RawUrl})">@item.Name</a>
             }
             else
             {

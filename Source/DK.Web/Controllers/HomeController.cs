@@ -86,7 +86,7 @@ namespace DK.Web.Controllers
             return View(dashboard);
         }
 
-        public ActionResult NewOrEditAsset(Guid? id = null, bool isApproved = false)
+        public ActionResult NewOrEditAsset(string returnUrl, Guid? id = null, bool isApproved = false)
         {
             CreateDropDownViewBag();
             TaiSan taiSan = null;
@@ -102,14 +102,21 @@ namespace DK.Web.Controllers
                     IsApproved = isApproved
                 };
             }
+            taiSan.JoinedTags = string.Join(";", taiSan.Tags);
             return View(taiSan);
         }
 
         [HttpPost]
-        public ActionResult NewOrEditAsset(TaiSan taisan)
+        public ActionResult NewOrEditAsset(TaiSan taisan, string returnUrl)
         {
             if (!ModelState.IsValid)
             {
+                foreach (ModelState modelState in ViewData.ModelState.Values)
+                {
+                    foreach (ModelError error in modelState.Errors)
+                    {
+                    }
+                }
                 CreateDropDownViewBag();
                 return View(taisan);
             }
@@ -117,40 +124,56 @@ namespace DK.Web.Controllers
             var currentAsset = _taiSanRepository.Get(taisan.Id);
             if (currentAsset != null)
             {
-                _taiSanRepository.Update(taisan);
-                if (taisan.IsApproved)
-                {
-                    return RedirectToAction(nameof(Index));
-                }
-                return RedirectToAction(nameof(TaisanUnApproved));
+                taisan.Children = currentAsset.Children;
+            }
+            else
+            {
+                var existingCodes = _taiSanService.GetExistingCodes();
+                taisan.GenerateCode(existingCodes);
             }
 
-            return NotFound();
+            taisan.Tags = string.IsNullOrWhiteSpace(taisan.JoinedTags) ? new List<string>() : taisan.JoinedTags.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries).Select(m => m.Trim()).ToList();
+
+            _taiSanRepository.Upsert(taisan);
+            return CustomRedirect(returnUrl);
         }
 
-        public ActionResult NewOrEditChildAsset(Guid id, int no)
+        public ActionResult NewOrEditChildAsset(string code, Guid parentId, string returnUrl)
         {
-            var taiSan = _taiSanRepository.Get(id);
-            var child = new TaiSan
-            {
-                No = no
-            };
-
-            if (taiSan != null && taiSan.Children.Count > 0 && no < taiSan.Children.Count)
-            {
-                child = taiSan.Children.ElementAt(no);
-            }
+            var taiSan = _taiSanRepository.Get(parentId);
+            if (taiSan == null) return CustomRedirect(returnUrl);
+            var subTS = taiSan.Children.FirstOrDefault(m => m.Code == code);
+            if (subTS == null) subTS = new TaiSan();
 
             CreateDropDownViewBag();
-            return PartialView("_NewOrEditAssetChild", child);
+            subTS.ParentId = parentId;
+            return View(subTS);
         }
 
-        public ActionResult GetChildAssetTableRow(TaiSan taiSan)
+        [HttpPost]
+        public ActionResult NewOrEditChildAsset(TaiSan ts, string returnUrl)
         {
-            return PartialView("_TableChildRow", taiSan);
+            var taiSan = _taiSanRepository.Get(ts.ParentId);
+            ModelState.AddModelError(string.Empty, "Có lỗi xảy ra, vui lòng thử lại");
+            var existingCodes = _taiSanService.GetExistingCodes();
+            if (ts.Code == null) ts.GenerateCode(existingCodes);
+            var index = taiSan.Children.FindIndex(m => m.Code == ts.Code);
+            if (index > -1) taiSan.Children.RemoveAt(index);
+            taiSan.Children.Add(ts);
+            _taiSanRepository.Update(taiSan);
+            return CustomRedirect(returnUrl);
         }
 
-        // POST: Home/Delete/5
+        public ActionResult DeleteChildAsset(string code, Guid parentId, string returnUrl)
+        {
+            var taiSan = _taiSanRepository.Get(parentId);
+            if (taiSan == null) return CustomRedirect(returnUrl);
+            var index = taiSan.Children.FindIndex(m => m.Code == code);
+            if (index > -1) taiSan.Children.RemoveAt(index);
+            _taiSanRepository.Update(taiSan);
+            return CustomRedirect(returnUrl);
+        }
+
         [HttpPost]
         public async Task<ActionResult> DeleteTaiSan(bool isApproved, Guid[] ids)
         {
@@ -173,7 +196,6 @@ namespace DK.Web.Controllers
             return RedirectToAction(nameof(TaisanUnApproved));
         }
 
-        // POST: Home/AppoveTaiSan/5
         [HttpPost]
         public async Task<ActionResult> AppoveTaiSan(Guid[] ids)
         {
@@ -214,6 +236,11 @@ namespace DK.Web.Controllers
             };
         }
 
+        private ActionResult CustomRedirect(string url)
+        {
+            if (string.IsNullOrWhiteSpace(url)) return RedirectToAction(nameof(Index)); else return Redirect(url);
+        }
+
         private void CreateDropDownViewBag()
         {
             var types = _typeRepository.Find(m => true).ToList();
@@ -225,7 +252,7 @@ namespace DK.Web.Controllers
             ViewBag.LoaiXe = types.Where(m => m.Name == TypeConstant.LoaiXe).Select(m => m.Title);
             ViewBag.PhongBan = types.Where(m => m.Name == TypeConstant.PhongBan).Select(m => m.Title);
             ViewBag.Tags = types.Where(m => m.Name == TypeConstant.Tags).Select(m => m.Title);
-            ViewBag.Members = UserManager.Users.Select(m => m.UserName);
+            ViewBag.Members = UserManager.Users.Select(m => m.UserName).ToList();
         }
     }
 }
