@@ -461,6 +461,7 @@
     <Content Include="Views\Home\_NewOrEditAssetForm.cshtml" />
     <Content Include="Views\Home\_TableChild.cshtml" />
     <Content Include="Views\Home\_TableChildRow.cshtml" />
+    <Content Include="Views\Home\_NewOrEditAssetChild.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

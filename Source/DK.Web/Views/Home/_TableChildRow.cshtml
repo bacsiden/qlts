@@ -9,11 +9,11 @@
         @(Model.No + 1)
     </td>
     <td>
-        <a href="@Url.Action("NewOrEditAsset", new { Model.Id})">@Model.Code</a>
+        <a href="javascript:void(0)" onclick="showNewOrEditTaiSanConModal('@Model.No')">@Model.Code</a>
         <input type="hidden" name="Children[@Model.No].Code" value="@Model.Code" />
     </td>
     <td>
-        <a href="@Url.Action("NewOrEditAsset", new { Model.Id})">@Model.Name</a>
+        <a href="javascript:void(0)" onclick="showNewOrEditTaiSanConModal('@Model.No')">@Model.Name</a>
         <input type="hidden" name="Children[@Model.No].Name" value="@Model.Name" />
     </td>
     <td>

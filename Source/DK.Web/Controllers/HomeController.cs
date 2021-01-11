@@ -128,6 +128,28 @@ namespace DK.Web.Controllers
             return NotFound();
         }
 
+        public ActionResult NewOrEditChildAsset(Guid id, int no)
+        {
+            var taiSan = _taiSanRepository.Get(id);
+            var child = new TaiSan
+            {
+                No = no
+            };
+
+            if (taiSan != null && taiSan.Children.Count > 0 && no < taiSan.Children.Count)
+            {
+                child = taiSan.Children.ElementAt(no);
+            }
+
+            CreateDropDownViewBag();
+            return PartialView("_NewOrEditAssetChild", child);
+        }
+
+        public ActionResult GetChildAssetTableRow(TaiSan taiSan)
+        {
+            return PartialView("_TableChildRow", taiSan);
+        }
+
         // POST: Home/Delete/5
         [HttpPost]
         public async Task<ActionResult> DeleteTaiSan(bool isApproved, Guid[] ids)
