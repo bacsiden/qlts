@@ -69,7 +69,7 @@
                 </div>
                 <div class="col-md-4 col-sm-6 search-item">
                     @Html.LabelFor(m => m.ChatLuong)
-                    @Html.DropDownListFor(x => x.ChatLuong, new SelectList(ViewBag.ChatLuong), "-:-", new { Class = "form-control form-control-sm" })
+                    @Html.BuildDrodownList("ChatLuong", ViewBag.ChatLuong as IEnumerable<string>, Model.ChatLuong)
                 </div>
             </div>
         </div>
@@ -88,5 +88,10 @@
             var activeClass = "@(Model.IsApproved ? "asset-approved": "asset-unapproved")";
             reActiveMenu(activeClass);
         });
+
+        function reActiveMenu(activeClass) {
+            $("#LeftMenu a.asset").removeClass('active');
+            $("#LeftMenu a." + activeClass).addClass('active');
+        }
     </script>
 }

@@ -1,4 +1,5 @@
-﻿@model DK.Application.Models.TaiSan
+﻿@using DK.Application.Models;
+@model DK.Application.Models.TaiSan
 
 @Html.Hidden("returnUrl", Request.Params["returnUrl"])
 @Html.HiddenFor(m => m.Id)
@@ -12,11 +13,11 @@
     </div>
     <div class="col-md-4 col-sm-6 search-item">
         @Html.LabelFor(m => m.GroupName)
-        @Html.DropDownListFor(x => x.GroupName, new SelectList(ViewBag.GroupName), "-:-", new { Class = "form-control form-control-sm" })
+        @Html.BuildDrodownList("GroupName", ViewBag.GroupName as IEnumerable<string>, Model.GroupName)
     </div>
     <div class="col-md-4 col-sm-6 search-item">
         @Html.LabelFor(m => m.ChungLoai)
-        @Html.DropDownListFor(x => x.ChungLoai, new SelectList(ViewBag.ChungLoai), "-:-", new { Class = "form-control form-control-sm" })
+        @Html.BuildDrodownList("ChungLoai", ViewBag.ChungLoai as IEnumerable<string>, Model.ChungLoai)
     </div>
     <div class="col-md-4 col-sm-6 search-item">
         @Html.LabelFor(m => m.NhanHieu)
@@ -40,7 +41,7 @@
     </div>
     <div class="col-md-4 col-sm-6 search-item">
         @Html.LabelFor(m => m.NguonKinhPhi)
-        @Html.DropDownListFor(x => x.NguonKinhPhi, new SelectList(ViewBag.NguonKinhPhi), "-:-", new { Class = "form-control form-control-sm" })
+        @Html.BuildDrodownList("NguonKinhPhi", ViewBag.NguonKinhPhi as IEnumerable<string>, Model.NguonKinhPhi)
     </div>
     <div class="col-md-4 col-sm-6 search-item">
         @Html.LabelFor(m => m.NganSachKhac)
@@ -84,7 +85,7 @@
     </div>
     <div class="col-md-4 col-sm-6 search-item">
         @Html.LabelFor(m => m.ChatLuong)
-        @Html.DropDownListFor(x => x.ChatLuong, new SelectList(ViewBag.ChatLuong), "-:-", new { Class = "form-control form-control-sm" })
+        @Html.BuildDrodownList("ChatLuong", ViewBag.ChatLuong as IEnumerable<string>, Model.ChatLuong)
     </div>
     <div class="col-md-4 col-sm-6 search-item">
         @Html.Label("Người sử dụng")
@@ -96,11 +97,11 @@
     </div>
     <div class="col-md-4 col-sm-6 search-item">
         @Html.LabelFor(m => m.PhongQuanLy)
-        @Html.DropDownListFor(x => x.PhongQuanLy, new SelectList(ViewBag.PhongBan), "-:-", new { Class = "form-control form-control-sm" })
+        @Html.BuildDrodownList("PhongQuanLy", ViewBag.PhongBan as IEnumerable<string>, Model.PhongQuanLy)
     </div>
     <div class="col-md-4 col-sm-6 search-item">
         @Html.LabelFor(m => m.LoaiXe)
-        @Html.DropDownListFor(x => x.LoaiXe, new SelectList(ViewBag.LoaiXe), "-:-", new { Class = "form-control form-control-sm" })
+        @Html.BuildDrodownList("LoaiXe", ViewBag.LoaiXe as IEnumerable<string>, Model.LoaiXe)
     </div>
     <div class="col-md-4 col-sm-6 search-item">
         @Html.LabelFor(m => m.DungTichXiLanh)

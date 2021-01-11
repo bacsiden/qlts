@@ -275,6 +275,7 @@
     <Compile Include="Utilities\Constant.cs" />
     <Compile Include="Utilities\CustomAttribute.cs" />
     <Compile Include="Utilities\Functions.cs" />
+    <Compile Include="Utilities\HtmlHelpers.cs" />
     <Compile Include="Utilities\ListMessage.cs" />
   </ItemGroup>
   <ItemGroup>
