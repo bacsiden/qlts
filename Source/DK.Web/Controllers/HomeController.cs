@@ -20,11 +20,13 @@ namespace DK.Web.Controllers
         private readonly ITaiSanRepository _taiSanRepository;
         private readonly ITypeRepository _typeRepository;
         private readonly ITaiSanService _taiSanService;
-        public HomeController(ITaiSanRepository taiSanRepository, ITypeRepository typeRepository, ITaiSanService taiSanService)
+        private readonly IKiemKeRepository _kiemKeRepository;
+        public HomeController(ITaiSanRepository taiSanRepository, ITypeRepository typeRepository, ITaiSanService taiSanService, IKiemKeRepository kiemKeRepository)
         {
             _taiSanRepository = taiSanRepository;
             _typeRepository = typeRepository;
             _taiSanService = taiSanService;
+            _kiemKeRepository = kiemKeRepository;
         }
         // GET: Tài sản đã phê duyệt
         public ActionResult Index(TaiSanSearchModel search)
@@ -83,6 +85,8 @@ namespace DK.Web.Controllers
             dashboard.TongSoDotKiemKe = _typeRepository.Find(m => m.Name == TypeConstant.KiemKe).Count();
             dashboard.TongSoXe = _taiSanRepository.Find(m => true).AsEnumerable().Where(m => !string.IsNullOrEmpty(m.LoaiXe)).Sum(m => (m.SoLuong ?? 1));
             dashboard.TongNguonKinhPhi = _taiSanRepository.Find(m => true).AsEnumerable().Sum(m => m.NguyenGiaKeToan * (m.SoLuong ?? 1)) ?? 0;
+            dashboard.RecentKiemKes = _typeRepository.Find(m => m.Name == TypeConstant.KiemKe).OrderByDescending(m => m.Id).Take(6).ToList();
+            dashboard.DanhMuc = Application.Models.Type.MenuCategories;
             return View(dashboard);
         }
 

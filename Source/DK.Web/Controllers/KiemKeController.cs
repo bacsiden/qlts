@@ -108,6 +108,7 @@ namespace DK.Web.Controllers
                 {
                     Name = TypeConstant.KiemKe,
                     Title = $"Kiểm kê ngày {DateTime.Now:dd-MM-yyyy}",
+                    CreatedBy = User.Identity.Name,
                 };
 
                 await _typeRepository.AddAsync(type);
@@ -141,7 +142,7 @@ namespace DK.Web.Controllers
                 ViewBag.Error = e.Message;
                 return View();
             }
-            
+
             return RedirectToAction(nameof(Detail), new { id = id });
         }
 

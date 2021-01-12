@@ -1,115 +1,132 @@
-﻿@model DK.Web.Models.DashboardModel
-    @{ 
-        ViewBag.Title = "Tổng quan";
+﻿@using DK.Application.Models
+@model DK.Web.Models.DashboardModel
+@{
+    ViewBag.Title = "Tổng quan";
+    var colors = new List<string>
+{
+        "bg-teal",
+        "bg-danger",
+        "bg-danger",
+        "bg-warning",
+        "bg-info",
+        "bg-purple",
+        "bg-teal",
+        "bg-danger",
+        "bg-danger",
+        "bg-warning",
+        "bg-info",
+        "bg-purple"
+    };
+}
+
+<style>
+    .table {
+        background-color: transparent;
     }
-    <div class="row row-sm">
-        <div class="col-sm-6 col-xl-3">
-            <div class="bg-teal rounded overflow-hidden">
-                <div class="pd-25 d-flex align-items-center">
-                    <i class="ion ion-ios-checkmark-outline tx-60 lh-0 tx-white op-7"></i>
-                    <div class="mg-l-20">
-                        <p class="tx-10 tx-spacing-1 tx-mont tx-medium tx-uppercase tx-white-8 mg-b-10">Tổng số đợt kiểm kê</p>
-                        <p class="tx-24 tx-white tx-lato tx-bold mg-b-2 lh-1">@Model.TongSoDotKiemKe</p>
-                        <span class="tx-11 tx-roboto tx-white-6"></span>
-                    </div>
+
+    .min-height {
+        min-height: 400px;
+    }
+</style>
+
+<div class="row row-sm">
+    <div class="col-sm-6 col-xl-3">
+        <div class="bg-teal rounded overflow-hidden">
+            <div class="pd-25 d-flex align-items-center">
+                <i class="ion ion-ios-checkmark-outline tx-60 lh-0 tx-white op-7"></i>
+                <div class="mg-l-20">
+                    <p class="tx-10 tx-spacing-1 tx-mont tx-medium tx-uppercase tx-white-8 mg-b-10">Tổng số đợt kiểm kê</p>
+                    <p class="tx-24 tx-white tx-lato tx-bold mg-b-2 lh-1">@Model.TongSoDotKiemKe</p>
+                    <span class="tx-11 tx-roboto tx-white-6"></span>
                 </div>
             </div>
-        </div><!-- col-3 -->
-        <div class="col-sm-6 col-xl-3 mg-t-20 mg-sm-t-0">
-            <div class="bg-danger rounded overflow-hidden">
-                <div class="pd-25 d-flex align-items-center">
-                    <i class="ion ion-bag tx-60 lh-0 tx-white op-7"></i>
-                    <div class="mg-l-20">
-                        <p class="tx-10 tx-spacing-1 tx-mont tx-medium tx-uppercase tx-white-8 mg-b-10">Tổng số tài sản</p>
-                        <p class="tx-24 tx-white tx-lato tx-bold mg-b-2 lh-1">@Model.TongSoTaiSan</p>
-                        <span class="tx-11 tx-roboto tx-white-6"></span>
-                    </div>
+        </div>
+    </div><!-- col-3 -->
+    <div class="col-sm-6 col-xl-3 mg-t-20 mg-sm-t-0">
+        <div class="bg-danger rounded overflow-hidden">
+            <div class="pd-25 d-flex align-items-center">
+                <i class="ion ion-bag tx-60 lh-0 tx-white op-7"></i>
+                <div class="mg-l-20">
+                    <p class="tx-10 tx-spacing-1 tx-mont tx-medium tx-uppercase tx-white-8 mg-b-10">Tổng số tài sản</p>
+                    <p class="tx-24 tx-white tx-lato tx-bold mg-b-2 lh-1">@Model.TongSoTaiSan</p>
+                    <span class="tx-11 tx-roboto tx-white-6"></span>
                 </div>
             </div>
-        </div><!-- col-3 -->
-        <div class="col-sm-6 col-xl-3 mg-t-20 mg-xl-t-0">
-            <div class="bg-primary rounded overflow-hidden">
-                <div class="pd-25 d-flex align-items-center">
-                    <i class="ion ion-model-s tx-60 lh-0 tx-white op-7"></i>
-                    <div class="mg-l-20">
-                        <p class="tx-10 tx-spacing-1 tx-mont tx-medium tx-uppercase tx-white-8 mg-b-10">Tổng số xe</p>
-                        <p class="tx-24 tx-white tx-lato tx-bold mg-b-2 lh-1">@Model.TongSoXe</p>
-                        <span class="tx-11 tx-roboto tx-white-6"></span>
-                    </div>
+        </div>
+    </div><!-- col-3 -->
+    <div class="col-sm-6 col-xl-3 mg-t-20 mg-xl-t-0">
+        <div class="bg-primary rounded overflow-hidden">
+            <div class="pd-25 d-flex align-items-center">
+                <i class="ion ion-model-s tx-60 lh-0 tx-white op-7"></i>
+                <div class="mg-l-20">
+                    <p class="tx-10 tx-spacing-1 tx-mont tx-medium tx-uppercase tx-white-8 mg-b-10">Tổng số xe</p>
+                    <p class="tx-24 tx-white tx-lato tx-bold mg-b-2 lh-1">@Model.TongSoXe</p>
+                    <span class="tx-11 tx-roboto tx-white-6"></span>
                 </div>
             </div>
-        </div><!-- col-3 -->
-        <div class="col-sm-6 col-xl-3 mg-t-20 mg-xl-t-0">
-            <div class="bg-br-primary rounded overflow-hidden">
-                <div class="pd-25 d-flex align-items-center">
-                    <i class="ion ion-social-usd-outline tx-60 lh-0 tx-white op-7"></i>
-                    <div class="mg-l-20">
-                        <p class="tx-10 tx-spacing-1 tx-mont tx-medium tx-uppercase tx-white-8 mg-b-10">Tổng giá ban đầu</p>
-                        <p class="tx-24 tx-white tx-lato tx-bold mg-b-2 lh-1">@Model.TongNguonKinhPhi.ToString("N0")</p>
-                        <span class="tx-11 tx-roboto tx-white-6"></span>
-                    </div>
+        </div>
+    </div><!-- col-3 -->
+    <div class="col-sm-6 col-xl-3 mg-t-20 mg-xl-t-0">
+        <div class="bg-br-primary rounded overflow-hidden">
+            <div class="pd-25 d-flex align-items-center">
+                <i class="ion ion-social-usd-outline tx-60 lh-0 tx-white op-7"></i>
+                <div class="mg-l-20">
+                    <p class="tx-10 tx-spacing-1 tx-mont tx-medium tx-uppercase tx-white-8 mg-b-10">Tổng giá ban đầu</p>
+                    <p class="tx-24 tx-white tx-lato tx-bold mg-b-2 lh-1">@Model.TongNguonKinhPhi.ToString("N0")</p>
+                    <span class="tx-11 tx-roboto tx-white-6"></span>
                 </div>
             </div>
-        </div><!-- col-3 -->
-    </div><!-- row -->
+        </div>
+    </div><!-- col-3 -->
+</div><!-- row -->
 
-    <div class="row row-sm mg-t-20">
-        <div class="col-8">
-            <div class="card pd-0 bd-0 shadow-base">
-                <div class="pd-x-30 pd-t-30 pd-b-15">
-                    <div class="d-flex align-items-center justify-content-between">
-                        <div>
-                            <h6 class="tx-13 tx-uppercase tx-inverse tx-semibold tx-spacing-1">Các đợt kiểm kê gần nhất</h6>
-                            <p class="mg-b-0">Thống kê giá trị...</p>
-                        </div>
-                        <div class="tx-13">
-                            <p class="mg-b-0"><span class="square-8 rounded-circle bg-purple mg-r-10"></span> Đợt kiểm kê 1</p>
-                            <p class="mg-b-0"><span class="square-8 rounded-circle bg-pink mg-r-10"></span> Đợt kiểm kê 2</p>
-                        </div>
-                    </div><!-- d-flex -->
+<div class="row row-sm mg-t-20">
+    <div class="col-8">
+        <div class="card bd-0 shadow-base pd-30 min-height">
+            <div class="d-flex align-items-center justify-content-between mg-b-30">
+                <div>
+                    <h6 class="tx-13 tx-uppercase tx-inverse tx-semibold tx-spacing-1">Các đợt kiểm kê gần đây</h6>
                 </div>
-                <div class="pd-x-15 pd-b-15">
-                    <div id="ch1" class="br-chartist br-chartist-2 ht-200 ht-sm-300"><svg xmlns:ct="http://gionkunz.github.com/chartist-js/ct" width="100%" height="100%" class="ct-chart-line" style="width: 100%; height: 100%;"><g class="ct-grids"><line x1="40" x2="40" y1="15" y2="270" class="ct-grid ct-horizontal"></line><line x1="143.9696480887277" x2="143.9696480887277" y1="15" y2="270" class="ct-grid ct-horizontal"></line><line x1="247.93929617745536" x2="247.93929617745536" y1="15" y2="270" class="ct-grid ct-horizontal"></line><line x1="351.908944266183" x2="351.908944266183" y1="15" y2="270" class="ct-grid ct-horizontal"></line><line x1="455.8785923549107" x2="455.8785923549107" y1="15" y2="270" class="ct-grid ct-horizontal"></line><line x1="559.8482404436384" x2="559.8482404436384" y1="15" y2="270" class="ct-grid ct-horizontal"></line><line x1="663.817888532366" x2="663.817888532366" y1="15" y2="270" class="ct-grid ct-horizontal"></line><line x1="767.7875366210938" x2="767.7875366210938" y1="15" y2="270" class="ct-grid ct-horizontal"></line><line y1="270" y2="270" x1="40" x2="767.7875366210938" class="ct-grid ct-vertical"></line><line y1="227.5" y2="227.5" x1="40" x2="767.7875366210938" class="ct-grid ct-vertical"></line><line y1="185" y2="185" x1="40" x2="767.7875366210938" class="ct-grid ct-vertical"></line><line y1="142.5" y2="142.5" x1="40" x2="767.7875366210938" class="ct-grid ct-vertical"></line><line y1="100" y2="100" x1="40" x2="767.7875366210938" class="ct-grid ct-vertical"></line><line y1="57.5" y2="57.5" x1="40" x2="767.7875366210938" class="ct-grid ct-vertical"></line><line y1="15" y2="15" x1="40" x2="767.7875366210938" class="ct-grid ct-vertical"></line></g><g><g class="ct-series ct-series-a"><path d="M40,270L40,227.5C74.657,216.167,109.313,193.5,143.97,193.5C178.626,193.5,213.283,210.5,247.939,210.5C282.596,210.5,317.252,202,351.909,202C386.565,202,421.222,220.7,455.879,227.5C490.535,234.3,525.192,244.5,559.848,244.5C594.505,244.5,629.161,227.5,663.818,227.5C698.474,227.5,733.131,233.167,767.788,236L767.788,270Z" class="ct-area"></path><path d="M40,227.5C74.657,216.167,109.313,193.5,143.97,193.5C178.626,193.5,213.283,210.5,247.939,210.5C282.596,210.5,317.252,202,351.909,202C386.565,202,421.222,220.7,455.879,227.5C490.535,234.3,525.192,244.5,559.848,244.5C594.505,244.5,629.161,227.5,663.818,227.5C698.474,227.5,733.131,233.167,767.788,236" class="ct-line"></path><line x1="40" y1="227.5" x2="40.01" y2="227.5" class="ct-point" ct:value="5"></line><line x1="143.9696480887277" y1="193.5" x2="143.97964808872769" y2="193.5" class="ct-point" ct:value="9"></line><line x1="247.93929617745536" y1="210.5" x2="247.94929617745535" y2="210.5" class="ct-point" ct:value="7"></line><line x1="351.908944266183" y1="202" x2="351.918944266183" y2="202" class="ct-point" ct:value="8"></line><line x1="455.8785923549107" y1="227.5" x2="455.8885923549107" y2="227.5" class="ct-point" ct:value="5"></line><line x1="559.8482404436384" y1="244.5" x2="559.8582404436384" y2="244.5" class="ct-point" ct:value="3"></line><line x1="663.817888532366" y1="227.5" x2="663.827888532366" y2="227.5" class="ct-point" ct:value="5"></line><line x1="767.7875366210938" y1="236" x2="767.7975366210937" y2="236" class="ct-point" ct:value="4"></line></g><g class="ct-series ct-series-b"><path d="M40,270L40,185C74.657,170.833,109.313,142.5,143.97,142.5C178.626,142.5,213.283,185,247.939,185C282.596,185,317.252,125.5,351.909,125.5C386.565,125.5,421.222,202,455.879,202C490.535,202,525.192,187.125,559.848,176.5C594.505,165.875,629.161,134,663.818,134C698.474,134,733.131,168,767.788,185L767.788,270Z" class="ct-area"></path><path d="M40,185C74.657,170.833,109.313,142.5,143.97,142.5C178.626,142.5,213.283,185,247.939,185C282.596,185,317.252,125.5,351.909,125.5C386.565,125.5,421.222,202,455.879,202C490.535,202,525.192,187.125,559.848,176.5C594.505,165.875,629.161,134,663.818,134C698.474,134,733.131,168,767.788,185" class="ct-line"></path><line x1="40" y1="185" x2="40.01" y2="185" class="ct-point" ct:value="10"></line><line x1="143.9696480887277" y1="142.5" x2="143.97964808872769" y2="142.5" class="ct-point" ct:value="15"></line><line x1="247.93929617745536" y1="185" x2="247.94929617745535" y2="185" class="ct-point" ct:value="10"></line><line x1="351.908944266183" y1="125.5" x2="351.918944266183" y2="125.5" class="ct-point" ct:value="17"></line><line x1="455.8785923549107" y1="202" x2="455.8885923549107" y2="202" class="ct-point" ct:value="8"></line><line x1="559.8482404436384" y1="176.5" x2="559.8582404436384" y2="176.5" class="ct-point" ct:value="11"></line><line x1="663.817888532366" y1="134" x2="663.827888532366" y2="134" class="ct-point" ct:value="16"></line><line x1="767.7875366210938" y1="185" x2="767.7975366210937" y2="185" class="ct-point" ct:value="10"></line></g></g><g class="ct-labels"><foreignObject style="overflow: visible;" x="40" y="275" width="103.96964808872768" height="20"><span class="ct-label ct-horizontal ct-end" xmlns="http://www.w3.org/2000/xmlns/" style="width: 104px; height: 20px;">1</span></foreignObject><foreignObject style="overflow: visible;" x="143.9696480887277" y="275" width="103.96964808872768" height="20"><span class="ct-label ct-horizontal ct-end" xmlns="http://www.w3.org/2000/xmlns/" style="width: 104px; height: 20px;">2</span></foreignObject><foreignObject style="overflow: visible;" x="247.93929617745536" y="275" width="103.96964808872767" height="20"><span class="ct-label ct-horizontal ct-end" xmlns="http://www.w3.org/2000/xmlns/" style="width: 104px; height: 20px;">3</span></foreignObject><foreignObject style="overflow: visible;" x="351.908944266183" y="275" width="103.9696480887277" height="20"><span class="ct-label ct-horizontal ct-end" xmlns="http://www.w3.org/2000/xmlns/" style="width: 104px; height: 20px;">4</span></foreignObject><foreignObject style="overflow: visible;" x="455.8785923549107" y="275" width="103.96964808872764" height="20"><span class="ct-label ct-horizontal ct-end" xmlns="http://www.w3.org/2000/xmlns/" style="width: 104px; height: 20px;">5</span></foreignObject><foreignObject style="overflow: visible;" x="559.8482404436384" y="275" width="103.9696480887277" height="20"><span class="ct-label ct-horizontal ct-end" xmlns="http://www.w3.org/2000/xmlns/" style="width: 104px; height: 20px;">6</span></foreignObject><foreignObject style="overflow: visible;" x="663.817888532366" y="275" width="103.9696480887277" height="20"><span class="ct-label ct-horizontal ct-end" xmlns="http://www.w3.org/2000/xmlns/" style="width: 104px; height: 20px;">7</span></foreignObject><foreignObject style="overflow: visible;" x="767.7875366210938" y="275" width="30" height="20"><span class="ct-label ct-horizontal ct-end" xmlns="http://www.w3.org/2000/xmlns/" style="width: 30px; height: 20px;">8</span></foreignObject><foreignObject style="overflow: visible;" y="227.5" x="0" height="42.5" width="30"><span class="ct-label ct-vertical ct-start" xmlns="http://www.w3.org/2000/xmlns/" style="height: 43px; width: 30px;">0</span></foreignObject><foreignObject style="overflow: visible;" y="185" x="0" height="42.5" width="30"><span class="ct-label ct-vertical ct-start" xmlns="http://www.w3.org/2000/xmlns/" style="height: 43px; width: 30px;">5</span></foreignObject><foreignObject style="overflow: visible;" y="142.5" x="0" height="42.5" width="30"><span class="ct-label ct-vertical ct-start" xmlns="http://www.w3.org/2000/xmlns/" style="height: 43px; width: 30px;">10</span></foreignObject><foreignObject style="overflow: visible;" y="100" x="0" height="42.5" width="30"><span class="ct-label ct-vertical ct-start" xmlns="http://www.w3.org/2000/xmlns/" style="height: 43px; width: 30px;">15</span></foreignObject><foreignObject style="overflow: visible;" y="57.5" x="0" height="42.5" width="30"><span class="ct-label ct-vertical ct-start" xmlns="http://www.w3.org/2000/xmlns/" style="height: 43px; width: 30px;">20</span></foreignObject><foreignObject style="overflow: visible;" y="15" x="0" height="42.5" width="30"><span class="ct-label ct-vertical ct-start" xmlns="http://www.w3.org/2000/xmlns/" style="height: 43px; width: 30px;">25</span></foreignObject><foreignObject style="overflow: visible;" y="-15" x="0" height="30" width="30"><span class="ct-label ct-vertical ct-start" xmlns="http://www.w3.org/2000/xmlns/" style="height: 30px; width: 30px;">30</span></foreignObject></g></svg></div>
-                </div>
-            </div><!-- card -->
-        </div><!-- col-9 -->
-        <div class="col-4">
-            <div class="card bd-0 shadow-base pd-30">
-                <h6 class="tx-13 tx-uppercase tx-inverse tx-semibold tx-spacing-1">Danh mục</h6>
-                <p class="mg-b-25">...</p>
+                <a href="/KiemKe/Index" class="btn btn-outline-info btn-oblong tx-11 tx-uppercase tx-mont tx-medium tx-spacing-1 pd-x-30 bd-2">Xem thêm</a>
+            </div><!-- d-flex -->
 
-                <label class="tx-12 tx-gray-600 mg-b-10">Danh mục 1</label>
-                <div class="progress ht-5 mg-b-10">
-                    <div class="progress-bar wd-25p" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
+            <table class="table table-valign-middle mg-b-0">
+                <tbody>
+                    @foreach (var item in Model.RecentKiemKes)
+                    {
+                        <tr>
+                            <td>
+                                <h6 class="tx-inverse tx-14 mg-b-0">@item.Title</h6>
+                                <span class="tx-12">@item.CreatedBy</span>
+                            </td>
+                            <td>@item.Created.ToString("dd/MM/yyyy")</td>
+                            <td class="pd-r-0-force tx-center"><a href="/KiemKe/Detail/@item.Id" class="tx-gray-600"><i class="icon ion-link tx-18 lh-0"></i></a></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
 
-                <label class="tx-12 tx-gray-600 mg-b-10">Danh mục 2</label>
-                <div class="progress ht-5 mg-b-10">
-                    <div class="progress-bar bg-teal wd-60p" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-
-                <label class="tx-12 tx-gray-600 mg-b-10">Danh mục 3</label>
-                <div class="progress ht-5 mg-b-10">
-                    <div class="progress-bar bg-danger wd-70p" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-
-                <label class="tx-12 tx-gray-600 mg-b-10">Danh mục 4</label>
-                <div class="progress ht-5 mg-b-10">
-                    <div class="progress-bar bg-warning wd-50p" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-
-                <label class="tx-12 tx-gray-600 mg-b-10">Danh mục 5</label>
-                <div class="progress ht-5 mg-b-10">
-                    <div class="progress-bar bg-info wd-45p" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-
-                <label class="tx-12 tx-gray-600 mg-b-10">Danh mục 6</label>
-                <div class="progress ht-5 mg-b-10">
-                    <div class="progress-bar bg-purple wd-65p" role="progressbar" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-
-                <div class="mg-t-20 tx-13">
-                </div>
-            </div><!-- card -->
-        </div><!-- col-3 -->
-    </div><!-- row -->
+    </div><!-- col-9 -->
+    <div class="col-4">
+        <div class="card bd-0 shadow-base pd-30  min-height">
+            <h6 class="tx-13 tx-uppercase tx-inverse tx-semibold tx-spacing-1">Danh mục</h6>
+            <br />
+            @{
+                var count = 0;
+                foreach (var item in Model.DanhMuc)
+                {
+                    <label class="tx-12 tx-gray-600 mg-b-10">
+                        <a href="/Category/Index/@item">@item</a>
+                    </label>
+                    <div class="progress ht-5 mg-b-10">
+                        <div class="progress-bar @colors[count] wd-25p" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    count++;
+                }
+            }
+            <div class="mg-t-20 tx-13">
+            </div>
+        </div><!-- card -->
+    </div><!-- col-3 -->
+</div><!-- row -->
