@@ -53,14 +53,14 @@ namespace DK.Web.Models
         public bool IsAdmin{ get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "Mật khẩu phải có độ dài từ {0} đến {2} kí tự.", MinimumLength = 6)]
+        [StringLength(100, ErrorMessage = "Mật khẩu phải có độ dài từ {0} đến {2} kí tự.", MinimumLength = 1)]
         [DataType(DataType.Password)]
         [Display(Name = "Mật khẩu")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
         [Display(Name = "Xác nhận mật khẩu")]
-        [Compare(nameof(Password), ErrorMessage = "Mật khẩu mới chưa khớp.")]
+        [Compare(nameof(Password), ErrorMessage = "Mật khẩu chưa khớp.")]
         public string ConfirmPassword { get; set; }
     }
 }
