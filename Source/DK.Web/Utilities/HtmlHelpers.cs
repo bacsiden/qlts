@@ -19,6 +19,12 @@ namespace DK.Web
             {
                 var tagOption = new TagBuilder("option");
                 tagOption.SetInnerText(item);
+                if (item != optionText)
+                {
+                    tagOption.Attributes.Add("value", item);
+                }
+                else
+                    tagOption.Attributes.Add("value", null);
                 if (!string.IsNullOrEmpty(item) && !string.IsNullOrEmpty(selected) && item.ToLower().Equals(selected.ToLower()))
                 {
                     tagOption.Attributes.Add("selected", "selected");

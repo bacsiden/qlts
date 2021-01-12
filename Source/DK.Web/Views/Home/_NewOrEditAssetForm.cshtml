@@ -3,10 +3,13 @@
 
 @Html.Hidden("returnUrl", Request.Params["returnUrl"])
 @Html.HiddenFor(m => m.Id)
-@Html.HiddenFor(m => m.Code)
 @Html.HiddenFor(m => m.IsApproved)
 @Html.ValidationSummary(true)
 <div class="row mb-2">
+    <div class="col-md-4 col-sm-6 search-item">
+        @Html.LabelFor(m => m.Code)
+        @Html.TextBoxFor(m => m.Code, new { Readonly = true, Class = "form-control form-control-sm" })
+    </div>
     <div class="col-md-4 col-sm-6 search-item">
         @Html.LabelFor(m => m.Name)
         @Html.TextBoxFor(m => m.Name, new { Class = "form-control form-control-sm" })

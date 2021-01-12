@@ -75,6 +75,10 @@ namespace DK.Application.Repositories
             #endregion
 
             #region Search Contains
+            if (!string.IsNullOrWhiteSpace(model.BienSo))
+            {
+                query &= filter.Regex(m => m.BienSo, new BsonRegularExpression(model.BienSo, "i"));
+            }
             if (!string.IsNullOrWhiteSpace(model.Name))
             {
                 query &= filter.Regex(m => m.Name, BsonRegularExpression.Create(new Regex(model.Name, RegexOptions.IgnoreCase)));
@@ -103,7 +107,7 @@ namespace DK.Application.Repositories
 
             if (model.Tags.Count > 0)
             {
-                query &= filter.AnyIn(m => m.Tags, model.Tags);
+                query &= filter.All(m => m.Tags, model.Tags);
             }
 
             return _collection.Find(query).ToEnumerable();

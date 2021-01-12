@@ -18,5 +18,8 @@ namespace DK.Application
         void ImportKiemKe(Stream stream, Guid kiemKeId);
         Task ExportBarCodeAsync(List<TaiSan> taiSans);
         Dictionary<string, int> GetExistingCodes();
+
+        void AddNewType(List<Models.Type> types, List<Models.Type> newTypes, string name, string value);
+        void AddNewType(List<Models.Type> types, List<Models.Type> newTypes, string name, List<string> values);
     }
 }

@@ -134,11 +134,19 @@ namespace DK.Web.Controllers
             {
                 var existingCodes = _taiSanService.GetExistingCodes();
                 taisan.GenerateCode(existingCodes);
+                taisan.CreatedBy = User.Identity.Name;
             }
 
             taisan.Tags = string.IsNullOrWhiteSpace(taisan.JoinedTags) ? new List<string>() : taisan.JoinedTags.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries).Select(m => m.Trim()).ToList();
 
             _taiSanRepository.Upsert(taisan);
+
+            var types = _typeRepository.Find(m => true).ToList();
+            var newTypes = new List<Application.Models.Type>();
+            _taiSanService.AddNewType(types, newTypes, TypeConstant.Tags, taisan.Tags);
+            if (newTypes.Any())
+                _typeRepository.AddRange(newTypes);
+
             return CustomRedirect(returnUrl);
         }
 
@@ -250,7 +258,7 @@ namespace DK.Web.Controllers
             var types = _typeRepository.Find(m => true).ToList();
             ViewBag.GroupName = TypeConstant.Groups;
             ViewBag.ChungLoai = types.Where(m => m.Name == TypeConstant.ChungLoai).Select(m => m.Title);
-            ViewBag.DanhMuc = types.Where(m => m.Name == TypeConstant.DanhMuc).Select(m => m.Title);
+            ViewBag.DanhMuc = types.Where(m => m.Name == TypeConstant.Group).Select(m => m.Title);
             ViewBag.NguonKinhPhi = types.Where(m => m.Name == TypeConstant.NguonKinhPhi).Select(m => m.Title);
             ViewBag.ChatLuong = types.Where(m => m.Name == TypeConstant.ChatLuong).Select(m => m.Title);
             ViewBag.LoaiXe = types.Where(m => m.Name == TypeConstant.LoaiXe).Select(m => m.Title);

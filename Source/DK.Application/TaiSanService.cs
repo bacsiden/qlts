@@ -79,7 +79,7 @@ namespace DK.Application
                 ts.ChatLuong = GetCellString(xls, row, nameof(TaiSan.ChatLuong));
                 AddNewType(types, newTypes, TypeConstant.ChatLuong, ts.ChatLuong);
 
-                ts.HaoMonLuyKe = GetCellInt(xls, row, nameof(TaiSan.HaoMonLuyKe));
+                ts.HaoMonLuyKe = GetCellDecimal(xls, row, nameof(TaiSan.HaoMonLuyKe));
                 ts.GiaTriConLai = GetCellDecimal(xls, row, nameof(TaiSan.GiaTriConLai));
                 ts.NguoiSuDung = GetCellString(xls, row, nameof(TaiSan.NguoiSuDung));
                 ts.NguoiQuanLy = GetCellString(xls, row, nameof(TaiSan.NguoiQuanLy));
@@ -422,12 +422,12 @@ namespace DK.Application
             return taisans.Union(subTs).ToDictionary(k => k.Key, v => v.Value);
         }
 
-        private void AddNewType(List<Models.Type> types, List<Models.Type> newTypes, string name, string value)
+        public void AddNewType(List<Models.Type> types, List<Models.Type> newTypes, string name, string value)
         {
             if (!string.IsNullOrWhiteSpace(value) && !types.Any(m => m.Name == name && value.Equals(m.Title, StringComparison.OrdinalIgnoreCase)))
                 newTypes.Add(new Models.Type { Name = name, Title = value });
         }
-        private void AddNewType(List<Models.Type> types, List<Models.Type> newTypes, string name, List<string> values)
+        public void AddNewType(List<Models.Type> types, List<Models.Type> newTypes, string name, List<string> values)
         {
             values.ForEach(x =>
             {

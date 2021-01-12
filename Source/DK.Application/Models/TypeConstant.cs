@@ -9,7 +9,7 @@ namespace DK.Application.Models
     public static class TypeConstant
     {
         public const string ChungLoai = "Chủng loại";
-        public const string DanhMuc = "Danh mục";
+        public const string Group = "Nhóm tài sản";
         public const string NguonKinhPhi = "Nguồn kinh phí";
         public const string ChatLuong = "Chất lượng";
         public const string LoaiXe = "Loại xe";
@@ -22,6 +22,11 @@ namespace DK.Application.Models
         public const string GChuyenDung = "Tài sản chuyên dùng";
 
         public static List<string> Groups = new List<string> { GQuanLy, GDacBiet, GChuyenDung };
+        public static string ToMoneyString(this decimal? input)
+        {
+            if (!input.HasValue) return null;
+            return input.Value.ToString("N0");
+        }
         public static string RemoveDiacritics(this string text)
         {
             if (string.IsNullOrWhiteSpace(text)) return null;

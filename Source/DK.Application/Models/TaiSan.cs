@@ -141,7 +141,7 @@ namespace DK.Application.Models
 
         [ColumnIndex(19)]
         [Display(Name = "Hao mòn lũy kế")]
-        public int? HaoMonLuyKe { get; set; }
+        public decimal? HaoMonLuyKe { get; set; }
 
         [ColumnIndex(20)]
         [Display(Name = "Giá trị còn lại")]

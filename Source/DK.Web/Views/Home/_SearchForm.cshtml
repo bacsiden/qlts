@@ -65,39 +65,39 @@
                 @Html.TextBoxFor(m => m.NamSuDungSearch, new { Class = "form-control form-control-sm", type = "number", min = "1" })
             </div>
             @*<div class="col-md-2 col-sm-3 search-item">
-                    @Html.LabelFor(m => m.SoLuongSearch)
-                    @Html.TextBoxFor(m => m.SoLuongSearch, new { Class = "form-control form-control-sm", type = "number", min = "1" })
-                </div>*@
+            @Html.LabelFor(m => m.SoLuongSearch)
+            @Html.TextBoxFor(m => m.SoLuongSearch, new { Class = "form-control form-control-sm", type = "number", min = "1" })
+        </div>*@
             <div class="col-md-2 col-sm-3 search-item">
                 @Html.LabelFor(m => m.ChatLuong)
                 @Html.DropDownListFor(x => x.ChatLuong, new SelectList(ViewBag.ChatLuong), "Tất cả", new { Class = "form-control form-control-sm" })
             </div>
             @*<div class="col-md-4 col-sm-6 search-item">
-                    @Html.LabelFor(m => m.NguyenGiaKeToan)
-                    <div class="input-group">
-                        <span class="input-group-addon">
-                            Từ
-                        </span>
-                        @Html.TextBoxFor(m => m.GiaKeToanTu, new { Class = "form-control form-control-sm price" })
-                        <span class="input-group-addon">
-                            đến
-                        </span>
-                        @Html.TextBoxFor(m => m.GiaKeToanDen, new { Class = "form-control form-control-sm price" })
-                    </div>
-                </div>*@
+            @Html.LabelFor(m => m.NguyenGiaKeToan)
+            <div class="input-group">
+                <span class="input-group-addon">
+                    Từ
+                </span>
+                @Html.TextBoxFor(m => m.GiaKeToanTu, new { Class = "form-control form-control-sm price" })
+                <span class="input-group-addon">
+                    đến
+                </span>
+                @Html.TextBoxFor(m => m.GiaKeToanDen, new { Class = "form-control form-control-sm price" })
+            </div>
+        </div>*@
             @*<div class="col-md-4 col-sm-6 search-item">
-                    @Html.LabelFor(m => m.NguyenGiaKiemKe)
-                    <div class="input-group">
-                        <span class="input-group-addon">
-                            Từ
-                        </span>
-                        @Html.TextBoxFor(m => m.GiaKeToanTu, new { Class = "form-control form-control-sm price" })
-                        <span class="input-group-addon">
-                            đến
-                        </span>
-                        @Html.TextBoxFor(m => m.GiaKiemKeDen, new { Class = "form-control form-control-sm price" })
-                    </div>
-                </div>*@
+            @Html.LabelFor(m => m.NguyenGiaKiemKe)
+            <div class="input-group">
+                <span class="input-group-addon">
+                    Từ
+                </span>
+                @Html.TextBoxFor(m => m.GiaKeToanTu, new { Class = "form-control form-control-sm price" })
+                <span class="input-group-addon">
+                    đến
+                </span>
+                @Html.TextBoxFor(m => m.GiaKiemKeDen, new { Class = "form-control form-control-sm price" })
+            </div>
+        </div>*@
             <div class="col-md-2 col-sm-3 search-item">
                 @Html.Label("Người sử dụng")
                 @Html.TextBoxFor(m => m.NguoiSuDung, new { Class = "form-control form-control-sm", placeholder = "Cá nhân" })
@@ -109,6 +109,10 @@
             <div class="col-md-2 col-sm-3 search-item">
                 @Html.LabelFor(m => m.PhongQuanLy)
                 @Html.DropDownListFor(x => x.PhongQuanLy, new SelectList(ViewBag.PhongBan), "Tất cả", new { Class = "form-control form-control-sm" })
+            </div>
+            <div class="col-md-2 col-sm-3 search-item">
+                @Html.LabelFor(m => m.BienSo)
+                @Html.TextBoxFor(m => m.BienSo, new { Class = "form-control form-control-sm", placeholder = "Biển số" })
             </div>
             <div class="col-md-2 col-sm-3 search-item">
                 @Html.LabelFor(m => m.LoaiXe)
@@ -141,7 +145,7 @@
         <div class="col search-item">
             @Html.CheckBoxFor(x => x.IncludeSub)
             <label>Tài sản con</label>
-            <button id="btnSearch" class="btn  btn-sm bd bg-primary tx-white pointer" type="button"><i class="fa fa-search"></i> Tìm kiếm</button>
+            <button id="btnSearch" class="btn  btn-sm bd bg-primary tx-white pointer" type="submit"><i class="fa fa-search"></i> Tìm kiếm</button>
             <a class="btn btn-sm bd pointer" href="/Home/Index"><i class="fa fa-refresh"></i> Reset</a>
             @if (Model.IsApproved)
             {
