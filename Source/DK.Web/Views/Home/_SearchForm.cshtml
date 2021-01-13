@@ -215,6 +215,14 @@
                 <div class="modal-body">
 
                     <div class="form-row align-items-center">
+                        <div class="form-check col-sm-4">
+                            @Html.CheckBox("allCol", allViews.All(m => m.Display))
+                            <label class="form-check-label" for="allCol">
+                                <strong>
+                                    Tất cả
+                                </strong>
+                            </label>
+                        </div>
                         @for (int i = 0; i < allViews.Count; i++)
                         {
                             var item = allViews[i];
@@ -222,7 +230,7 @@
                                 <input type="hidden" name="@("allViews[" + i + "].Id")" value="@item.Id">
                                 <input type="hidden" name="returnUrl" value="@Request.RawUrl">
                                 <input type="hidden" name="@("allViews[" + i + "].DisplayText")" value="@item.DisplayText">
-                                @Html.CheckBox("allViews[" + i + "].Display", item.Display)
+                                @Html.CheckBox("allViews[" + i + "].Display", item.Display, new { @class = "view-col" })
                                 <label class="form-check-label" for="@item.Id">
                                     @item.DisplayText
                                 </label>

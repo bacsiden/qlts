@@ -27,6 +27,15 @@
         $("#pattern").val($(this).data('pattern'));
         $("#frmSearch").submit();
     });
+
+    $('#allCol').click(function () {
+        if ($(this).is(':checked')) {
+            $('.view-col').each(function () { $(this).prop('checked', true); });
+        }
+        else {
+            $('.view-col').each(function () { $(this).prop('checked', false); });
+        }
+    });
 });
 
 // Event click with button Edit & Delete
