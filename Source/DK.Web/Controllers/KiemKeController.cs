@@ -9,6 +9,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.IO;
+using MediaDevices;
 
 namespace DK.Web.Controllers
 {
@@ -30,6 +32,26 @@ namespace DK.Web.Controllers
         // GET: Category
         public ActionResult Index(DefaultSearchModel pagerInfo)
         {
+            //var devices = MediaDevice.GetDevices();
+            //using (var device = devices.First())
+            //{
+            //    var dir = @"IPSM card\Android\data";
+            //    device.Connect();
+            //    var photoDir = device.GetDirectoryInfo(dir);
+
+            //    var files = photoDir.EnumerateFiles("*.*", SearchOption.AllDirectories);
+            //    var filename = @"IPSM card\Android\data\xxx.txt";
+            //    device.UploadFile(@"c:\xxx.txt", filename);
+            //    //foreach (var file in files)
+            //    //{
+            //    //    MemoryStream memoryStream = new System.IO.MemoryStream();
+            //    //    device.DownloadFile(file.FullName, memoryStream);
+            //    //    memoryStream.Position = 0;
+            //    //}
+            //    device.Disconnect();
+            //}
+
+            
             var list = _typeRepository.Find(m => m.Name == TypeConstant.KiemKe);
             var pager = new Pager(list.Count(), pagerInfo.PageIndex, pagerInfo.PageSize);
 

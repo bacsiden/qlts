@@ -59,6 +59,9 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="MediaDevices, Version=1.8.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MediaDevices.1.8.0\lib\net45\MediaDevices.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
       <Private>True</Private>
@@ -354,6 +357,7 @@
     <Content Include="Content\lib\spectrum\spectrum.js" />
     <Content Include="Content\lib\summernote\summernote-bs4.css" />
     <Content Include="Content\lib\summernote\summernote-bs4.min.js" />
+    <Content Include="MediaDevicesLicense.txt" />
     <Content Include="Content\lib\bootstrap\dist\css\bootstrap-grid.css.map" />
     <Content Include="Content\lib\bootstrap\dist\css\bootstrap-grid.min.css.map" />
     <Content Include="Content\lib\bootstrap\dist\css\bootstrap-reboot.css.map" />
@@ -374,6 +378,7 @@
     <Content Include="Content\lib\jquery\dist\jquery.min.map" />
     <Content Include="Content\lib\summernote\font\summernote.woff" />
     <None Include="Properties\PublishProfiles\containerts - Web Deploy.pubxml" />
+    <Content Include="MediaDevices.chm" />
     <None Include="Properties\PublishProfiles\file system.pubxml" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
