@@ -28,11 +28,12 @@ namespace DK.Application.Repositories
         T Update(T model);
 
         Task DeleteAsync(Guid id);
+        void Delete(Guid id);
         Task DeleteAsync(string id);
         Task DeleteManyAsync(string fieldName, object value);
         Task SetAsync(Guid id, string fieldName, dynamic value);
         Task SetAsync(string id, string fieldName, dynamic value);
-
+        void Set(Guid id, string fieldName, dynamic value);
         IFindFluent<T, T> Find(IEnumerable<Guid> Ids);
     }
 }

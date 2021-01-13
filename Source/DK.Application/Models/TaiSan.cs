@@ -45,6 +45,15 @@ namespace DK.Application.Models
             return LoaiXe != null || DungTichXiLanh != null || SoChoNgoi != null || value.Contains("phương tiện giao thông") || value.Contains("ô tô");
         }
 
+        public string Display(string fieldName)
+        {
+            var prop = this.GetType().GetProperty(fieldName);
+            var value = prop.GetValue(this);
+            if (value == null) return null;
+            if (value is decimal) return ((decimal?)value).ToMoneyString();
+            return value.ToString();
+        }
+
         public Guid ParentId { get; set; }
 
         [BsonIgnore]
@@ -235,6 +244,7 @@ namespace DK.Application.Models
         /// <summary>
         /// Multi select
         /// </summary>
+        [Display(Name = "Tags")]
         [ColumnIndex(34)]
         public List<string> Tags { get; set; } = new List<string>();
 

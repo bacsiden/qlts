@@ -21,12 +21,15 @@ namespace DK.Web.Controllers
         private readonly ITypeRepository _typeRepository;
         private readonly ITaiSanService _taiSanService;
         private readonly IKiemKeRepository _kiemKeRepository;
-        public HomeController(ITaiSanRepository taiSanRepository, ITypeRepository typeRepository, ITaiSanService taiSanService, IKiemKeRepository kiemKeRepository)
+        private readonly IViewFieldRepository _viewFieldRepository;
+        public HomeController(ITaiSanRepository taiSanRepository, ITypeRepository typeRepository, ITaiSanService taiSanService, IKiemKeRepository kiemKeRepository,
+            IViewFieldRepository viewFieldRepository)
         {
             _taiSanRepository = taiSanRepository;
             _typeRepository = typeRepository;
             _taiSanService = taiSanService;
             _kiemKeRepository = kiemKeRepository;
+            _viewFieldRepository = viewFieldRepository;
         }
         // GET: Tài sản đã phê duyệt
         public ActionResult Index(TaiSanSearchModel search)
@@ -35,9 +38,22 @@ namespace DK.Web.Controllers
 
             CreateDropDownViewBag();
             ViewBag.SearchModel = search;
+            ViewBag.ViewFields = _viewFieldRepository.ListForTaiSan(User.Identity.Name);
 
             var result = SearchTaiSan(search);
             return View(result);
+        }
+
+        public ActionResult SetView(List<ViewField> allViews, string returnUrl)
+        {
+            var lst = _viewFieldRepository.ListForTaiSan(User.Identity.Name);
+            foreach (var item in allViews)
+            {
+                var old = lst.FirstOrDefault(m => m.Id == item.Id);
+                if (old?.Display != item.Display)
+                    _viewFieldRepository.Set(item.Id, nameof(ViewField.Display), item.Display);
+            }
+            return CustomRedirect(returnUrl);
         }
 
         // GET: Tài sản chưa phê duyệt
@@ -53,6 +69,7 @@ namespace DK.Web.Controllers
 
             CreateDropDownViewBag();
             ViewBag.SearchModel = search;
+            ViewBag.ViewFields = _viewFieldRepository.ListForTaiSan(User.Identity.Name);
 
             var result = SearchTaiSan(search);
             return View(result);

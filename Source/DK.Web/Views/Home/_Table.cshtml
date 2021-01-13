@@ -3,6 +3,8 @@
 @{
     var canManage = DK.Application.Models.RoleList.GetAll().Any(User.IsInRole);
     var searchModel = ViewBag.SearchModel as DK.Application.Models.TaiSanSearchModel;
+    var allViews = ((List<ViewField>)ViewBag.ViewFields).ToList();
+    var views = allViews.Where(m => m.Display).ToList();
 }
 
 <table class="table mg-b-0" cellspacing="0">
@@ -12,115 +14,23 @@
             <th><input type="checkbox" class="checkAll" /></th>
         }
         <th>STT</th>
-        <th>
-            @Html.DisplayNameFor(m => m.Code)
-        </th>
-        <th>
-            @Html.DisplayNameFor(m => m.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(m => m.GroupName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(m => m.ChungLoai)
-        </th>
-        <th>
-            @Html.DisplayNameFor(m => m.NhanHieu)
-        </th>
-        <th>
-            @Html.DisplayNameFor(m => m.Serial)
-        </th>
-        <th>
-            @Html.DisplayNameFor(m => m.XuatXu)
-        </th>
-        <th>
-            @Html.DisplayNameFor(m => m.ThuocHopDong)
-        </th>
-        <th>
-            @Html.DisplayNameFor(m => m.ThuocGoiThau)
-        </th>
-        <th>
-            @Html.DisplayNameFor(m => m.NguonKinhPhi)
-        </th>
-        <th>
-            @Html.DisplayNameFor(m => m.NganSachNam)
-        </th>
-        <th>
-            @Html.DisplayNameFor(m => m.NamSanXuat)
-        </th>
-        <th>
-            @Html.DisplayNameFor(m => m.NamSuDung)
-        </th>
-        <th>
-            @Html.DisplayNameFor(m => m.NguyenGiaKeToan)
-        </th>
-        <th>
-            @Html.DisplayNameFor(m => m.SoLuong)
-        </th>
-        <th>
-            @Html.DisplayNameFor(m => m.KhoiLuong)
-        </th>
-        <th>
-            @Html.DisplayNameFor(m => m.ChatLuong)
-        </th>
-        <th>
-            @Html.DisplayNameFor(m => m.HaoMonLuyKe)
-        </th>
-        <th>
-            @Html.DisplayNameFor(m => m.GiaTriConLai)
-        </th>
-        <th>
-            @Html.DisplayNameFor(m => m.NguoiSuDung)
-        </th>
-        <th>
-            @Html.DisplayNameFor(m => m.NguoiQuanLy)
-        </th>
-        <th>
-            @Html.DisplayNameFor(m => m.PhongQuanLy)
-        </th>
-        <th>
-            @Html.DisplayNameFor(m => m.LoaiXe)
-        </th>
-        <th>
-            @Html.DisplayNameFor(m => m.BienSo)
-        </th>
-        <th>
-            @Html.DisplayNameFor(m => m.DungTichXiLanh)
-        </th>
-        <th>
-            @Html.DisplayNameFor(m => m.SoChoNgoi)
-        </th>
-        <th>
-            @Html.DisplayNameFor(m => m.SoTang)
-        </th>
-        <th>
-            @Html.DisplayNameFor(m => m.DienTichXayDung)
-        </th>
-        <th>
-            @Html.DisplayNameFor(m => m.CapCongTrinh)
-        </th>
-        <th>
-            @Html.DisplayNameFor(m => m.DiaChi)
-        </th>
-        <th>
-            @Html.DisplayNameFor(m => m.DienTichKhuonVien)
-        </th>
-        <th>
-            Tags
-        </th>
+        @foreach (var item in views)
+        {
+            <th>@item.DisplayText</th>
+        }
     </tr>
 
     @{
         var stt = 1;
         foreach (var item in Model)
         {
-            @BindData(stt, item, canManage, searchModel.IsApproved, true);
+            @BindData(stt, item, canManage, searchModel.IsApproved, true, views);
             if (((TaiSanSearchModel)ViewBag.SearchModel).IncludeSub)
             {
                 var childStt = 1;
                 foreach (var child in item.Children)
                 {
-                    @BindData(childStt, child, canManage, searchModel.IsApproved, false);
+                    @BindData(childStt, child, canManage, searchModel.IsApproved, false, views);
                     childStt++;
                 }
             }
@@ -129,8 +39,9 @@
     }
 </table>
 
-@helper BindData(int stt, TaiSan item, bool canManage, bool isApproved, bool isParent)
+@helper BindData(int stt, TaiSan item, bool canManage, bool isApproved, bool isParent, List<ViewField> views)
 {
+    var i = 0;
     <tr class="stat even">
         @if (isParent && (canManage || !isApproved))
         {
@@ -138,127 +49,39 @@
                 <input type="checkbox" class="checkitem" value="@item.Id" />
             </td>
         }
-
-        @if (!isParent)
+        else
         {
             <td></td>
         }
-        <td class="ac">
-            @if (isParent)
+
+        @if (isParent)
+        {
+            <td class="ac">
+                @if (isParent && (canManage || !isApproved))
+                {
+                    <a href="@Url.Action("NewOrEditAsset", new { item.Id, isApproved, returnUrl = Request.RawUrl})">@stt</a>
+                }
+            </td>
+        }
+        else
+        {
+            <td></td>
+        }
+
+        @foreach (var field in views)
+        {
+            i++;
+            if (i == 1 && isParent && (canManage || !isApproved))
             {
-                @(stt)
-            }
-        </td>
-        <td>
-            @if (isParent && (canManage || !isApproved))
-            {
-                <a href="@Url.Action("NewOrEditAsset", new { item.Id, isApproved, returnUrl = Request.RawUrl})">@item.Code</a>
+                <td>
+                    <a href="@Url.Action("NewOrEditAsset", new { item.Id, isApproved, returnUrl = Request.RawUrl })">@item.Display(field.FieldName)</a>
+                </td>
             }
             else
             {
-                @item.Code
+                <td>@item.Display(field.FieldName)</td>
             }
-        </td>
-        <td>
-            @if (isParent && (canManage || !isApproved))
-            {
-                <a href="@Url.Action("NewOrEditAsset", new { item.Id, isApproved, returnUrl = Request.RawUrl})">@item.Name</a>
-            }
-            else
-            {
-                @item.Name
-            }
-        </td>
-        <td>
-            @item.GroupName
-        </td>
-        <td>
-            @item.ChungLoai
-        </td>
-        <td>
-            @item.NhanHieu
-        </td>
-        <td>
-            @item.Serial
-        </td>
-        <td>
-            @item.XuatXu
-        </td>
-        <td>
-            @item.ThuocHopDong
-        </td>
-        <td>
-            @item.ThuocGoiThau
-        </td>
-        <td>
-            @item.NguonKinhPhi
-        </td>
-        <td>
-            @item.NganSachNam
-        </td>
-        <td>
-            @item.NamSanXuat
-        </td>
-        <td>
-            @item.NamSuDung
-        </td>
-        <td>
-            @item.NguyenGiaKeToan.ToMoneyString()
-        </td>
-        <td>
-            @item.SoLuong
-        </td>
-        <td>
-            @item.KhoiLuong
-        </td>
-        <td>
-            @item.ChatLuong
-        </td>
-        <td>
-            @item.HaoMonLuyKe.ToMoneyString()
-        </td>
-        <td>
-            @item.GiaTriConLai.ToMoneyString()
-        </td>
-        <td>
-            @item.NguoiSuDung
-        </td>
-        <td>
-            @item.NguoiQuanLy
-        </td>
-        <td>
-            @item.PhongQuanLy
-        </td>
-        <td>
-            @item.LoaiXe
-        </td>
-        <td>
-            @item.BienSo
-        </td>
-        <td>
-            @item.DungTichXiLanh
-        </td>
-        <td>
-            @item.SoChoNgoi
-        </td>
-        <td>
-            @item.SoTang
-        </td>
-        <td>
-            @item.DienTichXayDung
-        </td>
-        <td>
-            @item.CapCongTrinh
-        </td>
-        <td>
-            @item.DiaChi
-        </td>
-        <td>
-            @item.DienTichKhuonVien
-        </td>
-        <td>
-            @string.Join("<br />", item.Tags)
-        </td>
+        }
     </tr>
 }
 

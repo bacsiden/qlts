@@ -114,7 +114,3 @@ input[type="button"], input[type="submit"], button[type="submit"], button[type="
     background-color: #fff;
     border-color: #dee2e6 #dee2e6 #fff;
 }
-
-.table-responsive {
-    max-height: 550px;
-}

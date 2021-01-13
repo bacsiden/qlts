@@ -101,14 +101,17 @@
     <Compile Include="Models\Type.cs" />
     <Compile Include="Models\TaiSan.cs" />
     <Compile Include="Models\TypeConstant.cs" />
+    <Compile Include="Models\ViewField.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\BaseRepository.cs" />
     <Compile Include="Repositories\IKiemKeRepository.cs" />
     <Compile Include="Repositories\ITaiSanRepository.cs" />
+    <Compile Include="Repositories\IViewFieldepository.cs" />
     <Compile Include="Repositories\ITypeRepository.cs" />
     <Compile Include="Repositories\KiemKeRepository.cs" />
     <Compile Include="Repositories\TaiSanRepository.cs" />
     <Compile Include="Repositories\IBaseRepository.cs" />
+    <Compile Include="Repositories\ViewFieldRepository.cs" />
     <Compile Include="Repositories\TypeRepository.cs" />
     <Compile Include="TaiSanService.cs" />
   </ItemGroup>

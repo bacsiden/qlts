@@ -87,7 +87,14 @@ namespace DK.Application.Repositories
             return _collection.UpdateOneAsync(filter_id, Builders<T>.Update.Set(fieldName, value));
         }
 
+        public virtual void Set(Guid id, string fieldName, dynamic value)
+        {
+            var filter_id = Builders<T>.Filter.Eq("_id", id);
+            _collection.UpdateOne(filter_id, Builders<T>.Update.Set(fieldName, value));
+        }
+
         public virtual Task DeleteAsync(Guid id) => _collection.DeleteOneAsync(Builders<T>.Filter.Eq("_id", id));
+        public virtual void Delete(Guid id) => _collection.DeleteOne(Builders<T>.Filter.Eq("_id", id));
 
         public virtual Task DeleteAsync(string id) => _collection.DeleteOneAsync(Builders<T>.Filter.Eq("_id", ObjectId.Parse(id)));
 

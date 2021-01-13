@@ -1,8 +1,10 @@
-﻿@model DK.Application.Models.TaiSanSearchModel
+﻿@using DK.Application.Models
+@model DK.Application.Models.TaiSanSearchModel
 @{
     var tags = ViewBag.Tags as IEnumerable<string> ?? new List<string>();
     var pageSizeList = new int[] { 10, 50, 100, 200, 500 };
     var canManage = DK.Application.Models.RoleList.GetAll().Any(User.IsInRole);
+    var allViews = ((List<ViewField>)ViewBag.ViewFields).ToList();
 }
 
 @using (Html.BeginForm(null, null, FormMethod.Get, new { role = "form", id = "frmSearch" }))
@@ -65,39 +67,39 @@
                 @Html.TextBoxFor(m => m.NamSuDungSearch, new { Class = "form-control form-control-sm", type = "number", min = "1" })
             </div>
             @*<div class="col-md-2 col-sm-3 search-item">
-            @Html.LabelFor(m => m.SoLuongSearch)
-            @Html.TextBoxFor(m => m.SoLuongSearch, new { Class = "form-control form-control-sm", type = "number", min = "1" })
-        </div>*@
+                    @Html.LabelFor(m => m.SoLuongSearch)
+                    @Html.TextBoxFor(m => m.SoLuongSearch, new { Class = "form-control form-control-sm", type = "number", min = "1" })
+                </div>*@
             <div class="col-md-2 col-sm-3 search-item">
                 @Html.LabelFor(m => m.ChatLuong)
                 @Html.DropDownListFor(x => x.ChatLuong, new SelectList(ViewBag.ChatLuong), "Tất cả", new { Class = "form-control form-control-sm" })
             </div>
             @*<div class="col-md-4 col-sm-6 search-item">
-            @Html.LabelFor(m => m.NguyenGiaKeToan)
-            <div class="input-group">
-                <span class="input-group-addon">
-                    Từ
-                </span>
-                @Html.TextBoxFor(m => m.GiaKeToanTu, new { Class = "form-control form-control-sm price" })
-                <span class="input-group-addon">
-                    đến
-                </span>
-                @Html.TextBoxFor(m => m.GiaKeToanDen, new { Class = "form-control form-control-sm price" })
-            </div>
-        </div>*@
+                    @Html.LabelFor(m => m.NguyenGiaKeToan)
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            Từ
+                        </span>
+                        @Html.TextBoxFor(m => m.GiaKeToanTu, new { Class = "form-control form-control-sm price" })
+                        <span class="input-group-addon">
+                            đến
+                        </span>
+                        @Html.TextBoxFor(m => m.GiaKeToanDen, new { Class = "form-control form-control-sm price" })
+                    </div>
+                </div>*@
             @*<div class="col-md-4 col-sm-6 search-item">
-            @Html.LabelFor(m => m.NguyenGiaKiemKe)
-            <div class="input-group">
-                <span class="input-group-addon">
-                    Từ
-                </span>
-                @Html.TextBoxFor(m => m.GiaKeToanTu, new { Class = "form-control form-control-sm price" })
-                <span class="input-group-addon">
-                    đến
-                </span>
-                @Html.TextBoxFor(m => m.GiaKiemKeDen, new { Class = "form-control form-control-sm price" })
-            </div>
-        </div>*@
+                    @Html.LabelFor(m => m.NguyenGiaKiemKe)
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            Từ
+                        </span>
+                        @Html.TextBoxFor(m => m.GiaKeToanTu, new { Class = "form-control form-control-sm price" })
+                        <span class="input-group-addon">
+                            đến
+                        </span>
+                        @Html.TextBoxFor(m => m.GiaKiemKeDen, new { Class = "form-control form-control-sm price" })
+                    </div>
+                </div>*@
             <div class="col-md-2 col-sm-3 search-item">
                 @Html.Label("Người sử dụng")
                 @Html.TextBoxFor(m => m.NguoiSuDung, new { Class = "form-control form-control-sm", placeholder = "Cá nhân" })
@@ -145,7 +147,7 @@
         <div class="col search-item">
             @Html.CheckBoxFor(x => x.IncludeSub)
             <label>Tài sản con</label>
-            <button id="btnSearch" class="btn  btn-sm bd bg-primary tx-white pointer" type="submit"><i class="fa fa-search"></i> Tìm kiếm</button>
+            <button id="btnSearch" class="btn btn-sm bd bg-primary tx-white pointer" type="submit"><i class="fa fa-search"></i> Tìm kiếm</button>
             <a class="btn btn-sm bd pointer" href="/Home/Index"><i class="fa fa-refresh"></i> Reset</a>
             @if (Model.IsApproved)
             {
@@ -187,6 +189,10 @@
             </div>
             @if (canManage || !Model.IsApproved)
             {
+                <button type="button" class="btn btn-sm btn btn-info" data-toggle="modal" data-target="#modalViews">
+                    <i class="fa fa-table"> </i>
+                    Hiển thị cột
+                </button>
                 <a class="btn btn-sm btn-danger pointer DeleteItem" href="/Home/DeleteTaiSan"><i class="fa fa-times"></i> Xóa</a>
             }
             @if (canManage && !Model.IsApproved)
@@ -196,3 +202,39 @@
         </div>
     </div>
 }
+<div class="modal fade" id="modalViews" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Chọn các cột hiển thị</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="@Url.Action("SetView")" method="post">
+                <div class="modal-body">
+
+                    <div class="form-row align-items-center">
+                        @for (int i = 0; i < allViews.Count; i++)
+                        {
+                            var item = allViews[i];
+                            <div class="form-check col-sm-4">
+                                <input type="hidden" name="@("allViews[" + i + "].Id")" value="@item.Id">
+                                <input type="hidden" name="returnUrl" value="@Request.RawUrl">
+                                <input type="hidden" name="@("allViews[" + i + "].DisplayText")" value="@item.DisplayText">
+                                @Html.CheckBox("allViews[" + i + "].Display", item.Display)
+                                <label class="form-check-label" for="@item.Id">
+                                    @item.DisplayText
+                                </label>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                    <button type="submit" class="btn btn-info">OK</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
