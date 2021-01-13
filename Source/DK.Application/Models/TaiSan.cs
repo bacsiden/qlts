@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 
 namespace DK.Application.Models
@@ -52,6 +53,11 @@ namespace DK.Application.Models
             if (value == null) return null;
             if (value is decimal) return ((decimal?)value).ToMoneyString();
             return value.ToString();
+        }
+
+        public string Display<TProperty>(Expression<Func<TaiSan, TProperty>> property)
+        {
+            return Display(((MemberExpression)property.Body).Member.Name);
         }
 
         public Guid ParentId { get; set; }

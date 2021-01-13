@@ -56,6 +56,14 @@ namespace DK.Web.Controllers
             return CustomRedirect(returnUrl);
         }
 
+        public ActionResult Preview(TaiSanSearchModel search)
+        {
+            var list = _taiSanRepository.Find(search);
+            _taiSanService.ExportDataAsync(list.ToList(), search).GetAwaiter().GetResult();
+
+            return CustomRedirect($"/Html/{search.pattern}.html");
+        }
+
         // GET: Tài sản chưa phê duyệt
         public ActionResult TaisanUnApproved(TaiSanSearchModel search)
         {
@@ -255,7 +263,7 @@ namespace DK.Web.Controllers
 
             var pager = new Pager(list.Count(), search.PageIndex, search.PageSize);
             if (!string.IsNullOrWhiteSpace(search.pattern))
-                _taiSanService.ExportDataAsync(list.ToList(), search.pattern, search.IncludeSub);
+                _taiSanService.ExportDataAsync(list.ToList(), search);
             search.pattern = null;
             return new PagerViewModel
             {

@@ -28,6 +28,11 @@
         $("#frmSearch").submit();
     });
 
+    $('.report-preview').click(function () {
+        $("#Preview").val($(this).data('true'));
+        $("#frmSearch").submit();
+    });
+
     $('#allCol').click(function () {
         if ($(this).is(':checked')) {
             $('.view-col').each(function () { $(this).prop('checked', true); });

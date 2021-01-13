@@ -17,6 +17,7 @@ namespace DK.Application
     public class TaiSanService : ITaiSanService
     {
         protected readonly string TemplateFolder = HttpContext.Current.Server.MapPath("~/ReportTemplates\\");
+        protected readonly string HtmlFolder = HttpContext.Current.Server.MapPath("~/Html\\");
         private readonly ITaiSanRepository _taiSanRepository;
         private readonly ITypeRepository _typeRepository;
         private readonly IKiemKeRepository _kiemKeRepository;
@@ -126,23 +127,23 @@ namespace DK.Application
                 _typeRepository.AddRange(newTypes);
         }
 
-        public Task ExportDataAsync(List<TaiSan> taiSans, string pattern, bool includeSub = false)
+        public Task ExportDataAsync(List<TaiSan> taiSans, TaiSanSearchModel search)
         {
-            if (pattern == "barcode")
+            if (search.pattern == "barcode")
                 return ExportBarCodeAsync(taiSans);
-            var template = ReportVariables.Templates[pattern];
-            if (pattern == "data")
-                return ExportTaiSanAsync(taiSans, pattern, includeSub);
+            var template = ReportVariables.Templates[search.pattern];
+            if (search.pattern == "data")
+                return ExportTaiSanAsync(taiSans, search);
             else if (template.Item1.Contains("chi tiết") || template.Item1.Contains("đánh giá lại"))
-                return ExportReportDetailsAsync(taiSans, pattern);
+                return ExportReportDetailsAsync(taiSans, search);
             else if (template.Item1.Contains("tổng hợp"))
-                return ExportReportGroupAsync(taiSans, pattern);
+                return ExportReportGroupAsync(taiSans, search);
             return Task.CompletedTask;
         }
 
-        public Task ExportTaiSanAsync(List<TaiSan> taiSans, string pattern, bool includeSub = false)
+        public Task ExportTaiSanAsync(List<TaiSan> taiSans, TaiSanSearchModel search)
         {
-            var template = ReportVariables.Templates[pattern];
+            var template = ReportVariables.Templates[search.pattern];
             var lst = new List<TaiSan>();
             using (FlexCelReport fr = new FlexCelReport(true))
             {
@@ -152,7 +153,7 @@ namespace DK.Application
                     item.No = no++;
                     item.JoinedTags = string.Join("; ", item.Tags);
                     lst.Add(item);
-                    if (includeSub && item.Children.Any())
+                    if (search.IncludeSub && item.Children.Any())
                     {
                         foreach (var ts in item.Children)
                         {
@@ -167,17 +168,28 @@ namespace DK.Application
                 var xlsx = new XlsFile(true);
                 xlsx.Open(TemplateFolder + template.Item2);
                 fr.Run(xlsx);
-                using (MemoryStream XlsStream = new MemoryStream())
+                if (search.Preview)
                 {
-                    xlsx.Save(XlsStream);
-                    return SendToBrowser(XlsStream, "application/excel", GetReportName(pattern));
+                    using (FlexCelHtmlExport html = new FlexCelHtmlExport(xlsx))
+                    {
+                        html.Export($"{HtmlFolder}{search.pattern}.html", null);
+                        return Task.CompletedTask;
+                    }
+                }
+                else
+                {
+                    using (MemoryStream XlsStream = new MemoryStream())
+                    {
+                        xlsx.Save(XlsStream);
+                        return SendToBrowser(XlsStream, "application/excel", GetReportName(search.pattern));
+                    }
                 }
             }
         }
 
-        public Task ExportReportDetailsAsync(List<TaiSan> taiSans, string pattern)
+        public Task ExportReportDetailsAsync(List<TaiSan> taiSans, TaiSanSearchModel search)
         {
-            var template = ReportVariables.Templates[pattern];
+            var template = ReportVariables.Templates[search.pattern];
             using (FlexCelReport fr = new FlexCelReport(true))
             {
                 var no = 1;
@@ -189,26 +201,38 @@ namespace DK.Application
                 fr.AddTable("row", taiSans);
                 fr.AddTable("sum", new List<TaiSan> { BuildSumTaiSan(taiSans) });
                 fr.SetValue("title", template.Item1.ToUpperInvariant());
-                fr.SetValue("pattern", pattern);
+                fr.SetValue("pattern", search.pattern);
                 var xlsx = new XlsFile(true);
                 xlsx.Open(TemplateFolder + template.Item2);
                 fr.Run(xlsx);
-                using (MemoryStream XlsStream = new MemoryStream())
+
+                if (search.Preview)
                 {
-                    xlsx.Save(XlsStream);
-                    return SendToBrowser(XlsStream, "application/excel", GetReportName(pattern));
+                    using (FlexCelHtmlExport html = new FlexCelHtmlExport(xlsx))
+                    {
+                        html.Export($"{HtmlFolder}{search.pattern}.html", null);
+                        return Task.CompletedTask;
+                    }
+                }
+                else
+                {
+                    using (MemoryStream XlsStream = new MemoryStream())
+                    {
+                        xlsx.Save(XlsStream);
+                        return SendToBrowser(XlsStream, "application/excel", GetReportName(search.pattern));
+                    }
                 }
             }
         }
 
-        public Task ExportReportGroupAsync(List<TaiSan> taiSans, string pattern)
+        public Task ExportReportGroupAsync(List<TaiSan> taiSans, TaiSanSearchModel search)
         {
             foreach (var item in taiSans)
             {
                 item.NganSachBo = string.IsNullOrWhiteSpace(item.NguonKinhPhi) ? null : item.NguyenGiaKeToan;
                 item.Khac = item.NganSachBo == null ? item.NguyenGiaKeToan : null;
             }
-            var template = ReportVariables.Templates[pattern];
+            var template = ReportVariables.Templates[search.pattern];
             // nhóm theo chủng loại
             var groups = taiSans.Where(m => !string.IsNullOrWhiteSpace(m.ChungLoai)).Select(m => m.ChungLoai).Distinct();
             var reportData = taiSans.Where(m => string.IsNullOrWhiteSpace(m.ChungLoai)).ToList();
@@ -235,14 +259,26 @@ namespace DK.Application
                 fr.AddTable("row", lst);
                 fr.AddTable("sum", new List<TaiSan> { sumAll });
                 fr.SetValue("title", template.Item1.ToUpperInvariant());
-                fr.SetValue("pattern", pattern);
+                fr.SetValue("pattern", search.pattern);
                 var xlsx = new XlsFile(true);
                 xlsx.Open(TemplateFolder + template.Item2);
                 fr.Run(xlsx);
-                using (MemoryStream XlsStream = new MemoryStream())
+
+                if (search.Preview)
                 {
-                    xlsx.Save(XlsStream);
-                    return SendToBrowser(XlsStream, "application/excel", GetReportName(pattern));
+                    using (FlexCelHtmlExport html = new FlexCelHtmlExport(xlsx))
+                    {
+                        html.Export($"{HtmlFolder}{search.pattern}.html", null);
+                        return Task.CompletedTask;
+                    }
+                }
+                else
+                {
+                    using (MemoryStream XlsStream = new MemoryStream())
+                    {
+                        xlsx.Save(XlsStream);
+                        return SendToBrowser(XlsStream, "application/excel", GetReportName(search.pattern));
+                    }
                 }
             }
         }
@@ -272,7 +308,7 @@ namespace DK.Application
             return sum;
         }
 
-        public Task ExportKiemKeAsync(List<KiemKe> kiemKes, string pattern)
+        public Task ExportKiemKeAsync(List<KiemKe> kiemKes, string pattern, bool preview = false)
         {
             var template = ReportVariables.Templates[pattern];
             using (FlexCelReport fr = new FlexCelReport(true))
@@ -306,10 +342,21 @@ namespace DK.Application
                 var xlsx = new XlsFile(true);
                 xlsx.Open(TemplateFolder + template.Item2);
                 fr.Run(xlsx);
-                using (MemoryStream XlsStream = new MemoryStream())
+                if (preview)
                 {
-                    xlsx.Save(XlsStream);
-                    return SendToBrowser(XlsStream, "application/excel", $"{pattern}.xlsx");
+                    using (FlexCelHtmlExport html = new FlexCelHtmlExport(xlsx))
+                    {
+                        html.Export($"{HtmlFolder}{pattern}.html", null);
+                        return Task.CompletedTask;
+                    }
+                }
+                else
+                {
+                    using (MemoryStream XlsStream = new MemoryStream())
+                    {
+                        xlsx.Save(XlsStream);
+                        return SendToBrowser(XlsStream, "application/excel", GetReportName(pattern));
+                    }
                 }
             }
         }

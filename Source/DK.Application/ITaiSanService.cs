@@ -8,13 +8,13 @@ namespace DK.Application
 {
     public interface ITaiSanService
     {
-        Task ExportDataAsync(List<TaiSan> taiSans, string pattern, bool includeSub = false);
-        Task ExportTaiSanAsync(List<TaiSan> taiSans, string pattern, bool includeSub = false);
-        Task ExportReportDetailsAsync(List<TaiSan> taiSans, string pattern);
+        Task ExportDataAsync(List<TaiSan> taiSans, TaiSanSearchModel search);
+        Task ExportTaiSanAsync(List<TaiSan> taiSans, TaiSanSearchModel search);
+        Task ExportReportDetailsAsync(List<TaiSan> taiSans, TaiSanSearchModel search);
         void ImportTaiSan(string userName, Stream stream);
         Task SendToBrowser(Stream OutStream, string MimeType, string FileName);
 
-        Task ExportKiemKeAsync(List<KiemKe> kiemKes, string pattern);
+        Task ExportKiemKeAsync(List<KiemKe> kiemKes, string pattern, bool preview = false);
         void ImportKiemKe(Stream stream, Guid kiemKeId);
         Task ExportBarCodeAsync(List<TaiSan> taiSans);
         Dictionary<string, int> GetExistingCodes();

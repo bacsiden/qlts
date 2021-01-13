@@ -34,6 +34,7 @@ namespace DK.Application.Models
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public bool IncludeSub { get; set; } = true;
+        public bool Preview { get; set; }
         public object ToPagingModel()
         {
             return new
