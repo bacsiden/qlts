@@ -25,6 +25,8 @@
         <th rowspan="2">
             @Html.DisplayNameFor(m => m.GhiChu)
         </th>
+        <th rowspan="2">
+        </th>
     </tr>
     <tr>
         <th style=" border-left: 1px solid #dee2e6; ">
@@ -67,10 +69,10 @@
                     @(stt++)
                 </td>
                 <td>
-                    @item.Code
+                    <a href="@Url.Action("NewOrEdit", new {id=item.Id, parentId = item.KiemKeId, returnUrl = Request.RawUrl })">@item.Code</a>
                 </td>
                 <td>
-                    @item.Name
+                    <a href="@Url.Action("NewOrEdit", new {id=item.Id, parentId = item.KiemKeId, returnUrl = Request.RawUrl })">@item.Name</a>
                 </td>
                 <td>
                     @(item.NamSuDung)
@@ -104,6 +106,9 @@
                 </td>
                 <td>
                     @(item.GhiChu)
+                </td>
+                <td>
+                    <a href="@Url.Action("DeleteKiemKe", new { item.Id, returnUrl = Request.RawUrl})" class="DeleteItem text-danger" onclick="return confirm('Bạn có chắc muốn xóa?')">Xóa</a>
                 </td>
             </tr>
         }

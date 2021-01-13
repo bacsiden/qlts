@@ -21,12 +21,12 @@
                     @(stt++)
                 </td>
                 <td>
-                    <a href="/KiemKe/Detail/@item.Id">@item.Title</a>
+                    <a href="@Url.Action("Detail", new { item.Id, returnUrl = Request.RawUrl})">@item.Title</a>
                 </td>
                 <td>
                     @if (canManage)
                     {
-                        <a href="/KiemKe/Delete/@item.Id" class="DeleteItem text-danger" onclick="return confirm('Bạn có chắc muốn xóa?')">Xóa</a>
+                        <a href="@Url.Action("Delete", new { item.Id, returnUrl = Request.RawUrl})" class="DeleteItem text-danger" onclick="return confirm('Bạn có chắc muốn xóa?')">Xóa</a>
                     }
                 </td>
             </tr>

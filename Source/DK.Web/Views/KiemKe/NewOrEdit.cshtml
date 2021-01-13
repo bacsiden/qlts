@@ -1,0 +1,115 @@
+﻿@using DK.Application.Models
+@model KiemKe
+@{
+    ViewBag.Title = Model.Id != Guid.Empty ? "Chỉnh sửa kiểm kê" : "Thêm mới kiểm kê";
+    var canManage = DK.Application.Models.RoleList.GetAll().Any(User.IsInRole);
+}
+<style>
+    .search-item {
+        margin-bottom: 10px;
+    }
+
+        .search-item label {
+            margin-bottom: 0;
+        }
+
+    @@media (min-width: 1200px) {
+        .modal-xl {
+            max-width: 1140px;
+        }
+    }
+</style>
+@using (Html.BeginForm(null, null, FormMethod.Post, new { role = "form" }))
+{
+    <div class="card mt-2 mb-2 shadow-base">
+        <div class="card-body">
+            @Html.Hidden("returnUrl", Request.Params["returnUrl"])
+            @Html.HiddenFor(m => m.Id)
+            @Html.HiddenFor(m => m.KiemKeId)
+            @Html.ValidationSummary(true)
+            <div class="row mb-2">
+                <div class="col-md-4 col-sm-6 search-item">
+                    @Html.LabelFor(m => m.Code)
+                    @Html.TextBoxFor(m => m.Code, new { Readonly = true, Class = "form-control form-control-sm" })
+                </div>
+                <div class="col-md-4 col-sm-6 search-item">
+                    @Html.LabelFor(m => m.Name)
+                    @Html.TextBoxFor(m => m.Name, new { Class = "form-control form-control-sm" })
+                </div>
+                <div class="col-md-4 col-sm-6 search-item">
+                    @Html.LabelFor(m => m.NamSuDung)
+                    @Html.TextBoxFor(m => m.NamSuDung, new { Class = "form-control form-control-sm", type = "number", min = 1 })
+                </div>
+                <div class="col-12 mt-3">
+                    <h5 class="border-bottom">Theo sổ kế toán</h5>
+                </div>
+                <div class="col-md-4 col-sm-6 search-item">
+                    @Html.LabelFor(m => m.SoLuongKeToan)
+                    @Html.TextBoxFor(m => m.SoLuongKeToan, new { Class = "form-control form-control-sm currency" })
+                </div>
+                <div class="col-md-4 col-sm-6 search-item">
+                    @Html.LabelFor(m => m.NguyenGiaKeToan)
+                    @Html.TextBoxFor(m => m.NguyenGiaKeToan, new { Class = "form-control form-control-sm currency" })
+                </div>
+                <div class="col-md-4 col-sm-6 search-item">
+                    @Html.LabelFor(m => m.GiaTriConLaiKeToan)
+                    @Html.TextBoxFor(m => m.GiaTriConLaiKeToan, new { Class = "form-control form-control-sm currency" })
+                </div>
+                <div class="col-12 mt-3">
+                    <h5 class="border-bottom">Theo kiểm kê</h5>
+                </div>
+                <div class="col-md-4 col-sm-6 search-item">
+                    @Html.LabelFor(m => m.SoLuongKiemKe)
+                    @Html.TextBoxFor(m => m.SoLuongKiemKe, new { Class = "form-control form-control-sm currency" })
+                </div>
+                <div class="col-md-4 col-sm-6 search-item">
+                    @Html.LabelFor(m => m.NguyenGiaKiemKe)
+                    @Html.TextBoxFor(m => m.NguyenGiaKiemKe, new { Class = "form-control form-control-sm currency" })
+                </div>
+                <div class="col-md-4 col-sm-6 search-item">
+                    @Html.LabelFor(m => m.GiaTriConLaiKiemKe)
+                    @Html.TextBoxFor(m => m.GiaTriConLaiKiemKe, new { Class = "form-control form-control-sm currency" })
+                </div>
+                @*<div class="col-12 mt-3">
+                        <h5 class="border-bottom">Chênh lệch</h5>
+                    </div>
+                    <div class="col-md-4 col-sm-6 search-item">
+                        @Html.LabelFor(m => m.SoLuongChenhLech)
+                        @Html.TextBoxFor(m => m.SoLuongChenhLech, new { Class = "form-control form-control-sm currency" })
+                    </div>
+                    <div class="col-md-4 col-sm-6 search-item">
+                        @Html.LabelFor(m => m.NguyenGiaChenhLech)
+                        @Html.TextBoxFor(m => m.NguyenGiaChenhLech, new { Class = "form-control form-control-sm currency" })
+                    </div>
+                    <div class="col-md-4 col-sm-6 search-item">
+                        @Html.LabelFor(m => m.GiaTriConLaiChenhLech)
+                        @Html.TextBoxFor(m => m.GiaTriConLaiChenhLech, new { Class = "form-control form-control-sm currency" })
+                    </div>*@
+                <div class="col-12 search-item">
+                    @Html.LabelFor(m => m.GhiChu)
+                    @Html.TextAreaFor(m => m.GhiChu, new { Class = "form-control" })
+                </div>
+            </div>
+        </div>
+    </div>
+    <button class="btn btn-sm bd bg-primary tx-white pointer" onclick="beforeSubmit()"><i class="fa fa-save"></i> Lưu lại</button>
+    <a class="btn btn-sm bd pointer bg-white" href="@Request.Params["returnUrl"]"><i class="fa fa-arrow-left"></i> Quay lại</a>
+}
+
+
+@section Scripts {
+    <script src="~/Scripts/jquery.maskMoney.min.js"></script>
+    <script>
+        $(function () {
+            $('.currency').maskMoney({ thousands: '.', precision: 0, allowZero: true, suffix: '' });
+        });
+
+        function beforeSubmit() {
+            $('.currency').maskMoney('destroy');
+            $('.currency').each(function (i, item) {
+                var value = $(item).val().replace(/\./g, '');
+                $(item).val(value);
+            });
+        }
+    </script>
+}

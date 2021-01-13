@@ -61,6 +61,56 @@ namespace DK.Web.Controllers
             return View(result);
         }
 
+        public ActionResult NewOrEdit(Guid parentId, Guid? id = null, string returnUrl = "")
+        {
+            //CreateDropDownViewBag();
+            KiemKe kiemKe = null;
+            if (id.HasValue)
+            {
+                kiemKe = _kiemKeRepository.Get(id.Value);
+            }
+
+            if (kiemKe == null)
+            {
+                kiemKe = new KiemKe { KiemKeId = parentId };
+            }
+
+            return View(kiemKe);
+        }
+
+        [HttpPost]
+        public ActionResult NewOrEdit(KiemKe kiemke, string returnUrl)
+        {
+            if (!ModelState.IsValid)
+            {
+                foreach (ModelState modelState in ViewData.ModelState.Values)
+                {
+                    foreach (ModelError error in modelState.Errors)
+                    {
+                    }
+                }
+                return View(kiemke);
+            }
+
+            var current = _kiemKeRepository.Get(kiemke.Id);
+            if (current == null)
+            {
+                var existingCodes = _taiSanService.GetExistingCodes();
+                var ts = new TaiSan() { Name = kiemke.Name };
+                ts.GenerateCode(existingCodes);
+
+                kiemke.Code = ts.Code;
+                kiemke.CreatedBy = User.Identity.Name;
+            }
+            else
+            {
+                kiemke.CreatedBy = current.CreatedBy;
+            }
+
+            _kiemKeRepository.Upsert(kiemke);
+            if (string.IsNullOrWhiteSpace(returnUrl)) return RedirectToAction(nameof(Detail), new { kiemke.KiemKeId }); else return Redirect(returnUrl);
+        }
+
         [HttpPost]
         public async Task<ActionResult> Detail(Application.Models.Type model)
         {
@@ -69,6 +119,27 @@ namespace DK.Web.Controllers
             _typeRepository.Update(kiemke);
 
             return RedirectToAction("Detail", new { kiemke.Id });
+        }
+
+        public async Task<ActionResult> DeleteKiemKe(Guid id, string returnUrl)
+        {
+            var kiemke = await _kiemKeRepository.GetAsync(id);
+            if (kiemke == null)
+            {
+                return NotFound();
+            }
+
+            returnUrl = string.IsNullOrEmpty(returnUrl) ? Url.Action(nameof(Detail), new { kiemke.KiemKeId }) : returnUrl;
+            try
+            {
+                await _kiemKeRepository.DeleteAsync(id);
+            }
+            catch (Exception _)
+            {
+
+            }
+
+            return Redirect(returnUrl);
         }
 
         public async Task<ActionResult> Delete(Guid id)
