@@ -49,13 +49,16 @@
 
 function initCurrencyInput() {
     $('.currency').each(function (i, item) {
-        var value = formatMoney(convertToFloat(item.value),'')
-        $(item).val(value);
+        if (item.value) {
+            var value = formatMoney(convertToFloat(item.value), '')
+            $(item).val(value);
+        }
+
+        $(item).maskMoney({ thousands: '.', precision: 0, allowZero: true, suffix: '' });
     });
-    $('.currency').maskMoney({ thousands: '.', precision: 0, allowZero: true, suffix: '' });
 }
 
-function updateCurrencyInputBeforeSubmit() {
+function removeCurrencySeparators() {
     $('.currency').maskMoney('destroy');
     $('.currency').each(function (i, item) {
         var value = $(item).val().replace(/\./g, '');
@@ -64,7 +67,7 @@ function updateCurrencyInputBeforeSubmit() {
 }
 
 function formatMoney(n, currency) {
-    return currency + " " + n.toFixed(0).replace(/./g, function (c, i, a) {
+    return (currency ? currency + " " : "") + n.toFixed(0).replace(/./g, function (c, i, a) {
         return i > 0 && c !== "." && (a.length - i) % 3 === 0 ? "." + c : c;
     });
 }

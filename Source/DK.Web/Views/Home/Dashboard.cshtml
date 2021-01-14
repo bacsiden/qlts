@@ -25,7 +25,7 @@
     }
 
     .min-height {
-        min-height: 400px;
+        min-height: 478px;
     }
 </style>
 
@@ -96,11 +96,13 @@
                     {
                         <tr>
                             <td>
-                                <h6 class="tx-inverse tx-14 mg-b-0">@item.Title</h6>
+                                <h6 class="tx-inverse tx-14 mg-b-0">
+                                    <a href="@Url.Action("Detail", "KiemKe", new {item.Id })">@item.Title</a>
+                                </h6>
                                 <span class="tx-12">@item.CreatedBy</span>
                             </td>
                             <td>@item.Created.ToString("dd/MM/yyyy")</td>
-                            <td class="pd-r-0-force tx-center"><a href="/KiemKe/Detail/@item.Id" class="tx-gray-600"><i class="icon ion-link tx-18 lh-0"></i></a></td>
+                            <td class="pd-r-0-force tx-center"><a href="@Url.Action("Detail", "KiemKe", new {item.Id })" class="tx-gray-600"><i class="icon ion-link tx-18 lh-0"></i></a></td>
                         </tr>
                     }
                 </tbody>
@@ -110,17 +112,17 @@
     </div><!-- col-9 -->
     <div class="col-4">
         <div class="card bd-0 shadow-base pd-30  min-height">
-            <h6 class="tx-13 tx-uppercase tx-inverse tx-semibold tx-spacing-1">Danh mục</h6>
+            <h6 class="tx-13 tx-uppercase tx-inverse tx-semibold tx-spacing-1">Danh mục (@ViewBag.Total)</h6>
             <br />
             @{
                 var count = 0;
-                foreach (var item in Model.DanhMuc)
+                foreach (var item in Model.DanhMucPercent)
                 {
                     <label class="tx-12 tx-gray-600 mg-b-10">
-                        <a href="/Category/Index/@item">@item</a>
+                        <a href="@Url.Action("Index", "Category", new {Id = item.Key })">@item.Key (@Model.DanhMuc[item.Key])</a>
                     </label>
                     <div class="progress ht-5 mg-b-10">
-                        <div class="progress-bar @colors[count] wd-25p" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                        <div class="progress-bar @colors[count] wd-@(item.Value)p" role="progressbar" aria-valuenow="@item.Value" aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
                     count++;
                 }

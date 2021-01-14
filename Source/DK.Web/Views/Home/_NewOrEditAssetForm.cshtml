@@ -52,39 +52,39 @@
     </div>
     <div class="col-md-4 col-sm-6 search-item">
         @Html.LabelFor(m => m.NganSachNam)
-        @Html.TextBoxFor(m => m.NganSachNam, new { type = "number", Class = "form-control form-control-sm price" })
+        @Html.TextBoxFor(m => m.NganSachNam, new { type = "number", min = "1", Class = "form-control form-control-sm" })
     </div>
     <div class="col-md-4 col-sm-6 search-item">
         @Html.LabelFor(m => m.NamSanXuat)
-        @Html.TextBoxFor(m => m.NamSanXuat, new { type = "number", Class = "form-control form-control-sm price" })
+        @Html.TextBoxFor(m => m.NamSanXuat, new { type = "number", min = "1", Class = "form-control form-control-sm" })
     </div>
     <div class="col-md-4 col-sm-6 search-item">
         @Html.LabelFor(m => m.NamSuDung)
-        @Html.TextBoxFor(m => m.NamSuDung, new { type = "number", Class = "form-control form-control-sm price" })
+        @Html.TextBoxFor(m => m.NamSuDung, new { type = "number", min = "1", Class = "form-control form-control-sm" })
     </div>
     <div class="col-md-4 col-sm-6 search-item">
         @Html.LabelFor(m => m.NguyenGiaKeToan)
-        @Html.TextBoxFor(m => m.NguyenGiaKeToan, new { type = "number", Class = "form-control form-control-sm price" })
+        @Html.TextBoxFor(m => m.NguyenGiaKeToan, new { Class = "form-control form-control-sm currency" })
     </div>
     <div class="col-md-4 col-sm-6 search-item">
         @Html.LabelFor(m => m.SoLuong)
-        @Html.TextBoxFor(m => m.SoLuong, new { type = "number", Class = "form-control form-control-sm price" })
+        @Html.TextBoxFor(m => m.SoLuong, new { type = "number", min = "1", Class = "form-control form-control-sm" })
     </div>
     <div class="col-md-4 col-sm-6 search-item">
         @Html.LabelFor(m => m.BienSo)
-        @Html.TextBoxFor(m => m.BienSo, new { Class = "form-control form-control-sm price" })
+        @Html.TextBoxFor(m => m.BienSo, new { Class = "form-control form-control-sm" })
     </div>
     <div class="col-md-4 col-sm-6 search-item">
         @Html.LabelFor(m => m.KhoiLuong)
-        @Html.TextBoxFor(m => m.KhoiLuong, new { type = "number", Class = "form-control form-control-sm price" })
+        @Html.TextBoxFor(m => m.KhoiLuong, new { type = "number", min = "1", Class = "form-control form-control-sm" })
     </div>
     <div class="col-md-4 col-sm-6 search-item">
         @Html.LabelFor(m => m.HaoMonLuyKe)
-        @Html.TextBoxFor(m => m.HaoMonLuyKe, new { type = "number", Class = "form-control form-control-sm price" })
+        @Html.TextBoxFor(m => m.HaoMonLuyKe, new { Class = "form-control form-control-sm currency" })
     </div>
     <div class="col-md-4 col-sm-6 search-item">
         @Html.LabelFor(m => m.GiaTriConLai)
-        @Html.TextBoxFor(m => m.GiaTriConLai, new { type = "number", Class = "form-control form-control-sm price" })
+        @Html.TextBoxFor(m => m.GiaTriConLai, new { Class = "form-control form-control-sm currency" })
     </div>
     <div class="col-md-4 col-sm-6 search-item">
         @Html.LabelFor(m => m.ChatLuong)
@@ -108,23 +108,23 @@
     </div>
     <div class="col-md-4 col-sm-6 search-item">
         @Html.LabelFor(m => m.DungTichXiLanh)
-        @Html.TextBoxFor(m => m.DungTichXiLanh, new { type = "number", Class = "form-control form-control-sm price" })
+        @Html.TextBoxFor(m => m.DungTichXiLanh, new { type = "number", min = "1", Class = "form-control form-control-sm" })
     </div>
     <div class="col-md-4 col-sm-6 search-item">
         @Html.LabelFor(m => m.SoChoNgoi)
-        @Html.TextBoxFor(m => m.SoChoNgoi, new { type = "number", Class = "form-control form-control-sm price" })
+        @Html.TextBoxFor(m => m.SoChoNgoi, new { type = "number", min = "1", Class = "form-control form-control-sm" })
     </div>
     <div class="col-md-4 col-sm-6 search-item">
         @Html.LabelFor(m => m.SoTang)
-        @Html.TextBoxFor(m => m.SoTang, new { type = "number", Class = "form-control form-control-sm price" })
+        @Html.TextBoxFor(m => m.SoTang, new { type = "number", min = "1", Class = "form-control form-control-sm" })
     </div>
     <div class="col-md-4 col-sm-6 search-item">
         @Html.LabelFor(m => m.DienTichXayDung)
-        @Html.TextBoxFor(m => m.DienTichXayDung, new { type = "number", Class = "form-control form-control-sm price" })
+        @Html.TextBoxFor(m => m.DienTichXayDung, new { type = "number", min = "1", Class = "form-control form-control-sm" })
     </div>
     <div class="col-md-4 col-sm-6 search-item">
         @Html.LabelFor(m => m.CapCongTrinh)
-        @Html.TextBoxFor(m => m.CapCongTrinh, new { Class = "form-control form-control-sm price" })
+        @Html.TextBoxFor(m => m.CapCongTrinh, new { Class = "form-control form-control-sm" })
     </div>
     <div class="col-md-4 col-sm-6 search-item">
         @Html.LabelFor(m => m.DiaChi)
@@ -132,11 +132,11 @@
     </div>
     <div class="col-md-4 col-sm-6 search-item">
         @Html.LabelFor(m => m.DienTichKhuonVien)
-        @Html.TextBoxFor(m => m.DienTichKhuonVien, new { type = "number", Class = "form-control form-control-sm price" })
+        @Html.TextBoxFor(m => m.DienTichKhuonVien, new { type = "number", min = "1", Class = "form-control form-control-sm" })
     </div>
 
     <div class="col-md-4 col-sm-6 search-item">
         <label>Tags, cách nhau bằng dấu ;. Ví dụ a;b</label>
-        @Html.TextBoxFor(m => m.JoinedTags, new { Class = "form-control form-control-sm price" })
+        @Html.TextBoxFor(m => m.JoinedTags, new { Class = "form-control form-control-sm" })
     </div>
 </div>

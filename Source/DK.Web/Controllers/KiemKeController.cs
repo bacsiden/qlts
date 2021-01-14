@@ -57,7 +57,7 @@ namespace DK.Web.Controllers
 
             var result = new PagerViewModel
             {
-                BaseUrl = Url.Action("Index", new { pagerInfo.PageIndex, pagerInfo.PageSize }),
+                BaseUrl = Url.Action("Index", new { pagerInfo.PageSize }),
                 Items = list.OrderByDescending(m => m.Id).Skip((pager.CurrentPage - 1) * pager.PageSize).Take(pager.PageSize).ToList(),
                 Pager = pager
             };

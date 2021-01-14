@@ -1,8 +1,4 @@
-﻿using DK.Application.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 
 namespace DK.Web.Models
 {
@@ -12,7 +8,8 @@ namespace DK.Web.Models
         public int TongSoTaiSan { get; set; }
         public int TongSoXe { get; set; }
         public decimal TongNguonKinhPhi { get; set; }
-        public List<Application.Models.Type> RecentKiemKes{ get; set; }
-        public List<string> DanhMuc{ get; set; }
+        public List<Application.Models.Type> RecentKiemKes { get; set; }
+        public Dictionary<string, int> DanhMuc { get; set; } = new Dictionary<string, int>();
+        public Dictionary<string, int> DanhMucPercent { get; set; } = new Dictionary<string, int>();
     }
 }

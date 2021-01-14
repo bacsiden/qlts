@@ -3,8 +3,6 @@ using DK.Application.Models;
 using DK.Application.Repositories;
 using DK.Web.Core;
 using DK.Web.Models;
-using Microsoft.AspNet.Identity;
-using StructureMap.Query;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -107,12 +105,48 @@ namespace DK.Web.Controllers
         public ActionResult Dashboard()
         {
             var dashboard = new DashboardModel();
-            dashboard.TongSoTaiSan = _taiSanRepository.Find(m => true).AsEnumerable().Sum(m => m.SoLuong ?? 1);
+            var taisanList = _taiSanRepository.Find(m => true).AsEnumerable();
+            dashboard.TongSoTaiSan = taisanList.Sum(m => m.SoLuong ?? 1);
             dashboard.TongSoDotKiemKe = _typeRepository.Find(m => m.Name == TypeConstant.KiemKe).Count();
-            dashboard.TongSoXe = _taiSanRepository.Find(m => true).AsEnumerable().Where(m => !string.IsNullOrEmpty(m.LoaiXe)).Sum(m => (m.SoLuong ?? 1));
-            dashboard.TongNguonKinhPhi = _taiSanRepository.Find(m => true).AsEnumerable().Sum(m => m.NguyenGiaKeToan * (m.SoLuong ?? 1)) ?? 0;
+            dashboard.TongSoXe = taisanList.Where(m => !string.IsNullOrEmpty(m.LoaiXe)).Sum(m => (m.SoLuong ?? 1));
+            dashboard.TongNguonKinhPhi = taisanList.Sum(m => m.NguyenGiaKeToan * (m.SoLuong ?? 1)) ?? 0;
             dashboard.RecentKiemKes = _typeRepository.Find(m => m.Name == TypeConstant.KiemKe).OrderByDescending(m => m.Id).Take(6).ToList();
-            dashboard.DanhMuc = Application.Models.Type.MenuCategories;
+
+            var total = taisanList.Count();
+            foreach (var categoryName in Application.Models.Type.MenuCategories)
+            {
+                var count = 0;
+                switch (categoryName)
+                {
+                    case TypeConstant.Group:
+                        count = _taiSanRepository.Find(m => true).AsEnumerable().Count(m => !string.IsNullOrEmpty(m.GroupName));
+                        break;
+                    case TypeConstant.ChatLuong:
+                        count = _taiSanRepository.Find(m => true).AsEnumerable().Count(m => !string.IsNullOrEmpty(m.ChatLuong));
+                        break;
+                    case TypeConstant.ChungLoai:
+                        count = _taiSanRepository.Find(m => true).AsEnumerable().Count(m => !string.IsNullOrEmpty(m.ChungLoai));
+                        break;
+                    case TypeConstant.LoaiXe:
+                        count = _taiSanRepository.Find(m => true).AsEnumerable().Count(m => !string.IsNullOrEmpty(m.LoaiXe));
+                        break;
+                    case TypeConstant.NguonKinhPhi:
+                        count = _taiSanRepository.Find(m => true).AsEnumerable().Count(m => !string.IsNullOrEmpty(m.NguonKinhPhi));
+                        break;
+                    case TypeConstant.PhongBan:
+                        count = _taiSanRepository.Find(m => true).AsEnumerable().Count(m => !string.IsNullOrEmpty(m.PhongQuanLy));
+                        break;
+                    case TypeConstant.Tags:
+                        count = _taiSanRepository.Find(m => true).AsEnumerable().Count(m => m.Tags.Count > 0);
+                        break;
+                }
+
+                var percent = (int)(Math.Floor((float)count * 100 / total) / 5) * 5;
+                dashboard.DanhMuc.Add(categoryName, count);
+                dashboard.DanhMucPercent.Add(categoryName, percent);
+            }
+
+            ViewBag.Total = total;
             return View(dashboard);
         }
 

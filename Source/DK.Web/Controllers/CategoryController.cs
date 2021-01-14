@@ -158,7 +158,6 @@ namespace DK.Web.Controllers
             {
                 case TypeConstant.ChatLuong:
                     count = _taiSanRepository.Find(m => true).AsEnumerable().Count(m => categories.Any(name => name == m.ChatLuong));
-
                     break;
                 case TypeConstant.ChungLoai:
                     count = _taiSanRepository.Find(m => true).AsEnumerable().Count(m => categories.Any(name => name == m.ChungLoai));
