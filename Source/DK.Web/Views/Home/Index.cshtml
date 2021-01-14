@@ -2,7 +2,7 @@
 @using DK.Application.Models
 @model DK.Web.Core.PagerViewModel
 @{
-    ViewBag.Title = "Danh sách tài sản đã phê duyệt";
+    ViewBag.Title = "Danh sách tài sản";
     var searchModel = ViewBag.SearchModel as DK.Application.Models.TaiSanSearchModel;
     var canManage = DK.Application.Models.RoleList.GetAll().Any(User.IsInRole);
 }
