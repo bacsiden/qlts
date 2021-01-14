@@ -92,24 +92,12 @@
             </div>
         </div>
     </div>
-    <button class="btn btn-sm bd bg-primary tx-white pointer" onclick="beforeSubmit()"><i class="fa fa-save"></i> Lưu lại</button>
+    <button class="btn btn-sm bd bg-primary tx-white pointer" onclick="updateCurrencyInputBeforeSubmit()"><i class="fa fa-save"></i> Lưu lại</button>
     <a class="btn btn-sm bd pointer bg-white" href="@Request.Params["returnUrl"]"><i class="fa fa-arrow-left"></i> Quay lại</a>
 }
 
 
 @section Scripts {
     <script src="~/Scripts/jquery.maskMoney.min.js"></script>
-    <script>
-        $(function () {
-            $('.currency').maskMoney({ thousands: '.', precision: 0, allowZero: true, suffix: '' });
-        });
-
-        function beforeSubmit() {
-            $('.currency').maskMoney('destroy');
-            $('.currency').each(function (i, item) {
-                var value = $(item).val().replace(/\./g, '');
-                $(item).val(value);
-            });
-        }
-    </script>
+    <script src="~/Scripts/common.js"></script>
 }

@@ -43,7 +43,40 @@
         return false;
     });
 
-    $(document).on('keyup', 'input.typeNumber', function () {
-        this.value = this.value.replace(/[^0-9\.]/g, '');
-    });
+    initCurrencyInput();
 })
+
+
+function initCurrencyInput() {
+    $('.currency').each(function (i, item) {
+        var value = formatMoney(convertToFloat(item.value),'')
+        $(item).val(value);
+    });
+    $('.currency').maskMoney({ thousands: '.', precision: 0, allowZero: true, suffix: '' });
+}
+
+function updateCurrencyInputBeforeSubmit() {
+    $('.currency').maskMoney('destroy');
+    $('.currency').each(function (i, item) {
+        var value = $(item).val().replace(/\./g, '');
+        $(item).val(value);
+    });
+}
+
+function formatMoney(n, currency) {
+    return currency + " " + n.toFixed(0).replace(/./g, function (c, i, a) {
+        return i > 0 && c !== "." && (a.length - i) % 3 === 0 ? "." + c : c;
+    });
+}
+
+function convertToFloat(input) {
+    if (input) {
+        return parseFloat(input);
+    }
+
+    return input;
+}
+
+function isNumeric(n) {
+    return !isNaN(parseFloat(n)) && isFinite(n);
+}
