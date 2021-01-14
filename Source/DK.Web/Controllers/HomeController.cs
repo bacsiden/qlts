@@ -17,6 +17,7 @@ namespace DK.Web.Controllers
     [Authorize]
     public class HomeController : BaseController
     {
+        private readonly string HtmlFolder = System.Web.HttpContext.Current.Server.MapPath("~/Html\\");
         private readonly ITaiSanRepository _taiSanRepository;
         private readonly ITypeRepository _typeRepository;
         private readonly ITaiSanService _taiSanService;
@@ -60,8 +61,8 @@ namespace DK.Web.Controllers
         {
             var list = _taiSanRepository.Find(search);
             _taiSanService.ExportDataAsync(list.ToList(), search).GetAwaiter().GetResult();
-
-            return CustomRedirect($"/Html/{search.pattern}.html");
+            var html = System.IO.File.ReadAllText($"{HtmlFolder}{search.pattern}.html");
+            return View(model: html);
         }
 
         // GET: Tài sản chưa phê duyệt

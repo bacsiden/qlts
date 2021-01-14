@@ -170,7 +170,7 @@ namespace DK.Application
                 fr.Run(xlsx);
                 if (search.Preview)
                 {
-                    using (FlexCelHtmlExport html = new FlexCelHtmlExport(xlsx))
+                    using (FlexCelHtmlExport html = new FlexCelHtmlExport(xlsx, true))
                     {
                         html.Export($"{HtmlFolder}{search.pattern}.html", null);
                         return Task.CompletedTask;
@@ -208,7 +208,7 @@ namespace DK.Application
 
                 if (search.Preview)
                 {
-                    using (FlexCelHtmlExport html = new FlexCelHtmlExport(xlsx))
+                    using (FlexCelHtmlExport html = new FlexCelHtmlExport(xlsx, true))
                     {
                         html.Export($"{HtmlFolder}{search.pattern}.html", null);
                         return Task.CompletedTask;
@@ -266,7 +266,7 @@ namespace DK.Application
 
                 if (search.Preview)
                 {
-                    using (FlexCelHtmlExport html = new FlexCelHtmlExport(xlsx))
+                    using (FlexCelHtmlExport html = new FlexCelHtmlExport(xlsx, true))
                     {
                         html.Export($"{HtmlFolder}{search.pattern}.html", null);
                         return Task.CompletedTask;
@@ -300,6 +300,13 @@ namespace DK.Application
 
             sum.DienTichXayDung = taiSans.Where(m => m.DienTichXayDung.HasValue).Sum(m => m.DienTichXayDung);
             sum.DienTichKhuonVien = taiSans.Where(m => m.DienTichKhuonVien.HasValue).Sum(m => m.DienTichKhuonVien);
+
+            foreach (var item in taiSans)
+            {
+                if (string.IsNullOrWhiteSpace(item.NguonKinhPhi))
+                    item.Khac = item.NguyenGiaKeToan;
+                else item.NganSachBo = item.NguyenGiaKeToan;
+            }
 
             sum.NganSachBo = taiSans.Where(m => m.NganSachBo.HasValue).Sum(m => m.NganSachBo);
             sum.Khac = taiSans.Where(m => m.Khac.HasValue).Sum(m => m.Khac);
@@ -344,7 +351,7 @@ namespace DK.Application
                 fr.Run(xlsx);
                 if (preview)
                 {
-                    using (FlexCelHtmlExport html = new FlexCelHtmlExport(xlsx))
+                    using (FlexCelHtmlExport html = new FlexCelHtmlExport(xlsx, true))
                     {
                         html.Export($"{HtmlFolder}{pattern}.html", null);
                         return Task.CompletedTask;

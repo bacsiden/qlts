@@ -357,7 +357,6 @@
     <Content Include="Content\lib\spectrum\spectrum.js" />
     <Content Include="Content\lib\summernote\summernote-bs4.css" />
     <Content Include="Content\lib\summernote\summernote-bs4.min.js" />
-    <Content Include="MediaDevicesLicense.txt" />
     <Content Include="Content\lib\bootstrap\dist\css\bootstrap-grid.css.map" />
     <Content Include="Content\lib\bootstrap\dist\css\bootstrap-grid.min.css.map" />
     <Content Include="Content\lib\bootstrap\dist\css\bootstrap-reboot.css.map" />
@@ -378,8 +377,8 @@
     <Content Include="Content\lib\jquery\dist\jquery.min.map" />
     <Content Include="Content\lib\summernote\font\summernote.woff" />
     <None Include="Properties\PublishProfiles\containerts - Web Deploy.pubxml" />
-    <Content Include="MediaDevices.chm" />
     <None Include="Properties\PublishProfiles\file system.pubxml" />
+    <Content Include="Html\1.html" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\bracket.js" />
@@ -481,11 +480,11 @@
     <Content Include="Views\Home\_TableChild.cshtml" />
     <Content Include="Views\Home\_TableChildRow.cshtml" />
     <Content Include="Views\Home\NewOrEditChildAsset.cshtml" />
+    <Content Include="Views\Home\Preview.cshtml" />
     <Content Include="Views\KiemKe\NewOrEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Html\" />
     <Folder Include="SpecificResources\images\" />
   </ItemGroup>
   <ItemGroup>

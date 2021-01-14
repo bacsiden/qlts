@@ -29,8 +29,10 @@
     });
 
     $('.report-preview').click(function () {
-        $("#Preview").val($(this).data('true'));
-        $("#frmSearch").submit();
+        $("#Preview").val('true');
+        $("#pattern").val($(this).data('pattern'));
+        var search = $("#frmSearch").serialize();
+        window.open("/Home/Preview?" + search);
     });
 
     $('#allCol').click(function () {
@@ -68,6 +70,7 @@ $(".ApproveItem").click(function () {
 });
 
 function createKiemKe(e) {
+    if (!confirm('Bạn chắc chắn muốn tạo kiểm kê cho các tài sản dưới đây?')) return;
     $("#frmSearch").attr('action', '/KiemKe/Create');
     $("#frmSearch").submit();
 }

@@ -160,31 +160,32 @@
                 <button class="btn  btn-sm bd bg-primary tx-white pointer pull-right print-barcode ml-1" type="button"><i class="fa fa-barcode"></i> In mã vạch</button>
             }
 
-            <div class="dropdown d-sm-inline-block pull-right">
-                @if (Model.IsApproved)
+            <a class="dropdown-toggle btn btn-sm btn-primary" href="javascript:void(0)" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-eye"></i> Xem trước
+            </a>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
+                @foreach (var item in reportTemplates)
                 {
-                    <a class="btn  btn-sm bd pointer" href="javascript:void(0)" onclick="createKiemKe(this);"><i class="fa fa-plus"></i> Tạo kiểm kê</a>
+                    <a class="dropdown-item report-preview" href="javascript:void(0)" data-pattern="@item.Key">@item.Value.Item1 - @item.Key</a>
                 }
-                <a class="dropdown-toggle btn  btn-sm  btn-primary" href="javascript:void(0)" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fa fa-download"></i> Tải file
-                </a>
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
+            </div>
+
+            <div class="btn-group">
+                <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Tải file
+                </button>
+                <div class="dropdown-menu">
                     @foreach (var item in reportTemplates)
                     {
                         <a class="dropdown-item report" href="javascript:void(0)" data-pattern="@item.Key">@item.Value.Item1 - @item.Key</a>
                     }
                 </div>
-
-                <a class="dropdown-toggle btn  btn-sm  btn-primary" href="javascript:void(0)" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fa fa-download"></i> Xem trước
-                </a>
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
-                    @foreach (var item in reportTemplates)
-                    {
-                        <a class="dropdown-item report-preview" href="javascript:void(0)" data-pattern="@item.Key">@item.Value.Item1 - @item.Key</a>
-                    }
-                </div>
             </div>
+
+            @if (Model.IsApproved)
+            {
+                <a class="btn  btn-sm bd pointer" href="javascript:void(0)" onclick="return createKiemKe(this);"><i class="fa fa-plus"></i> Tạo kiểm kê</a>
+            }
         </div>
     </div>
 
