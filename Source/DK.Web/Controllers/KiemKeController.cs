@@ -17,6 +17,7 @@ namespace DK.Web.Controllers
     [Authorize]
     public class KiemKeController : BaseController
     {
+        private readonly string HtmlFolder = System.Web.HttpContext.Current.Server.MapPath("~/Html\\");
         private readonly ITaiSanRepository _taiSanRepository;
         private readonly ITypeRepository _typeRepository;
         private readonly IKiemKeRepository _kiemKeRepository;
@@ -239,11 +240,18 @@ namespace DK.Web.Controllers
             return RedirectToAction(nameof(Detail), new { id = id });
         }
 
-        public async Task<ActionResult> Export(Guid id, string pattern)
+        public async Task<ActionResult> Export(Guid id, string pattern, bool preview = false)
         {
             var kiemKes = _kiemKeRepository.Find(m => m.KiemKeId == id).ToList();
-            await _taiSanService.ExportKiemKeAsync(kiemKes, pattern);
+            await _taiSanService.ExportKiemKeAsync(kiemKes, pattern, preview);
             return RedirectToAction(nameof(Detail), new { id = id });
+        }
+        public ActionResult Preview(Guid id, string pattern)
+        {
+            var kiemKes = _kiemKeRepository.Find(m => m.KiemKeId == id).ToList();
+            _taiSanService.ExportKiemKeAsync(kiemKes, pattern, true).GetAwaiter().GetResult();
+            var html = System.IO.File.ReadAllText($"{HtmlFolder}{pattern}.html");
+            return View(model: html);
         }
 
         private IEnumerable<KiemKe> GetListKiemKes(Guid kiemKeId, IEnumerable<TaiSan> list)
@@ -254,6 +262,7 @@ namespace DK.Web.Controllers
                 No = 0,
                 Code = m.Code,
                 Name = m.Name,
+                GroupName = m.GroupName,
                 NamSuDung = m.NamSuDung,
                 SoLuongKeToan = m.SoLuong,
                 NguyenGiaKeToan = m.NguyenGiaKeToan,

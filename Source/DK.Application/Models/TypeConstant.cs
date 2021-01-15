@@ -10,7 +10,8 @@ namespace DK.Application.Models
     {
         public const string ChungLoai = "Chủng loại";
         public const string Group = "Nhóm tài sản";
-        public const string NguonKinhPhi = "Nguồn kinh phí";
+        public const string NguonKinhPhi = "Nguồn kinh phí bộ";
+        public const string NguonKinhPhiKhac = "Ngân sách khác";
         public const string ChatLuong = "Chất lượng";
         public const string LoaiXe = "Loại xe";
         public const string PhongBan = "Phòng, Đơn vị";

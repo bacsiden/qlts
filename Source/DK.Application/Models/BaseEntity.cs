@@ -10,9 +10,9 @@ namespace DK.Application.Models
         [BsonId(IdGenerator = typeof(CombGuidGenerator))]
         public Guid Id { get; set; }
 
-        public DateTime Created { get; protected set; } = DateTime.UtcNow.AddHours(7);
+        public DateTime Created { get; set; } = DateTime.UtcNow.AddHours(7);
 
-        public DateTime Modified { get; protected set; } = DateTime.UtcNow.AddHours(7);
+        public DateTime Modified { get; set; } = DateTime.UtcNow.AddHours(7);
 
         public string CreatedBy { get; set; }
     }

@@ -482,6 +482,7 @@
     <Content Include="Views\Home\NewOrEditChildAsset.cshtml" />
     <Content Include="Views\Home\Preview.cshtml" />
     <Content Include="Views\KiemKe\NewOrEdit.cshtml" />
+    <Content Include="Views\KiemKe\Preview.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -17,7 +17,7 @@ namespace DK.Application.Models
 
         public static int? GetChenhLech(int? value1, int? value2)
         {
-            if (value1.HasValue && value1.HasValue) return Math.Abs(value1.Value - value2.Value);
+            if (value1.HasValue && value2.HasValue) return Math.Abs(value1.Value - value2.Value);
             if (value1.HasValue) return value1.Value;
             if (value2.HasValue) return value2.Value;
             return null;
@@ -35,6 +35,7 @@ namespace DK.Application.Models
         [ColumnIndex(1)]
         [BsonIgnore]
         public int No { get; set; }
+        public string GroupName { get; set; }
 
         // search chính xác
         [ColumnIndex(2)]

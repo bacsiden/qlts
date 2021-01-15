@@ -28,7 +28,7 @@ namespace DK.Application
             _kiemKeRepository = kiemKeRepository;
         }
 
-        public void ImportTaiSan(string userName, Stream stream)
+        public void ImportNewTaiSan(string userName, Stream stream)
         {
             var taisans = GetExistingCodes();
             var types = _typeRepository.Find(m => true).ToList();
@@ -45,61 +45,10 @@ namespace DK.Application
             for (int row = 3; row <= xls.RowCount; row++)
             {
                 var ts = new TaiSan() { CreatedBy = userName };
-                var no = GetCellInt(xls, row, nameof(TaiSan.No));
-                if (!no.HasValue) throw new Exception($"Lỗi dữ liệu tại dòng {row}. Cột STT phải có dữ liệu");
-                ts.No = no.Value;
+                FillTaiSan(xls, ts, types, newTypes, row);
 
                 ts.Code = GetCellString(xls, row, nameof(TaiSan.Code));
-                if (!string.IsNullOrWhiteSpace(ts.Code)) throw new Exception($"Lỗi dữ liệu tại dòng {row}. Không được nhập mã tài sản. Mã tài sản sẽ được tự sinh");
-
-                ts.Name = GetCellString(xls, row, nameof(TaiSan.Name));
-                ts.GroupName = GetCellString(xls, row, nameof(TaiSan.GroupName));
-
-                if (!TypeConstant.Groups.Any(m => m.Equals(ts.GroupName, StringComparison.OrdinalIgnoreCase)))
-                {
-                    throw new Exception($"Lỗi dữ liệu tại dòng {row}. Tên nhóm tài sản phải là: {TypeConstant.GDacBiet}, {TypeConstant.GChuyenDung}, {TypeConstant.GQuanLy}");
-                }
-
-                ts.ChungLoai = GetCellString(xls, row, nameof(TaiSan.ChungLoai));
-                AddNewType(types, newTypes, TypeConstant.ChungLoai, ts.ChungLoai);
-                ts.NhanHieu = GetCellString(xls, row, nameof(TaiSan.NhanHieu));
-                ts.Serial = GetCellString(xls, row, nameof(TaiSan.Serial));
-                ts.XuatXu = GetCellString(xls, row, nameof(TaiSan.XuatXu));
-                ts.ThuocHopDong = GetCellString(xls, row, nameof(TaiSan.ThuocHopDong));
-                ts.ThuocGoiThau = GetCellString(xls, row, nameof(TaiSan.ThuocGoiThau));
-                ts.NguonKinhPhi = GetCellString(xls, row, nameof(TaiSan.NguonKinhPhi));
-                AddNewType(types, newTypes, TypeConstant.NguonKinhPhi, ts.NguonKinhPhi);
-                ts.NganSachKhac = GetCellString(xls, row, nameof(TaiSan.NganSachKhac));
-
-                ts.NganSachNam = GetCellInt(xls, row, nameof(TaiSan.NganSachNam));
-                ts.NamSanXuat = GetCellInt(xls, row, nameof(TaiSan.NamSanXuat));
-                ts.NamSuDung = GetCellInt(xls, row, nameof(TaiSan.NamSuDung));
-                ts.NguyenGiaKeToan = GetCellDecimal(xls, row, nameof(TaiSan.NguyenGiaKeToan));
-                ts.SoLuong = GetCellInt(xls, row, nameof(TaiSan.SoLuong));
-                ts.KhoiLuong = GetCellInt(xls, row, nameof(TaiSan.KhoiLuong));
-                ts.ChatLuong = GetCellString(xls, row, nameof(TaiSan.ChatLuong));
-                AddNewType(types, newTypes, TypeConstant.ChatLuong, ts.ChatLuong);
-
-                ts.HaoMonLuyKe = GetCellDecimal(xls, row, nameof(TaiSan.HaoMonLuyKe));
-                ts.GiaTriConLai = GetCellDecimal(xls, row, nameof(TaiSan.GiaTriConLai));
-                ts.NguoiSuDung = GetCellString(xls, row, nameof(TaiSan.NguoiSuDung));
-                ts.NguoiQuanLy = GetCellString(xls, row, nameof(TaiSan.NguoiQuanLy));
-                ts.PhongQuanLy = GetCellString(xls, row, nameof(TaiSan.PhongQuanLy));
-                AddNewType(types, newTypes, TypeConstant.PhongBan, ts.PhongQuanLy);
-
-                ts.LoaiXe = GetCellString(xls, row, nameof(TaiSan.LoaiXe));
-                ts.BienSo = GetCellString(xls, row, nameof(TaiSan.BienSo));
-                ts.DungTichXiLanh = GetCellInt(xls, row, nameof(TaiSan.DungTichXiLanh));
-                ts.SoChoNgoi = GetCellInt(xls, row, nameof(TaiSan.SoChoNgoi));
-                ts.SoTang = GetCellInt(xls, row, nameof(TaiSan.SoTang));
-                ts.DienTichXayDung = GetCellInt(xls, row, nameof(TaiSan.DienTichXayDung));
-                ts.CapCongTrinh = GetCellString(xls, row, nameof(TaiSan.CapCongTrinh));
-                ts.DiaChi = GetCellString(xls, row, nameof(TaiSan.DiaChi));
-                ts.DienTichKhuonVien = GetCellInt(xls, row, nameof(TaiSan.DienTichKhuonVien));
-                ts.Tags = GetCellListString(xls, row, nameof(TaiSan.Tags));
-                AddNewType(types, newTypes, TypeConstant.Tags, ts.Tags);
-
-                ts.GenerateCode(taisans);
+                if (!string.IsNullOrWhiteSpace(ts.Code) || ts.Number.HasValue) throw new Exception($"Lỗi dữ liệu tại dòng {row}. Không được nhập cột Mã tài sản hoặc Số hiệu. Các cột đó sẽ được tự sinh");
 
                 if (lastNo == -1 || lastNo == ts.No)
                 {
@@ -122,7 +71,49 @@ namespace DK.Application
             newTaiSans.Add(ts1);
 
             if (newTaiSans.Any())
+            {
+                foreach (var item in newTaiSans)
+                {
+                    item.GenerateCode(taisans);
+                    item.Children.ForEach(m => m.GenerateCode(taisans));
+                }
                 _taiSanRepository.AddRange(newTaiSans);
+            }
+            if (newTypes.Any())
+                _typeRepository.AddRange(newTypes);
+        }
+
+        public void ImportUpdateTaiSan(Stream stream)
+        {
+            var taisans = GetExistingCodeValues();
+            var types = _typeRepository.Find(m => true).ToList();
+            var newTypes = new List<Models.Type>();
+
+            XlsFile xls = new XlsFile();
+            xls.Open(stream);
+            var oldTaiSans = new List<TaiSan>();
+
+            xls.ActiveSheet = 1;
+            for (int row = 3; row <= xls.RowCount; row++)
+            {
+                var code = GetCellString(xls, row, nameof(TaiSan.Code));
+                if (string.IsNullOrWhiteSpace(code))
+                    throw new Exception($"Lỗi dữ liệu tại dòng {row}, Cột Mã tài sản phải có giá trị");
+
+                taisans.TryGetValue(code, out TaiSan ts);
+                if (ts == null) throw new Exception($"Lỗi dữ liệu tại dòng {row}, không tìm thấy tài sản có mã {code} trong cơ sở dữ liệu");
+                var number = GetCellInt(xls, row, nameof(TaiSan.Number));
+                if (!number.HasValue)
+                    throw new Exception($"Lỗi dữ liệu tại dòng {row}, Cột Số hiệu tài sản phải có giá trị");
+                if (number == -1)
+                    throw new Exception($"Lỗi dữ liệu tại dòng {row}, không hỗ trợ sửa tài sản con từ file excel");
+                if (ts.Number != number) throw new Exception($"Lỗi dữ liệu tại dòng {row}, số hiệu {number} không không  thuộc vè tài sản có mã {code}. Số hiệu đúng là {ts.Number}, hãy cập nhật vào file excel và thử lại");
+
+                FillTaiSan(xls, ts, types, newTypes, row);
+                oldTaiSans.Add(ts);
+            }
+            foreach (var item in oldTaiSans)
+                _taiSanRepository.Update(item);
             if (newTypes.Any())
                 _typeRepository.AddRange(newTypes);
         }
@@ -318,6 +309,13 @@ namespace DK.Application
         public Task ExportKiemKeAsync(List<KiemKe> kiemKes, string pattern, bool preview = false)
         {
             var template = ReportVariables.Templates[pattern];
+            var selectGroup = TypeConstant.GDacBiet;
+            if (template.Item1.IndexOf("chuyên dùng", StringComparison.OrdinalIgnoreCase) >= 0)
+                selectGroup = TypeConstant.GChuyenDung;
+            else if (template.Item1.IndexOf("quản lý", StringComparison.OrdinalIgnoreCase) >= 0)
+                selectGroup = TypeConstant.GQuanLy;
+            kiemKes = kiemKes.Where(m => m.GroupName == selectGroup).ToList();
+
             using (FlexCelReport fr = new FlexCelReport(true))
             {
                 var no = 1;
@@ -476,6 +474,15 @@ namespace DK.Application
             return taisans.Union(subTs).ToDictionary(k => k.Key, v => v.Value);
         }
 
+        public Dictionary<string, TaiSan> GetExistingCodeValues()
+        {
+            var allTs = _taiSanRepository.Find(m => true).ToList();
+            var taisans = allTs.Select(m => new { key = m.Code, value = m }).ToDictionary(x => x.key, x => x.value);
+            var subTs = allTs.SelectMany(m => m.Children).Select(m => new { key = m.Code, value = m }).ToDictionary(x => x.key, x => x.value);
+
+            return taisans.Union(subTs).ToDictionary(k => k.Key, v => v.Value);
+        }
+
         public void AddNewType(List<Models.Type> types, List<Models.Type> newTypes, string name, string value)
         {
             if (!string.IsNullOrWhiteSpace(value) && !types.Any(m => m.Name == name && value.Equals(m.Title, StringComparison.OrdinalIgnoreCase)))
@@ -488,6 +495,66 @@ namespace DK.Application
                 if (!string.IsNullOrWhiteSpace(x) && !types.Any(m => m.Name == name && x.Equals(m.Title, StringComparison.OrdinalIgnoreCase)))
                     newTypes.Add(new Models.Type { Name = name, Title = x });
             });
+        }
+
+        private void FillTaiSan(XlsFile xls, TaiSan ts, List<Models.Type> types, List<Models.Type> newTypes, int row, System.Type type = null)
+        {
+            var no = GetCellInt(xls, row, nameof(TaiSan.No));
+            if (!no.HasValue) throw new Exception($"Lỗi dữ liệu tại dòng {row}. Cột STT phải có dữ liệu");
+            ts.No = no.Value;
+
+            ts.Code = GetCellString(xls, row, nameof(TaiSan.Code));
+            ts.Number = GetCellInt(xls, row, nameof(TaiSan.Number));
+
+            ts.Name = GetCellString(xls, row, nameof(TaiSan.Name));
+            ts.GroupName = GetCellString(xls, row, nameof(TaiSan.GroupName));
+
+            if (!TypeConstant.Groups.Any(m => m.Equals(ts.GroupName, StringComparison.OrdinalIgnoreCase)))
+            {
+                throw new Exception($"Lỗi dữ liệu tại dòng {row}. Tên nhóm tài sản phải là: {TypeConstant.GDacBiet}, {TypeConstant.GChuyenDung}, {TypeConstant.GQuanLy}");
+            }
+
+            ts.ChungLoai = GetCellString(xls, row, nameof(TaiSan.ChungLoai));
+            ts.NhanHieu = GetCellString(xls, row, nameof(TaiSan.NhanHieu));
+            ts.Serial = GetCellString(xls, row, nameof(TaiSan.Serial));
+            ts.XuatXu = GetCellString(xls, row, nameof(TaiSan.XuatXu));
+            ts.ThuocHopDong = GetCellString(xls, row, nameof(TaiSan.ThuocHopDong));
+            ts.ThuocGoiThau = GetCellString(xls, row, nameof(TaiSan.ThuocGoiThau));
+            ts.NguonKinhPhi = GetCellString(xls, row, nameof(TaiSan.NguonKinhPhi));
+            ts.NganSachKhac = GetCellString(xls, row, nameof(TaiSan.NganSachKhac));
+
+            ts.NganSachNam = GetCellInt(xls, row, nameof(TaiSan.NganSachNam));
+            ts.NamSanXuat = GetCellInt(xls, row, nameof(TaiSan.NamSanXuat));
+            ts.NamSuDung = GetCellInt(xls, row, nameof(TaiSan.NamSuDung));
+            ts.NguyenGiaKeToan = GetCellDecimal(xls, row, nameof(TaiSan.NguyenGiaKeToan));
+            ts.SoLuong = GetCellInt(xls, row, nameof(TaiSan.SoLuong));
+            ts.KhoiLuong = GetCellInt(xls, row, nameof(TaiSan.KhoiLuong));
+            ts.ChatLuong = GetCellString(xls, row, nameof(TaiSan.ChatLuong));
+
+            ts.HaoMonLuyKe = GetCellDecimal(xls, row, nameof(TaiSan.HaoMonLuyKe));
+            ts.GiaTriConLai = GetCellDecimal(xls, row, nameof(TaiSan.GiaTriConLai));
+            ts.NguoiSuDung = GetCellString(xls, row, nameof(TaiSan.NguoiSuDung));
+            ts.NguoiQuanLy = GetCellString(xls, row, nameof(TaiSan.NguoiQuanLy));
+            ts.PhongQuanLy = GetCellString(xls, row, nameof(TaiSan.PhongQuanLy));
+
+            ts.LoaiXe = GetCellString(xls, row, nameof(TaiSan.LoaiXe));
+            ts.BienSo = GetCellString(xls, row, nameof(TaiSan.BienSo));
+            ts.DungTichXiLanh = GetCellInt(xls, row, nameof(TaiSan.DungTichXiLanh));
+            ts.SoChoNgoi = GetCellInt(xls, row, nameof(TaiSan.SoChoNgoi));
+            ts.SoTang = GetCellInt(xls, row, nameof(TaiSan.SoTang));
+            ts.DienTichXayDung = GetCellInt(xls, row, nameof(TaiSan.DienTichXayDung));
+            ts.CapCongTrinh = GetCellString(xls, row, nameof(TaiSan.CapCongTrinh));
+            ts.DiaChi = GetCellString(xls, row, nameof(TaiSan.DiaChi));
+            ts.DienTichKhuonVien = GetCellInt(xls, row, nameof(TaiSan.DienTichKhuonVien));
+            ts.Tags = GetCellListString(xls, row, nameof(TaiSan.Tags));
+            ts.Modified = DateTime.UtcNow.AddHours(7);
+
+            AddNewType(types, newTypes, TypeConstant.ChungLoai, ts.ChungLoai);
+            AddNewType(types, newTypes, TypeConstant.NguonKinhPhi, ts.NguonKinhPhi);
+            AddNewType(types, newTypes, TypeConstant.NguonKinhPhiKhac, ts.NganSachKhac);
+            AddNewType(types, newTypes, TypeConstant.ChatLuong, ts.ChatLuong);
+            AddNewType(types, newTypes, TypeConstant.PhongBan, ts.PhongQuanLy);
+            AddNewType(types, newTypes, TypeConstant.Tags, ts.Tags);
         }
         private string GetCellString(XlsFile xls, int row, string fieldName, System.Type type = null)
         {

@@ -92,7 +92,7 @@ namespace DK.Web.Controllers
         {
             try
             {
-                _taiSanService.ImportTaiSan(User.Identity.Name, taisan.InputStream);
+                _taiSanService.ImportNewTaiSan(User.Identity.Name, taisan.InputStream);
             }
             catch (Exception e)
             {

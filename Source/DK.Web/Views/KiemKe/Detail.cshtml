@@ -1,8 +1,10 @@
-﻿@model DK.Web.Core.PagerViewModel
+﻿@using System.Linq
+@model DK.Web.Core.PagerViewModel
 @{
     ViewBag.Title = "Chi tiết kiểm kê";
     var kiemKe = ViewBag.KiemKe as DK.Application.Models.Type;
     var canManage = DK.Application.Models.RoleList.GetAll().Any(User.IsInRole);
+    var reportTemplates = DK.Application.Models.ReportVariables.Templates.Where(m => m.Key.StartsWith("1")).ToList();
 }
 
 <style>
@@ -25,13 +27,25 @@
                         <a class="btn btn-sm bd pointer" href="/KiemKe/Import/@kiemKe.Id" onclick="createKiemKe(this);"><i class="fa fa-file-excel-o"> </i> Đọc từ excel</a>
 
                         <a class="dropdown-toggle btn btn-sm btn-primary" href="javascript:void(0)" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fa fa-download"></i> Xuất báo cáo
+                            <i class="fa fa-eye"></i> Xem trước
                         </a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
-                            @foreach (var item in DK.Application.Models.ReportVariables.Templates.Where(m => m.Key.StartsWith("1")))
+                            @foreach (var item in reportTemplates)
                             {
-                                <a class="dropdown-item report" href="/KiemKe/Export/@kiemKe.Id?pattern=@item.Key" data-pattern="@item.Key">@item.Value.Item1 - @item.Key</a>
+                                <a class="dropdown-item" target="_blank" href="/KiemKe/Preview/@kiemKe.Id?pattern=@item.Key" data-pattern="@item.Key">@item.Value.Item1 - @item.Key</a>
                             }
+                        </div>
+
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Tải file
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
+                                @foreach (var item in reportTemplates)
+                                {
+                                    <a class="dropdown-item" href="/KiemKe/Export/@kiemKe.Id?pattern=@item.Key" data-pattern="@item.Key">@item.Value.Item1 - @item.Key</a>
+                                }
+                            </div>
                         </div>
                     </div>
                 </div>

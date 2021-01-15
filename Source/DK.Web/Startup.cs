@@ -29,10 +29,10 @@ namespace DK.Web
                 {
                     UserName = username,
                     Email = username,
-                    LastName = "Quản lý",
+                    LastName = "Quản trị hệ thống",
                     Status = 1,
                 };
-                userManager.Create(admin, "Admin@123");
+                userManager.Create(admin, "1");
             }
 
             if (!userManager.IsInRole(admin.Id, RoleList.SupperAdmin))
