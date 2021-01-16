@@ -10,12 +10,14 @@
     {
         reportTemplates = reportTemplates.Where(m => m.Key == "data");
     }
+    var isApproved = ViewContext.RouteData.Values["action"].ToString().Equals("index", StringComparison.OrdinalIgnoreCase);
 }
 
 @using (Html.BeginForm(null, null, FormMethod.Get, new { role = "form", id = "frmSearch" }))
 {
     <input type="hidden" id="pattern" name="pattern" value="">
-    @Html.HiddenFor(m => m.Preview)
+    <input type="hidden" id="Preview" name="Preview" value="">
+    <input type="hidden" id="IsApproved" name="IsApproved" value="@isApproved.ToString()">
     <div class="row mb-2">
         <div class="col-md-2 col-sm-3 search-item">
             @Html.LabelFor(m => m.Code)

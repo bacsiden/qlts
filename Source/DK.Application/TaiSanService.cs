@@ -72,12 +72,15 @@ namespace DK.Application
 
             if (newTaiSans.Any())
             {
+                var number = types.First(m => m.Id == TypeConstant.TaiSanSequenceId);
                 foreach (var item in newTaiSans)
                 {
                     item.GenerateCode(taisans);
                     item.Children.ForEach(m => m.GenerateCode(taisans));
+                    item.Number = ++number.Number;
                 }
                 _taiSanRepository.AddRange(newTaiSans);
+                _typeRepository.Update(number);
             }
             if (newTypes.Any())
                 _typeRepository.AddRange(newTypes);

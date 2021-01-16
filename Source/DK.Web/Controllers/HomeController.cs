@@ -101,7 +101,25 @@ namespace DK.Web.Controllers
             }
             return RedirectToAction(nameof(TaisanUnApproved));
         }
+        public ActionResult ImportUpdate(string returnUrl)
+        {
+            return View();
+        }
 
+        [HttpPost]
+        public ActionResult ImportUpdate(HttpPostedFileBase taisan, string returnUrl)
+        {
+            try
+            {
+                _taiSanService.ImportUpdateTaiSan(taisan.InputStream);
+            }
+            catch (Exception e)
+            {
+                ViewBag.Error = e.Message;
+                return View();
+            }
+            return CustomRedirect(returnUrl);
+        }
         public ActionResult Dashboard()
         {
             var dashboard = new DashboardModel();
@@ -185,6 +203,8 @@ namespace DK.Web.Controllers
                 return View(taisan);
             }
 
+            var types = _typeRepository.Find(m => true).ToList();
+            var number = types.First(m => m.Id == TypeConstant.TaiSanSequenceId);
             var currentAsset = _taiSanRepository.Get(taisan.Id);
             if (currentAsset != null)
             {
@@ -195,14 +215,16 @@ namespace DK.Web.Controllers
                 var existingCodes = _taiSanService.GetExistingCodes();
                 taisan.GenerateCode(existingCodes);
                 taisan.CreatedBy = User.Identity.Name;
+                taisan.Number = ++number.Number;
             }
 
             taisan.Tags = string.IsNullOrWhiteSpace(taisan.JoinedTags) ? new List<string>() : taisan.JoinedTags.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries).Select(m => m.Trim()).ToList();
 
             _taiSanRepository.Upsert(taisan);
+            _typeRepository.Update(number);
 
-            var types = _typeRepository.Find(m => true).ToList();
             var newTypes = new List<Application.Models.Type>();
+            
             _taiSanService.AddNewType(types, newTypes, TypeConstant.Tags, taisan.Tags);
             if (newTypes.Any())
                 _typeRepository.AddRange(newTypes);

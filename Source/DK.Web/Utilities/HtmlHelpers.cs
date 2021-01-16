@@ -7,7 +7,8 @@ namespace DK.Web
     {
         public static MvcHtmlString BuildDrodownList(this HtmlHelper html, string name, IEnumerable<string> list, string selected, string optionText = "-:-", string className = "form-control form-control-sm")
         {
-            var newList = new List<string> { optionText };
+            var newList = new List<string>();
+            if (optionText != null) newList.Add(optionText);
             newList.AddRange(list);
 
             var tagSelect = new TagBuilder("select");

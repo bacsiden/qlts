@@ -1,4 +1,5 @@
 ﻿using DK.Application.Models;
+using DK.Application.Repositories;
 using DK.Web.DependencyResolution;
 using DK.Web.Models;
 using Microsoft.AspNet.Identity;
@@ -39,6 +40,9 @@ namespace DK.Web
             {
                 userManager.AddToRole(admin.Id, RoleList.SupperAdmin);
             }
+            var typeRepo = IoC.Container.GetInstance<ITypeRepository>();
+            var type = typeRepo.Get(TypeConstant.TaiSanSequenceId);
+            if (type == null) typeRepo.Add(new Type { Id = TypeConstant.TaiSanSequenceId, Number = 0 });
         }
     }
 }

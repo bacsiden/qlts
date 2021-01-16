@@ -20,6 +20,7 @@ namespace DK.Application.Models
         public bool IsSubmenu { get; set; }
 
         public Guid ParentId { get; set; }
+        public int Number { get; set; }
 
         public static List<string> MenuCategories = new List<string> { TypeConstant.Group, TypeConstant.ChungLoai,
             TypeConstant.NguonKinhPhi, TypeConstant.NguonKinhPhiKhac, TypeConstant.ChatLuong, TypeConstant.LoaiXe, TypeConstant.PhongBan, TypeConstant.Tags };

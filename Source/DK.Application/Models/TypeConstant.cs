@@ -8,6 +8,8 @@ namespace DK.Application.Models
 {
     public static class TypeConstant
     {
+        public static Guid TaiSanSequenceId = new Guid("4446ea03-a68d-4932-8352-a6e581a359eb");
+
         public const string ChungLoai = "Chủng loại";
         public const string Group = "Nhóm tài sản";
         public const string NguonKinhPhi = "Nguồn kinh phí bộ";
