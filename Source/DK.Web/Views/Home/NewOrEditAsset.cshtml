@@ -15,6 +15,16 @@
             margin-bottom: 0;
         }
 
+    .bootstrap-tagsinput {
+        width: 100%;
+        padding: 0px 6px 5px 6px!important;
+    }
+    
+    hr {
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+
     @@media (min-width: 1200px) {
         .modal-xl {
             max-width: 1140px;
@@ -22,7 +32,7 @@
     }
 </style>
 
-@using (Html.BeginForm(null, null, FormMethod.Post, new { role = "form" }))
+@using (Html.BeginForm(null, null, FormMethod.Post, new { role = "form", onsubmit = "removeCurrencySeparators()" }))
 {
     <button class="btn btn-sm bd bg-primary tx-white pointer"><i class="fa fa-save"></i> Lưu lại</button>
     <a class="btn btn-sm bd pointer bg-white" href="@Request.Params["returnUrl"]"><i class="fa fa-arrow-left"></i> Quay lại</a>
@@ -31,7 +41,7 @@
             @Html.Partial("_NewOrEditAssetForm", Model)
         </div>
     </div>
-    <button class="btn btn-sm bd bg-primary tx-white pointer" onclick="removeCurrencySeparators()"><i class="fa fa-save"></i> Lưu lại</button>
+    <button class="btn btn-sm bd bg-primary tx-white pointer"><i class="fa fa-save"></i> Lưu lại</button>
     <a class="btn btn-sm bd pointer bg-white" href="@Request.Params["returnUrl"]"><i class="fa fa-arrow-left"></i> Quay lại</a>
 
 
@@ -53,8 +63,10 @@
 
 @section Scripts {
     <link href="@Url.Content("~/Content/lib/select2/css/select2-bootstrap.min.css")" rel="stylesheet">
+    <link href="~/Content/lib/bootstrap-tagsinput/bootstrap-tagsinput.css" rel="stylesheet" />
     <script src="~/Scripts/jquery.maskMoney.min.js"></script>
     <script src="~/Content/lib/select2/js/select2.min.js"></script>
+    <script src="~/Content/lib/bootstrap-tagsinput/bootstrap-tagsinput.js"></script>
     <script src="~/Scripts/common.js"></script>
     <script>
         $(document).ready(function () {

@@ -151,6 +151,9 @@ namespace DK.Web.Controllers
                     case TypeConstant.NguonKinhPhi:
                         count = _taiSanRepository.Find(m => true).AsEnumerable().Count(m => !string.IsNullOrEmpty(m.NguonKinhPhi));
                         break;
+                    case TypeConstant.NguonKinhPhiKhac:
+                        count = _taiSanRepository.Find(m => true).AsEnumerable().Count(m => !string.IsNullOrEmpty(m.NganSachKhac));
+                        break;
                     case TypeConstant.PhongBan:
                         count = _taiSanRepository.Find(m => true).AsEnumerable().Count(m => !string.IsNullOrEmpty(m.PhongQuanLy));
                         break;
@@ -184,7 +187,7 @@ namespace DK.Web.Controllers
                     IsApproved = isApproved
                 };
             }
-            taiSan.JoinedTags = string.Join(";", taiSan.Tags);
+            taiSan.JoinedTags = string.Join(",", taiSan.Tags);
             return View(taiSan);
         }
 
@@ -218,7 +221,7 @@ namespace DK.Web.Controllers
                 taisan.Number = ++number.Number;
             }
 
-            taisan.Tags = string.IsNullOrWhiteSpace(taisan.JoinedTags) ? new List<string>() : taisan.JoinedTags.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries).Select(m => m.Trim()).ToList();
+            taisan.Tags = string.IsNullOrWhiteSpace(taisan.JoinedTags) ? new List<string>() : taisan.JoinedTags.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries).Select(m => m.Trim()).ToList();
 
             _taiSanRepository.Upsert(taisan);
             _typeRepository.Update(number);
@@ -342,6 +345,7 @@ namespace DK.Web.Controllers
             ViewBag.ChungLoai = types.Where(m => m.Name == TypeConstant.ChungLoai).Select(m => m.Title);
             ViewBag.DanhMuc = types.Where(m => m.Name == TypeConstant.Group).Select(m => m.Title);
             ViewBag.NguonKinhPhi = types.Where(m => m.Name == TypeConstant.NguonKinhPhi).Select(m => m.Title);
+            ViewBag.NganSachKhac = types.Where(m => m.Name == TypeConstant.NguonKinhPhiKhac).Select(m => m.Title);
             ViewBag.ChatLuong = types.Where(m => m.Name == TypeConstant.ChatLuong).Select(m => m.Title);
             ViewBag.LoaiXe = types.Where(m => m.Name == TypeConstant.LoaiXe).Select(m => m.Title);
             ViewBag.PhongBan = types.Where(m => m.Name == TypeConstant.PhongBan).Select(m => m.Title);

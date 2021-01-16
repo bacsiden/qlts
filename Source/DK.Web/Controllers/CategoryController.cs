@@ -104,6 +104,13 @@ namespace DK.Web.Controllers
                             item.NguonKinhPhi = newName;
                         });
                         break;
+                    case TypeConstant.NguonKinhPhiKhac:
+                        taisans = _taiSanRepository.Find(m => true).AsEnumerable().Where(m => oldNames.Any(name => name == m.NganSachKhac)).ToList();
+                        taisans.ForEach(item =>
+                        {
+                            item.NganSachKhac = newName;
+                        });
+                        break;
                     case TypeConstant.PhongBan:
                         taisans = _taiSanRepository.Find(m => true).AsEnumerable().Where(m => oldNames.Any(name => name == m.PhongQuanLy)).ToList();
                         taisans.ForEach(item =>
@@ -167,6 +174,9 @@ namespace DK.Web.Controllers
                     break;
                 case TypeConstant.NguonKinhPhi:
                     count = _taiSanRepository.Find(m => true).AsEnumerable().Count(m => categories.Any(name => name == m.NguonKinhPhi));
+                    break;
+                case TypeConstant.NguonKinhPhiKhac:
+                    count = _taiSanRepository.Find(m => true).AsEnumerable().Count(m => categories.Any(name => name == m.NganSachKhac));
                     break;
                 case TypeConstant.PhongBan:
                     count = _taiSanRepository.Find(m => true).AsEnumerable().Count(m => categories.Any(name => name == m.PhongQuanLy));

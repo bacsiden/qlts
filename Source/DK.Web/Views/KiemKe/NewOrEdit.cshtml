@@ -13,13 +13,18 @@
             margin-bottom: 0;
         }
 
+    hr {
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+
     @@media (min-width: 1200px) {
         .modal-xl {
             max-width: 1140px;
         }
     }
 </style>
-@using (Html.BeginForm(null, null, FormMethod.Post, new { role = "form" }))
+@using (Html.BeginForm(null, null, FormMethod.Post, new { role = "form", onsubmit = "removeCurrencySeparators()" }))
 {
     <div class="card mt-2 mb-2 shadow-base">
         <div class="card-body">
@@ -42,6 +47,7 @@
                     @Html.TextBoxFor(m => m.NamSuDung, new { Class = "form-control form-control-sm", type = "number", min = 1 })
                 </div>
                 <div class="col-12 mt-3">
+                    <hr class="bd-primary">
                     <h5 class="border-bottom">Theo sổ kế toán</h5>
                 </div>
                 <div class="col-md-4 col-sm-6 search-item">
@@ -57,6 +63,7 @@
                     @Html.TextBoxFor(m => m.GiaTriConLaiKeToan, new { Class = "form-control form-control-sm currency" })
                 </div>
                 <div class="col-12 mt-3">
+                    <hr class="bd-primary">
                     <h5 class="border-bottom">Theo kiểm kê</h5>
                 </div>
                 <div class="col-md-4 col-sm-6 search-item">
@@ -93,7 +100,7 @@
             </div>
         </div>
     </div>
-    <button class="btn btn-sm bd bg-primary tx-white pointer" onclick="removeCurrencySeparators()"><i class="fa fa-save"></i> Lưu lại</button>
+    <button class="btn btn-sm bd bg-primary tx-white pointer"><i class="fa fa-save"></i> Lưu lại</button>
     <a class="btn btn-sm bd pointer bg-white" href="@Request.Params["returnUrl"]"><i class="fa fa-arrow-left"></i> Quay lại</a>
 }
 
