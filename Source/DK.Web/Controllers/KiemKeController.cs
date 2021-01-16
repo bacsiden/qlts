@@ -133,7 +133,7 @@ namespace DK.Web.Controllers
             }
             catch (Exception e)
             {
-                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest, e.Message);
+                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest, "Có lỗi khi xuất dữ liệu ra thiết bị. " + e.Message);
             }
         }
 
@@ -175,7 +175,7 @@ namespace DK.Web.Controllers
             }
             catch (Exception e)
             {
-                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest, e.Message);
+                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest, "Có lỗi khi đọc dữ liệu từ thiết bị. " + e.Message);
             }
         }
 
