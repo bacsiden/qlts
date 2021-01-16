@@ -35,6 +35,8 @@ namespace DK.Application.Models
         [ColumnIndex(1)]
         [BsonIgnore]
         public int No { get; set; }
+
+        [Display(Name = "Nhóm tài sản")]
         public string GroupName { get; set; }
 
         // search chính xác

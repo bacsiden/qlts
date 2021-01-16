@@ -12,42 +12,42 @@
         vertical-align: middle;
     }
 </style>
+<div class="pull-right">
+    <button type="button" class="btn btn-sm btn-info bd pointer" onclick="pushData('@(kiemKe.Id)');" id="pushData"><i class="fa fa-upload"> </i> Đẩy dữ liệu vào thiết bị <i class="fa fa-spin fa-spinner d-none"></i></button>
+
+    <button type="button" class="btn btn-sm btn-info bd pointer" onclick="pullData('@(kiemKe.Id)')" id="pullData"><i class="fa fa-deviantart"> </i> Đọc từ thiết bị <i class="fa fa-spin fa-spinner d-none"></i></button>
+
+    <a class="btn btn-sm bd pointer" href="/KiemKe/Import/@kiemKe.Id"><i class="fa fa-file-excel-o"> </i> Đọc từ excel</a>
+
+    <a class="dropdown-toggle btn btn-sm btn-primary" href="javascript:void(0)" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="fa fa-eye"></i> Xem trước
+    </a>
+    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
+        @foreach (var item in reportTemplates)
+        {
+            <a class="dropdown-item" target="_blank" href="/KiemKe/Preview/@kiemKe.Id?pattern=@item.Key" data-pattern="@item.Key">@item.Value.Item1 - @item.Key</a>
+        }
+    </div>
+
+    <div class="btn-group">
+        <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Tải file
+        </button>
+        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
+            @foreach (var item in reportTemplates)
+            {
+                <a class="dropdown-item" href="/KiemKe/Export/@kiemKe.Id?pattern=@item.Key" data-pattern="@item.Key">@item.Value.Item1 - @item.Key</a>
+            }
+        </div>
+    </div>
+</div>
 @using (Html.BeginForm(null, null, FormMethod.Post, new { role = "form" }))
 {
     <div class="card mt-2 mb-2 shadow-base">
         <div class="card-body">
             <div class="row">
-                <div class="col-md-5 search-item">
+                <div class="col-md-12 search-item">
                     @Html.Partial("_Form", kiemKe)
-                </div>
-                <div class="col-md-7 search-item">
-                    <div class="dropdown d-sm-inline-block @(canManage ? "pull-right": "")">
-                        <a class="btn btn-sm btn-info bd pointer" href="javascript:void(0)" onclick="pushData('@(kiemKe.Id)')"><i class="fa fa-upload"> </i> Đẩy dữ liệu vào thiết bị</a>
-                        <a class="btn btn-sm btn-info bd pointer" href="javascript:void(0)" onclick="pullData('@(kiemKe.Id)')"><i class="fa fa-deviantart"> </i> Đọc từ thiết bị</a>
-                        <a class="btn btn-sm bd pointer" href="/KiemKe/Import/@kiemKe.Id" onclick="createKiemKe(this);"><i class="fa fa-file-excel-o"> </i> Đọc từ excel</a>
-
-                        <a class="dropdown-toggle btn btn-sm btn-primary" href="javascript:void(0)" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fa fa-eye"></i> Xem trước
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
-                            @foreach (var item in reportTemplates)
-                            {
-                                <a class="dropdown-item" target="_blank" href="/KiemKe/Preview/@kiemKe.Id?pattern=@item.Key" data-pattern="@item.Key">@item.Value.Item1 - @item.Key</a>
-                            }
-                        </div>
-
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Tải file
-                            </button>
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
-                                @foreach (var item in reportTemplates)
-                                {
-                                    <a class="dropdown-item" href="/KiemKe/Export/@kiemKe.Id?pattern=@item.Key" data-pattern="@item.Key">@item.Value.Item1 - @item.Key</a>
-                                }
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -76,34 +76,43 @@
     <script>
         function pullData(id) {
             if (!confirm("Bạn có chắc muốn lấy dữ liệu từ thiết bị kiểm kê?")) return;
+            $('#pullData').attr('disabled', true);
+            $('#pullData .fa-spin').removeClass('d-none');
             $.ajax(
                 {
                     type: 'GET',
                     url: '/KiemKe/PullData/' + id,
-                    data: "id=" + id,
-                    success: function (data) {
-                        //alert(data);
-                    }
+                    data: "id=" + id
                 }
-            ).always(function (data, xxx) {
-                if ("success" == xxx) return;
-                alert(data.statusText);
+            ).always(function (data) {
+                $('#pullData .fa-spin').addClass('d-none');
+                $('#pullData').attr('disabled', false);
+                if (!data) {
+                    console.log("Thành công");
+                    window.location.reload();
+                }
+                else
+                    alert(data);
             });
         }
-        function pushData(id) {
+        function pushData(id, $button) {
             if (!confirm("Bạn có chắc muốn đẩy dữ liệu ra thiết bị kiểm kê?")) return;
+            $('#pushData').attr('disabled', true);
+            $('#pushData .fa-spin').removeClass('d-none');
             $.ajax(
                 {
                     type: 'GET',
                     url: '/KiemKe/PushData/' + id,
-                    data: "id=" + id,
-                    success: function (data) {
-                        //alert(data);
-                    }
+                    data: "id=" + id
                 }
-            ).always(function (data, xxx) {
-                if ("success" == xxx) return;
-                alert(data.statusText);
+            ).always(function (data) {
+                $('#pushData').attr('disabled', false);
+                $('#pushData .fa-spin').addClass('d-none');
+                if (!data) {
+                    console.log("Thành công");
+                }
+                else
+                    alert(data);
             });
         }
     </script>

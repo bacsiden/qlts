@@ -99,7 +99,7 @@ namespace DK.Web.Controllers
             return Redirect(returnUrl);
         }
 
-        public HttpStatusCodeResult PushData(Guid id)
+        public string PushData(Guid id)
         {
             try
             {
@@ -129,15 +129,18 @@ namespace DK.Web.Controllers
                     device.Disconnect();
                 }
 
-                return new HttpStatusCodeResult(System.Net.HttpStatusCode.OK);
+                return null;
             }
             catch (Exception e)
             {
-                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest, "Có lỗi khi xuất dữ liệu ra thiết bị. " + e.Message);
+                var message = e.Message;
+                if (message?.Equals("Sequence contains no elements", StringComparison.OrdinalIgnoreCase) == true)
+                    message = "Thiết bị kiếm kê chưa kết nối với máy chủ";
+                return "Có lỗi khi xuất dữ liệu ra thiết bị. " + message;
             }
         }
 
-        public HttpStatusCodeResult PullData(Guid id)
+        public string PullData(Guid id)
         {
             try
             {
@@ -152,8 +155,8 @@ namespace DK.Web.Controllers
                     if (!device.FileExists(filename)) throw new Exception($"Không tìm thấy đợt kiểm kê '{type.Title}' từ thiết bị kiểm kê");
                     var serializer = new JsonSerializer();
                     var memorySteam = new MemoryStream();
-                    device.DownloadFile(filename, memorySteam);
-                    var str = new StreamReader(memorySteam);
+                    device.DownloadFile(filename, $"{HtmlFolder}KiemKe.json");
+                    var str = new StreamReader($"{HtmlFolder}KiemKe.json");
                     using (var jsonTextReader = new JsonTextReader(str))
                     {
                         var lstKiemKe = serializer.Deserialize<List<KiemKe>>(jsonTextReader);
@@ -171,11 +174,14 @@ namespace DK.Web.Controllers
                     device.Disconnect();
                 }
 
-                return new HttpStatusCodeResult(System.Net.HttpStatusCode.OK);
+                return null;
             }
             catch (Exception e)
             {
-                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest, "Có lỗi khi đọc dữ liệu từ thiết bị. " + e.Message);
+                var message = e.Message;
+                if (message?.Equals("Sequence contains no elements", StringComparison.OrdinalIgnoreCase) == true)
+                    message = "Thiết bị kiếm kê chưa kết nối với máy chủ";
+                return "Có lỗi khi đọc dữ liệu từ thiết bị. " + message;
             }
         }
 

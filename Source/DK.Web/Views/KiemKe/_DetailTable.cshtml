@@ -11,6 +11,9 @@
             @Html.DisplayNameFor(m => m.Name)
         </th>
         <th rowspan="2">
+            @Html.DisplayNameFor(m => m.GroupName)
+        </th>
+        <th rowspan="2">
             @Html.DisplayNameFor(m => m.NamSuDung)
         </th>
         <th colspan="3" class="text-center">
@@ -73,6 +76,9 @@
                 </td>
                 <td>
                     <a href="@Url.Action("NewOrEdit", new {id=item.Id, parentId = item.KiemKeId, returnUrl = Request.RawUrl })">@item.Name</a>
+                </td>
+                <td>
+                    @(item.GroupName)
                 </td>
                 <td>
                     @(item.NamSuDung)

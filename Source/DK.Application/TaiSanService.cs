@@ -372,7 +372,8 @@ namespace DK.Application
         public void ImportKiemKe(Stream stream, Guid kiemKeId)
         {
             var taisans = _taiSanRepository.Find(m => true).ToList().Select(m => new { key = m.Code, value = m }).ToDictionary(x => x.key, x => x.value);
-
+            var kiemKes = _kiemKeRepository.Find(m => m.KiemKeId == kiemKeId).ToList();
+            var kkType = _typeRepository.Get(kiemKeId);
             XlsFile xls = new XlsFile();
             xls.Open(stream);
 
@@ -399,13 +400,17 @@ namespace DK.Application
                 kk.GiaTriConLaiKeToan = GetCellDecimal(xls, row, nameof(KiemKe.GiaTriConLaiKeToan), typeof(KiemKe));
                 kk.GiaTriConLaiKiemKe = GetCellDecimal(xls, row, nameof(KiemKe.GiaTriConLaiKiemKe), typeof(KiemKe));
                 kk.GhiChu = GetCellString(xls, row, nameof(KiemKe.GhiChu), typeof(KiemKe));
-
-                newKiemKes.Add(kk);
+                var kiemKe = kiemKes.FirstOrDefault(m => m.Code == kk.Code);
+                if (kiemKe != null)
+                {
+                    kk.Id = kiemKe.Id;
+                    kk.GroupName = kiemKe.GroupName;
+                    newKiemKes.Add(kk);
+                }
             }
-            if (newKiemKes.Any())
+            foreach (var item in newKiemKes)
             {
-                _kiemKeRepository.DeleteManyAsync(nameof(KiemKe.KiemKeId), kiemKeId).GetAwaiter().GetResult();
-                _kiemKeRepository.AddRange(newKiemKes);
+                _kiemKeRepository.Update(item);
             }
         }
 
