@@ -103,5 +103,10 @@ namespace DK.Application.Repositories
             var filter = Builders<T>.Filter.Eq(fieldName, value);
             return _collection.DeleteManyAsync(filter);
         }
+        public virtual void DeleteMany(string fieldName, object value)
+        {
+            var filter = Builders<T>.Filter.Eq(fieldName, value);
+            _collection.DeleteMany(filter);
+        }
     }
 }

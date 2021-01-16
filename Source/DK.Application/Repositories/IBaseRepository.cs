@@ -31,6 +31,7 @@ namespace DK.Application.Repositories
         void Delete(Guid id);
         Task DeleteAsync(string id);
         Task DeleteManyAsync(string fieldName, object value);
+        void DeleteMany(string fieldName, object value);
         Task SetAsync(Guid id, string fieldName, dynamic value);
         Task SetAsync(string id, string fieldName, dynamic value);
         void Set(Guid id, string fieldName, dynamic value);

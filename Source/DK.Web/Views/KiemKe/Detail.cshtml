@@ -22,8 +22,8 @@
                 </div>
                 <div class="col-md-6 search-item">
                     <div class="dropdown d-sm-inline-block @(canManage ? "pull-right": "")">
-                        <a class="btn btn-sm bd pointer" href="#"><i class="fa fa-upload"> </i> Đẩy dữ liệu vào thiết bị</a>
-                        <a class="btn btn-sm bd pointer" href="#" onclick="createKiemKe(this);"><i class="fa fa-deviantart"> </i> Đọc từ thiết bị</a>
+                        <a class="btn btn-sm btn-info bd pointer" href="javascript:void(0)" onclick="pushData('@(kiemKe.Id)')"><i class="fa fa-upload"> </i> Đẩy dữ liệu vào thiết bị</a>
+                        <a class="btn btn-sm btn-info bd pointer" href="javascript:void(0)" onclick="pullData('@(kiemKe.Id)')"><i class="fa fa-deviantart"> </i> Đọc từ thiết bị</a>
                         <a class="btn btn-sm bd pointer" href="/KiemKe/Import/@kiemKe.Id" onclick="createKiemKe(this);"><i class="fa fa-file-excel-o"> </i> Đọc từ excel</a>
 
                         <a class="dropdown-toggle btn btn-sm btn-primary" href="javascript:void(0)" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -61,8 +61,8 @@
 <div class="row mt-4">
     <div class="col-12">
         @*<div class="mb-1">
-            <a href="@Url.Action("NewOrEdit", new { parentId = kiemKe.Id, returnUrl = Request.RawUrl })" class="btn btn-primary btn-sm mr-1"><i class="fa fa-plus"></i> Thêm</a>
-        </div>*@
+                <a href="@Url.Action("NewOrEdit", new { parentId = kiemKe.Id, returnUrl = Request.RawUrl })" class="btn btn-primary btn-sm mr-1"><i class="fa fa-plus"></i> Thêm</a>
+            </div>*@
         <div class="card shadow-base bd-0">
             <div class="table-responsive">
                 @Html.Partial("_DetailTable", Model.Items)
@@ -72,3 +72,39 @@
     </div>
 </div>
 
+@section Scripts {
+    <script>
+        function pullData(id) {
+            if (!confirm("Bạn có chắc muốn lấy dữ liệu từ thiết bị kiểm kê?")) return;
+            $.ajax(
+                {
+                    type: 'GET',
+                    url: '/KiemKe/PullData/' + id,
+                    data: "id=" + id,
+                    success: function (data) {
+                        //alert(data);
+                    }
+                }
+            ).always(function (data, xxx) {
+                if ("success" == xxx) return;
+                alert(data.statusText);
+            });
+        }
+        function pushData(id) {
+            if (!confirm("Bạn có chắc muốn đẩy dữ liệu ra thiết bị kiểm kê?")) return;
+            $.ajax(
+                {
+                    type: 'GET',
+                    url: '/KiemKe/PushData/' + id,
+                    data: "id=" + id,
+                    success: function (data) {
+                        //alert(data);
+                    }
+                }
+            ).always(function (data, xxx) {
+                if ("success" == xxx) return;
+                alert(data.statusText);
+            });
+        }
+    </script>
+}

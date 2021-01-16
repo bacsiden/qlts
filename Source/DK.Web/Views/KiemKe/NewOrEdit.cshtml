@@ -26,6 +26,7 @@
             @Html.Hidden("returnUrl", Request.Params["returnUrl"])
             @Html.HiddenFor(m => m.Id)
             @Html.HiddenFor(m => m.KiemKeId)
+            @Html.HiddenFor(m => m.GroupName)
             @Html.ValidationSummary(true)
             <div class="row mb-2">
                 <div class="col-md-4 col-sm-6 search-item">
@@ -71,20 +72,20 @@
                     @Html.TextBoxFor(m => m.GiaTriConLaiKiemKe, new { Class = "form-control form-control-sm currency" })
                 </div>
                 @*<div class="col-12 mt-3">
-                        <h5 class="border-bottom">Chênh lệch</h5>
-                    </div>
-                    <div class="col-md-4 col-sm-6 search-item">
-                        @Html.LabelFor(m => m.SoLuongChenhLech)
-                        @Html.TextBoxFor(m => m.SoLuongChenhLech, new { Class = "form-control form-control-sm currency" })
-                    </div>
-                    <div class="col-md-4 col-sm-6 search-item">
-                        @Html.LabelFor(m => m.NguyenGiaChenhLech)
-                        @Html.TextBoxFor(m => m.NguyenGiaChenhLech, new { Class = "form-control form-control-sm currency" })
-                    </div>
-                    <div class="col-md-4 col-sm-6 search-item">
-                        @Html.LabelFor(m => m.GiaTriConLaiChenhLech)
-                        @Html.TextBoxFor(m => m.GiaTriConLaiChenhLech, new { Class = "form-control form-control-sm currency" })
-                    </div>*@
+                <h5 class="border-bottom">Chênh lệch</h5>
+            </div>
+            <div class="col-md-4 col-sm-6 search-item">
+                @Html.LabelFor(m => m.SoLuongChenhLech)
+                @Html.TextBoxFor(m => m.SoLuongChenhLech, new { Class = "form-control form-control-sm currency" })
+            </div>
+            <div class="col-md-4 col-sm-6 search-item">
+                @Html.LabelFor(m => m.NguyenGiaChenhLech)
+                @Html.TextBoxFor(m => m.NguyenGiaChenhLech, new { Class = "form-control form-control-sm currency" })
+            </div>
+            <div class="col-md-4 col-sm-6 search-item">
+                @Html.LabelFor(m => m.GiaTriConLaiChenhLech)
+                @Html.TextBoxFor(m => m.GiaTriConLaiChenhLech, new { Class = "form-control form-control-sm currency" })
+            </div>*@
                 <div class="col-12 search-item">
                     @Html.LabelFor(m => m.GhiChu)
                     @Html.TextAreaFor(m => m.GhiChu, new { Class = "form-control" })

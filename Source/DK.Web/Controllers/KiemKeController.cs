@@ -11,6 +11,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.IO;
 using MediaDevices;
+using Newtonsoft.Json;
 
 namespace DK.Web.Controllers
 {
@@ -33,26 +34,6 @@ namespace DK.Web.Controllers
         // GET: Category
         public ActionResult Index(DefaultSearchModel pagerInfo)
         {
-            //var devices = MediaDevice.GetDevices();
-            //using (var device = devices.First())
-            //{
-            //    var dir = @"IPSM card\Android\data";
-            //    device.Connect();
-            //    var photoDir = device.GetDirectoryInfo(dir);
-
-            //    var files = photoDir.EnumerateFiles("*.*", SearchOption.AllDirectories);
-            //    var filename = @"IPSM card\Android\data\xxx.txt";
-            //    device.UploadFile(@"c:\xxx.txt", filename);
-            //    //foreach (var file in files)
-            //    //{
-            //    //    MemoryStream memoryStream = new System.IO.MemoryStream();
-            //    //    device.DownloadFile(file.FullName, memoryStream);
-            //    //    memoryStream.Position = 0;
-            //    //}
-            //    device.Disconnect();
-            //}
-
-            
             var list = _typeRepository.Find(m => m.Name == TypeConstant.KiemKe);
             var pager = new Pager(list.Count(), pagerInfo.PageIndex, pagerInfo.PageSize);
 
@@ -82,6 +63,120 @@ namespace DK.Web.Controllers
             };
 
             return View(result);
+        }
+
+        public async Task<ActionResult> Merge(List<Guid> kiemKeIds, string name, string returnUrl)
+        {
+            if (!kiemKeIds.Any()) return Redirect(returnUrl);
+            var kiemKes = new List<KiemKe>();
+            foreach (var item in kiemKeIds)
+            {
+                kiemKes.AddRange(_kiemKeRepository.Find(m => m.KiemKeId == item));
+            }
+            var kiemKeLst = new List<KiemKe>();
+            var kkType = _typeRepository.Add(new Application.Models.Type { Title = name, Name = TypeConstant.KiemKe, CreatedBy = User.Identity.Name });
+            foreach (var item in kiemKes)
+            {
+                var kk = kiemKeLst.FirstOrDefault(m => m.Code == item.Code);
+                if (kk == null)
+                {
+                    kiemKeLst.Add(item);
+                    item.KiemKeId = kkType.Id;
+                }
+                else if (kk.SoLuongKiemKe < item.SoLuongKiemKe)
+                {
+                    var index = kiemKeLst.FindIndex(m => m.Id == kk.Id);
+                    kiemKeLst[index].SoLuongKiemKe = item.SoLuongKiemKe;
+                }
+            }
+            foreach (var item in kiemKeIds)
+            {
+                _kiemKeRepository.DeleteMany(nameof(KiemKe.KiemKeId), item);
+                _typeRepository.Delete(item);
+            }
+            _kiemKeRepository.AddRange(kiemKeLst);
+
+            return Redirect(returnUrl);
+        }
+
+        public HttpStatusCodeResult PushData(Guid id)
+        {
+            try
+            {
+                var kiemKes = _kiemKeRepository.Find(m => m.KiemKeId == id);
+                string output = JsonConvert.SerializeObject(kiemKes);
+                var devices = MediaDevice.GetDevices();
+                using (var device = devices.First())
+                {
+                    //var dir = @"IPSM card\Android\data";
+                    device.Connect();
+                    //var photoDir = device.GetDirectoryInfo(dir);
+
+                    //var files = photoDir.EnumerateFiles("*.*", SearchOption.AllDirectories);
+                    var filename = $@"IPSM card\Android\data\{id}.json";
+                    using (StreamWriter w = new StreamWriter($"{HtmlFolder}KiemKe.json", false))
+                    {
+                        w.Write(output);
+                    }
+                    if (device.FileExists(filename)) device.DeleteFile(filename);
+                    device.UploadFile($"{HtmlFolder}KiemKe.json", filename);
+                    //foreach (var file in files)
+                    //{
+                    //    MemoryStream memoryStream = new System.IO.MemoryStream();
+                    //    device.DownloadFile(file.FullName, memoryStream);
+                    //    memoryStream.Position = 0;
+                    //}
+                    device.Disconnect();
+                }
+
+                return new HttpStatusCodeResult(System.Net.HttpStatusCode.OK);
+            }
+            catch (Exception e)
+            {
+                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest, e.Message);
+            }
+        }
+
+        public HttpStatusCodeResult PullData(Guid id)
+        {
+            try
+            {
+                var type = _typeRepository.Get(id);
+                var kiemKes = _kiemKeRepository.Find(m => m.KiemKeId == id);
+                string output = JsonConvert.SerializeObject(kiemKes);
+                var devices = MediaDevice.GetDevices();
+                using (var device = devices.First())
+                {
+                    device.Connect();
+                    var filename = $@"IPSM card\Android\data\{id}.json";
+                    if (!device.FileExists(filename)) throw new Exception($"Không tìm thấy đợt kiểm kê '{type.Title}' từ thiết bị kiểm kê");
+                    var serializer = new JsonSerializer();
+                    var memorySteam = new MemoryStream();
+                    device.DownloadFile(filename, memorySteam);
+                    var str = new StreamReader(memorySteam);
+                    using (var jsonTextReader = new JsonTextReader(str))
+                    {
+                        var lstKiemKe = serializer.Deserialize<List<KiemKe>>(jsonTextReader);
+                        foreach (var item in lstKiemKe)
+                        {
+                            if (kiemKes.Any(m => m.Id == item.Id))
+                            {
+                                _kiemKeRepository.Update(item);
+                            }
+                        }
+                    }
+                    memorySteam.Close();
+                    str.Close();
+
+                    device.Disconnect();
+                }
+
+                return new HttpStatusCodeResult(System.Net.HttpStatusCode.OK);
+            }
+            catch (Exception e)
+            {
+                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest, e.Message);
+            }
         }
 
         public ActionResult NewOrEdit(Guid parentId, Guid? id = null, string returnUrl = "")
