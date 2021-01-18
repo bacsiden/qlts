@@ -33,6 +33,9 @@ namespace DK.Application.Models
         public Guid KiemKeId { get; set; }
 
         public Guid TaiSanId { get; set; }
+        public string DongVi { get; set; }
+        public string NguoiSuDung { get; set; }
+        public string NguoiQuanLy { get; set; }
 
         [ColumnIndex(1)]
         [BsonIgnore]

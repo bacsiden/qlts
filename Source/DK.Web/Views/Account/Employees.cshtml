@@ -6,7 +6,7 @@
 @section Button {
     <a href="@Url.Action("AddEmployee")" class="btn btn-primary btn-sm pull-right"><i class="fa fa-plus"></i> Thêm</a>
 }
-
+<label class="text-warning">Mật khẩu sau khi reset mặc định là: 1</label>
 <div class="row mt-2">
     <div class="col-12">
         <div class="card shadow-base bd-0">
@@ -20,6 +20,7 @@
                                 </th>
                                 <th> Tài khoản</th>
                                 <th> Vai trò</th>
+                                <th></th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -42,7 +43,11 @@
                                             </select>
                                         </td>
                                         <td>
-                                            <a href="@Url.Action("Delete", new { id = item.Id })" onclick="return confirm('Bạn có chắc chắn?')" class="text-info">@(item.Disabled.HasValue ? (item.Disabled.Value?"Đang bị khóa" : "Đang hoạt động"): "Đang hoạt động")</a>
+                                            <a href="@Url.Action("Delete", new { id = item.Id })" onclick="return confirm('Bạn có chắc chắn?')" class="text-info">@(item.Disabled.HasValue ? (item.Disabled.Value? "Đã bị khóa" : "Đang hoạt động"): "Đang hoạt động")</a>
+                                        </td>
+
+                                        <td>
+                                            <a href="@Url.Action("ResetPassword", new { id = item.Id })" onclick="return confirm('Bạn có chắc chắn?')" class="text-info">Reset password</a>
                                         </td>
                                     </tr>
                                 }

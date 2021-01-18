@@ -94,11 +94,10 @@ namespace DK.Web.Controllers
             {
                 var user = await UserManager.FindByIdAsync(CurrentUserId);
                 if (user == null) return null;
-
                 var result = await UserManager.ChangePasswordAsync(CurrentUserId, model.OldPassword, model.NewPassword);
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Settings");
+                    return Redirect("/");
                 }
                 AddErrors(result);
             }
@@ -177,7 +176,22 @@ namespace DK.Web.Controllers
             {
                 var user = UserManager.FindById(id);
                 UserManager.Disable(id, user.Disabled.HasValue ? !user.Disabled.Value : true);
-                //UserManager.Delete(user);
+            }
+            catch (Exception)
+            {
+
+            }
+
+            return RedirectToAction("Employees");
+        }
+
+        [WebAuthorize(Roles = RoleList.Manage)]
+        public ActionResult ResetPassword(string id)
+        {
+            try
+            {
+                UserManager.RemovePassword(id);
+                UserManager.AddPassword(id, "1");
             }
             catch (Exception)
             {

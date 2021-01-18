@@ -391,6 +391,9 @@ namespace DK.Application
                 kk.TaiSanId = ts.Id;
                 kk.GroupName = ts.GroupName;
                 kk.Number = ts.Number;
+                kk.DongVi = ts.PhongQuanLy;
+                kk.NguoiSuDung = ts.NguoiSuDung;
+                kk.NguoiQuanLy = ts.NguoiQuanLy;
                 kk.KiemKeId = kiemKeId;
                 kk.Name = GetCellString(xls, row, nameof(KiemKe.Name), typeof(KiemKe));
                 kk.SoLuongKeToan = GetCellInt(xls, row, nameof(KiemKe.SoLuongKeToan), typeof(KiemKe));
@@ -430,11 +433,13 @@ namespace DK.Application
                     doc.StartPrint("", PrintOptionConstants.bpoHalfCut);
                     foreach (var item in taiSans)
                     {
-                        doc.GetObject("no").Text = item.No.ToString();
-                        doc.GetObject("donv").Text = $"Phòng: {item.PhongQuanLy}";
+                        doc.GetObject("no").Text = $"{item.No}-{item.Number}";
+                        doc.GetObject("donv").Text = $"Đơn vị: {item.PhongQuanLy}";
                         doc.GetObject("code").Text = $"Mã tài sản: {item.Code}";
                         doc.GetObject("name").Text = item.Name;
                         doc.GetObject("barcode").Text = $"{item.Code}";
+                        doc.GetObject("ngql").Text = $"Người quản lý: {item.NguoiQuanLy}";
+                        doc.GetObject("ngsd").Text = $"Người sử dụng: {item.NguoiSuDung}";
                         doc.PrintOut(1, PrintOptionConstants.bpoCutAtEnd);
                         if (item.Children.Any())
                         {

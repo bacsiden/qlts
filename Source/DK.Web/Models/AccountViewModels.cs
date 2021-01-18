@@ -17,7 +17,6 @@ namespace DK.Web.Models
         public string OldPassword { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "Mật khẩu phải có độ dài từ {0} đến {2} kí tự.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Mật khẩu mới")]
         public string NewPassword { get; set; }
