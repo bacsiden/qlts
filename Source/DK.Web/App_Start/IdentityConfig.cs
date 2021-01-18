@@ -15,10 +15,11 @@ namespace DK.Web
     // Configure the application user manager used in this application. UserManager is defined in ASP.NET Identity and is used by the application.
     public class ApplicationUserManager : UserManager<ApplicationUser, string>
     {
+        private readonly UserStore<ApplicationUser> _store;
         public ApplicationUserManager(UserStore<ApplicationUser> store)
-
             : base(store)
         {
+            _store = store;
         }
 
         public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context)
@@ -64,6 +65,11 @@ namespace DK.Web
                     new DataProtectorTokenProvider<ApplicationUser>(dataProtectionProvider.Create("ASP.NET Identity"));
             }
             return manager;
+        }
+
+        public void Disable(string userId, bool disabled = true)
+        {
+            _store.Disable(userId, disabled);
         }
     }
 

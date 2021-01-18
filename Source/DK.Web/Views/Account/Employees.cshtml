@@ -42,7 +42,7 @@
                                             </select>
                                         </td>
                                         <td>
-                                            <a href="@Url.Action("Delete", new { id = item.Id })" onclick="return confirm('Bạn có chắc chắn muốn xóa?')" class="text-danger">Xóa</a>
+                                            <a href="@Url.Action("Delete", new { id = item.Id })" onclick="return confirm('Bạn có chắc chắn?')" class="text-info">@(item.Disabled.HasValue ? (item.Disabled.Value?"Đang bị khóa" : "Đang hoạt động"): "Đang hoạt động")</a>
                                         </td>
                                     </tr>
                                 }

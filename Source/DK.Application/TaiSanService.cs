@@ -234,7 +234,7 @@ namespace DK.Application
             var template = ReportVariables.Templates[search.pattern];
             // nhóm theo chủng loại
             var groups = taiSans.Where(m => !string.IsNullOrWhiteSpace(m.ChungLoai)).Select(m => m.ChungLoai).Distinct();
-            var reportData = taiSans.Where(m => string.IsNullOrWhiteSpace(m.ChungLoai)).ToList();
+            var reportData = new List<TaiSan>();
             var no = 1;
             foreach (var item in groups)
             {
@@ -244,6 +244,11 @@ namespace DK.Application
                 sum.GroupCode = item.GetFirstChars();
                 sum.No = no++;
                 reportData.Add(sum);
+            }
+            foreach (var item in taiSans.Where(m => string.IsNullOrWhiteSpace(m.ChungLoai)))
+            {
+                item.No = no++;
+                reportData.Add(item);
             }
             var sumAll = BuildSumTaiSan(reportData);
             using (FlexCelReport fr = new FlexCelReport(true))

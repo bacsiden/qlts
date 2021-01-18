@@ -253,6 +253,17 @@ namespace MongoDB.AspNet.Identity
             return Task.FromResult(user);
         }
 
+        public void Disable(string userId, bool disabled = true)
+        {
+            ThrowIfDisposed();
+            var user = FindByIdAsync(userId).GetAwaiter().GetResult();
+            if (user == null) return;
+            db.GetCollection<TUser>(collectionName)
+                .UpdateOne(
+                Builders<TUser>.Filter.Eq("_id", ObjectId.Parse(userId)),
+                Builders<TUser>.Update.Set("Disabled", disabled));
+        }
+
         /// <summary>
         ///     Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>

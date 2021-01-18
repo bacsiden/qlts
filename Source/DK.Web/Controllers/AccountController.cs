@@ -58,6 +58,12 @@ namespace DK.Web.Controllers
             {
                 return View(model);
             }
+            var user = UserManager.FindByName(model.UserName);
+            if (user != null && user.Disabled == true)
+            {
+                ModelState.AddModelError("", $"Tài khoản {model.UserName} đã bị khóa.");
+                return View(model);
+            }
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
             var result = await SignInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, shouldLockout: false);
@@ -170,7 +176,8 @@ namespace DK.Web.Controllers
             try
             {
                 var user = UserManager.FindById(id);
-                UserManager.Delete(user);
+                UserManager.Disable(id, user.Disabled.HasValue ? !user.Disabled.Value : true);
+                //UserManager.Delete(user);
             }
             catch (Exception)
             {

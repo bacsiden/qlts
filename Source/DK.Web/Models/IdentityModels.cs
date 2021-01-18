@@ -32,7 +32,7 @@ namespace DK.Web.Models
                 return Roles == null || Roles.Count == 0;
             }
         }
-
+        public bool? Disabled { get; set; }
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser, string> manager)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
