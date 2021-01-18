@@ -28,6 +28,10 @@ namespace DK.Application.Repositories
             {
                 query &= filter.Eq(m => m.Code, model.Code.Trim());
             }
+            if (model.Number.HasValue)
+            {
+                query &= filter.Eq(m => m.Number, model.Number.Value);
+            }
             if (!string.IsNullOrWhiteSpace(model.ChungLoai))
             {
                 query &= filter.Eq(m => m.ChungLoai, model.ChungLoai.Trim());
@@ -43,6 +47,10 @@ namespace DK.Application.Repositories
             if (!string.IsNullOrWhiteSpace(model.NguonKinhPhi))
             {
                 query &= filter.Eq(m => m.NguonKinhPhi, model.NguonKinhPhi.Trim());
+            }
+            if (!string.IsNullOrWhiteSpace(model.NganSachKhac))
+            {
+                query &= filter.Eq(m => m.NganSachKhac, model.NganSachKhac.Trim());
             }
             if (model.NganSachNamSearch.HasValue)
             {
