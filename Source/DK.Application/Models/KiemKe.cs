@@ -32,9 +32,13 @@ namespace DK.Application.Models
 
         public Guid KiemKeId { get; set; }
 
+        public Guid TaiSanId { get; set; }
+
         [ColumnIndex(1)]
         [BsonIgnore]
         public int No { get; set; }
+        [Display(Name = "Số hiệu")]
+        public int? Number { get; set; }
 
         [Display(Name = "Nhóm tài sản")]
         public string GroupName { get; set; }

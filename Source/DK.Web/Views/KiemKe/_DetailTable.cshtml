@@ -5,6 +5,9 @@
     <tr>
         <th rowspan="2">STT</th>
         <th rowspan="2">
+            @Html.DisplayNameFor(m => m.Number)
+        </th>
+        <th rowspan="2">
             @Html.DisplayNameFor(m => m.Code)
         </th>
         <th rowspan="2">
@@ -70,6 +73,9 @@
             <tr class="stat even">
                 <td class="ac">
                     @(stt++)
+                </td>
+                <td>
+                    <a href="@Url.Action("NewOrEdit", new {id=item.Id, parentId = item.KiemKeId, returnUrl = Request.RawUrl })">@item.Number</a>
                 </td>
                 <td>
                     <a href="@Url.Action("NewOrEdit", new {id=item.Id, parentId = item.KiemKeId, returnUrl = Request.RawUrl })">@item.Code</a>

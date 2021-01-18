@@ -34,8 +34,8 @@ namespace DK.Application.Models
         public void GenerateCode(int? i = null)
         {
             Code = $"{ChungLoai} {Name}".RemoveDiacritics().GetFirstChars();
-            if (Code != null && Code.Length > 7) Code = Code.Substring(0, 7);
-            Code += string.IsNullOrWhiteSpace(Serial) ? null : string.Join(null, Serial.RemoveDiacritics().Where(m => char.IsLetterOrDigit(m))).SubLastString(4);
+            if (Code != null && Code.Length > 6) Code = Code.Substring(0, 6);
+            Code += string.IsNullOrWhiteSpace(Serial) ? null : string.Join(null, Serial.RemoveDiacritics().Where(m => char.IsLetterOrDigit(m))).SubLastString(2);
             if (i != null)
                 Code = $"{Code}{i.Value.AddZeroFrefix(3)}";
         }
@@ -264,8 +264,9 @@ namespace DK.Application.Models
         public string JoinedTags { get; set; }
 
         public decimal? NganSachBo { get; set; }
+
         public decimal? Khac { get; set; }
-        public decimal? TongCong { get; set; }
+        public decimal? TongCong { get { return (NganSachBo.HasValue ? NganSachBo.Value : 0) + (Khac.HasValue ? Khac.Value : 0); } }
 
         public bool IsApproved { get; set; }
 

@@ -183,6 +183,11 @@ namespace DK.Application
 
         public Task ExportReportDetailsAsync(List<TaiSan> taiSans, TaiSanSearchModel search)
         {
+            foreach (var item in taiSans)
+            {
+                item.NganSachBo = string.IsNullOrWhiteSpace(item.NguonKinhPhi) ? null : item.NguyenGiaKeToan;
+                item.Khac = !string.IsNullOrWhiteSpace(item.NguonKinhPhi) ? null : item.NguyenGiaKeToan;
+            }
             var template = ReportVariables.Templates[search.pattern];
             using (FlexCelReport fr = new FlexCelReport(true))
             {
@@ -224,33 +229,26 @@ namespace DK.Application
             foreach (var item in taiSans)
             {
                 item.NganSachBo = string.IsNullOrWhiteSpace(item.NguonKinhPhi) ? null : item.NguyenGiaKeToan;
-                item.Khac = item.NganSachBo == null ? item.NguyenGiaKeToan : null;
+                item.Khac = !string.IsNullOrWhiteSpace(item.NguonKinhPhi) ? null : item.NguyenGiaKeToan;
             }
             var template = ReportVariables.Templates[search.pattern];
             // nhóm theo chủng loại
             var groups = taiSans.Where(m => !string.IsNullOrWhiteSpace(m.ChungLoai)).Select(m => m.ChungLoai).Distinct();
             var reportData = taiSans.Where(m => string.IsNullOrWhiteSpace(m.ChungLoai)).ToList();
+            var no = 1;
             foreach (var item in groups)
             {
                 var groupTaiSans = taiSans.Where(m => m.ChungLoai == item).ToList();
                 var sum = BuildSumTaiSan(groupTaiSans);
                 sum.ChungLoai = item;
+                sum.GroupCode = item.GetFirstChars();
+                sum.No = no++;
                 reportData.Add(sum);
             }
-
-            var no = 1;
-            var lst = new List<TaiSan>();
-            foreach (var item in reportData)
-            {
-                var ts = BuildSumTaiSan(new List<TaiSan> { item });
-                ts.No = no++;
-                lst.Add(ts);
-            }
-
-            var sumAll = BuildSumTaiSan(lst);
+            var sumAll = BuildSumTaiSan(reportData);
             using (FlexCelReport fr = new FlexCelReport(true))
             {
-                fr.AddTable("row", lst);
+                fr.AddTable("row", reportData);
                 fr.AddTable("sum", new List<TaiSan> { sumAll });
                 fr.SetValue("title", template.Item1.ToUpperInvariant());
                 fr.SetValue("pattern", search.pattern);
@@ -295,17 +293,8 @@ namespace DK.Application
             sum.DienTichXayDung = taiSans.Where(m => m.DienTichXayDung.HasValue).Sum(m => m.DienTichXayDung);
             sum.DienTichKhuonVien = taiSans.Where(m => m.DienTichKhuonVien.HasValue).Sum(m => m.DienTichKhuonVien);
 
-            foreach (var item in taiSans)
-            {
-                if (string.IsNullOrWhiteSpace(item.NguonKinhPhi))
-                    item.Khac = item.NguyenGiaKeToan;
-                else item.NganSachBo = item.NguyenGiaKeToan;
-            }
-
             sum.NganSachBo = taiSans.Where(m => m.NganSachBo.HasValue).Sum(m => m.NganSachBo);
             sum.Khac = taiSans.Where(m => m.Khac.HasValue).Sum(m => m.Khac);
-            sum.TongCong = sum.NganSachBo + sum.Khac;
-            sum.GiaTriConLai = sum.TongCong - sum.HaoMonLuyKe;
             return sum;
         }
 
@@ -372,8 +361,6 @@ namespace DK.Application
         public void ImportKiemKe(Stream stream, Guid kiemKeId)
         {
             var taisans = _taiSanRepository.Find(m => true).ToList().Select(m => new { key = m.Code, value = m }).ToDictionary(x => x.key, x => x.value);
-            var kiemKes = _kiemKeRepository.Find(m => m.KiemKeId == kiemKeId).ToList();
-            var kkType = _typeRepository.Get(kiemKeId);
             XlsFile xls = new XlsFile();
             xls.Open(stream);
 
@@ -386,11 +373,19 @@ namespace DK.Application
 
                 var kk = new KiemKe();
                 kk.Code = GetCellString(xls, row, nameof(KiemKe.Code), typeof(KiemKe));
+                if (string.IsNullOrWhiteSpace(kk.Code))
+                {
+                    throw new Exception($"Mã tài sản không được để trống");
+                }
 
-                if (!taisans.ContainsKey(kk.Code))
+                taisans.TryGetValue(kk.Code, out TaiSan ts);
+                if (ts == null)
                 {
                     throw new Exception($"Mã tài sản '{kk.Code}' không tồn tại trong danh mục tài sản");
                 }
+                kk.TaiSanId = ts.Id;
+                kk.GroupName = ts.GroupName;
+                kk.Number = ts.Number;
                 kk.KiemKeId = kiemKeId;
                 kk.Name = GetCellString(xls, row, nameof(KiemKe.Name), typeof(KiemKe));
                 kk.SoLuongKeToan = GetCellInt(xls, row, nameof(KiemKe.SoLuongKeToan), typeof(KiemKe));
@@ -400,18 +395,12 @@ namespace DK.Application
                 kk.GiaTriConLaiKeToan = GetCellDecimal(xls, row, nameof(KiemKe.GiaTriConLaiKeToan), typeof(KiemKe));
                 kk.GiaTriConLaiKiemKe = GetCellDecimal(xls, row, nameof(KiemKe.GiaTriConLaiKiemKe), typeof(KiemKe));
                 kk.GhiChu = GetCellString(xls, row, nameof(KiemKe.GhiChu), typeof(KiemKe));
-                var kiemKe = kiemKes.FirstOrDefault(m => m.Code == kk.Code);
-                if (kiemKe != null)
-                {
-                    kk.Id = kiemKe.Id;
-                    kk.GroupName = kiemKe.GroupName;
-                    newKiemKes.Add(kk);
-                }
+
+                newKiemKes.Add(kk);
             }
-            foreach (var item in newKiemKes)
-            {
-                _kiemKeRepository.Update(item);
-            }
+
+            _kiemKeRepository.DeleteMany(nameof(KiemKe.KiemKeId), kiemKeId);
+            _kiemKeRepository.AddRange(newKiemKes);
         }
 
         public Task ExportBarCodeAsync(List<TaiSan> taiSans)

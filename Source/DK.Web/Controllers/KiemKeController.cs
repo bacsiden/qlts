@@ -40,7 +40,7 @@ namespace DK.Web.Controllers
             var result = new PagerViewModel
             {
                 BaseUrl = Url.Action("Index", new { pagerInfo.PageSize }),
-                Items = list.OrderByDescending(m => m.Id).Skip((pager.CurrentPage - 1) * pager.PageSize).Take(pager.PageSize).ToList(),
+                Items = list.OrderByDescending(m => m.Created).Skip((pager.CurrentPage - 1) * pager.PageSize).Take(pager.PageSize).ToList(),
                 Pager = pager
             };
 
@@ -65,7 +65,7 @@ namespace DK.Web.Controllers
             return View(result);
         }
 
-        public async Task<ActionResult> Merge(List<Guid> kiemKeIds, string name, string returnUrl)
+        public ActionResult Merge(List<Guid> kiemKeIds, string name, string returnUrl)
         {
             if (!kiemKeIds.Any()) return Redirect(returnUrl);
             var kiemKes = new List<KiemKe>();
@@ -359,9 +359,11 @@ namespace DK.Web.Controllers
         {
             return list.AsEnumerable().Select(m => new KiemKe
             {
+                TaiSanId = m.Id,
                 KiemKeId = kiemKeId,
                 No = 0,
                 Code = m.Code,
+                Number = m.Number,
                 Name = m.Name,
                 GroupName = m.GroupName,
                 NamSuDung = m.NamSuDung,

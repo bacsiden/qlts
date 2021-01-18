@@ -31,6 +31,8 @@
             @Html.Hidden("returnUrl", Request.Params["returnUrl"])
             @Html.HiddenFor(m => m.Id)
             @Html.HiddenFor(m => m.KiemKeId)
+            @Html.HiddenFor(m => m.TaiSanId)
+            @Html.HiddenFor(m => m.Number)
             @Html.HiddenFor(m => m.GroupName)
             @Html.ValidationSummary(true)
             <div class="row mb-2">
