@@ -59,7 +59,7 @@ namespace DK.Web.Controllers
                 return View(model);
             }
             var user = UserManager.FindByName(model.UserName);
-            if (user != null && user.Disabled == true)
+            if (user?.Disabled == true)
             {
                 ModelState.AddModelError("", $"Tài khoản {model.UserName} đã bị khóa.");
                 return View(model);

@@ -145,13 +145,10 @@
                     }
                 </select>
             </div>
-            @if (Model.IsApproved || canManage)
-            {
-                <div class="col-md-2 col-sm-3 search-item">
-                    @Html.Label("Người tạo")
-                    @Html.DropDownListFor(x => x.CreatedBy, new SelectList(ViewBag.Members), "Tất cả", new { Class = "form-control form-control-sm" })
-                </div>
-            }
+            <div class="col-md-2 col-sm-3 search-item">
+                @Html.Label("Người tạo")
+                @Html.DropDownListFor(x => x.CreatedBy, new SelectList(ViewBag.Members), "Tất cả", new { Class = "form-control form-control-sm" })
+            </div>
         </div>
     </div>
     <div class="text-center collapse-icon">
@@ -206,12 +203,12 @@
                     @Html.DropDownListFor(x => x.PageSize, new SelectList(pageSizeList), new { Class = "form-control form-control-sm" })
                 </div>
             </div>
+            <button type="button" class="btn btn-sm btn btn-info" data-toggle="modal" data-target="#modalViews">
+                <i class="fa fa-table"> </i>
+                Hiển thị cột
+            </button>
             @if (canManage || !Model.IsApproved)
             {
-                <button type="button" class="btn btn-sm btn btn-info" data-toggle="modal" data-target="#modalViews">
-                    <i class="fa fa-table"> </i>
-                    Hiển thị cột
-                </button>
                 <a class="btn btn-sm btn-danger pointer DeleteItem" href="/Home/DeleteTaiSan"><i class="fa fa-times"></i> Xóa</a>
             }
             @if (canManage && !Model.IsApproved)
@@ -258,8 +255,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
                     <button type="submit" class="btn btn-info">OK</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
                 </div>
             </form>
         </div>

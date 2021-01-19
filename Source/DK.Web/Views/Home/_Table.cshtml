@@ -79,7 +79,7 @@
             }
             else
             {
-                <td>@item.Display(field.FieldName)</td>
+                <td>@Html.Raw(item.Display(field.FieldName))</td>
             }
         }
     </tr>

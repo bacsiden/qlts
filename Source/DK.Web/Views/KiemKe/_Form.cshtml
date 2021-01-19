@@ -1,16 +1,5 @@
 ﻿@model DK.Application.Models.Type
-@{
-    var canManage = DK.Application.Models.RoleList.GetAll().Any(User.IsInRole);
-}
 
 @Html.HiddenFor(m => m.Id)
 @Html.HiddenFor(m => m.Name)
-@if (canManage)
-{
-    @Html.TextBoxFor(m => m.Title, new { Class = "form-control form-control-sm" })
-}
-else
-{
-    <h5>@Model.Title</h5>
-}
-
+@Html.TextBoxFor(m => m.Title, new { Class = "form-control form-control-sm" })

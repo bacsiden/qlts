@@ -57,7 +57,7 @@ namespace DK.Web.Controllers
 
             var result = new PagerViewModel
             {
-                BaseUrl = Url.Action("Detail", new { id, pagerInfo.PageIndex, pagerInfo.PageSize }),
+                BaseUrl = Url.Action("Detail", new { id, pagerInfo.PageSize }),
                 Items = list.Skip((pager.CurrentPage - 1) * pager.PageSize).Take(pager.PageSize).ToList(),
                 Pager = pager
             };

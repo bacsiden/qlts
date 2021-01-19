@@ -43,7 +43,16 @@
                                             </select>
                                         </td>
                                         <td>
-                                            <a href="@Url.Action("Delete", new { id = item.Id })" onclick="return confirm('Bạn có chắc chắn?')" class="text-info">@(item.Disabled.HasValue ? (item.Disabled.Value? "Đã bị khóa" : "Đang hoạt động"): "Đang hoạt động")</a>
+                                            <a href="@Url.Action("Delete", new { id = item.Id })" onclick="return confirm('Bạn có chắc chắn?')" class="text-info">
+                                                @if (item.Disabled == true)
+                                                {
+                                                    <span class="text-danger">Đã bị khóa</span>
+                                                }
+                                                else
+                                                {
+                                                    <span>Đang hoạt động</span>
+                                                }
+                                            </a>
                                         </td>
 
                                         <td>
