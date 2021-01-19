@@ -433,7 +433,7 @@ namespace DK.Application
                     doc.StartPrint("", PrintOptionConstants.bpoHalfCut);
                     foreach (var item in taiSans)
                     {
-                        doc.GetObject("no").Text = $"{item.No}-{item.Number}";
+                        doc.GetObject("no").Text = $"{item.No},{item.Number}";
                         doc.GetObject("donv").Text = $"Đơn vị: {item.PhongQuanLy}";
                         doc.GetObject("code").Text = $"Mã tài sản: {item.Code}";
                         doc.GetObject("name").Text = item.Name;
@@ -467,7 +467,7 @@ namespace DK.Application
                 using (MemoryStream XlsStream = new MemoryStream())
                 {
                     xlsx.Save(XlsStream);
-                    return SendToBrowser(XlsStream, "application/excel", "Tài sản dán mã vạch.xlsx");
+                    return SendToBrowser(XlsStream, "application/excel", "Tài sản dán mã vạch.xlsx".RemoveDiacritics());
                 }
             }
         }
