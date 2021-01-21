@@ -52,7 +52,7 @@ namespace DK.Web.Controllers
             var kiemke = await _typeRepository.GetAsync(id);
             ViewBag.KiemKe = kiemke;
 
-            var list = _kiemKeRepository.Find(m => m.KiemKeId == kiemke.Id).ToEnumerable();
+            var list = _kiemKeRepository.Find(m => m.KiemKeId == kiemke.Id).OrderBy(m => m.Number);
             var pager = new Pager(list.Count(), pagerInfo.PageIndex, pagerInfo.PageSize);
 
             var result = new PagerViewModel
@@ -343,7 +343,7 @@ namespace DK.Web.Controllers
 
         public async Task<ActionResult> Export(Guid id, string pattern, bool preview = false)
         {
-            var kiemKes = _kiemKeRepository.Find(m => m.KiemKeId == id).ToList();
+            var kiemKes = _kiemKeRepository.Find(m => m.KiemKeId == id).OrderBy(m => m.Number).ToList();
             await _taiSanService.ExportKiemKeAsync(kiemKes, pattern, preview);
             return RedirectToAction(nameof(Detail), new { id = id });
         }

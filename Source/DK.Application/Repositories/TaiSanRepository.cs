@@ -118,7 +118,7 @@ namespace DK.Application.Repositories
                 query &= filter.All(m => m.Tags, model.Tags);
             }
 
-            return _collection.Find(query).ToEnumerable();
+            return _collection.Find(query).SortBy(m => m.Number).ToEnumerable();
         }
     }
 }

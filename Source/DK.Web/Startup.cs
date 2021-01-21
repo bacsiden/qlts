@@ -33,7 +33,7 @@ namespace DK.Web
                     LastName = "Quản trị hệ thống",
                     Status = 1,
                 };
-                userManager.CreateAsync(admin, "1").GetAwaiter().GetResult();
+                userManager.Create(admin, "1");
             }
 
             if (!userManager.IsInRole(admin.Id, RoleList.SupperAdmin))
