@@ -29,11 +29,11 @@ namespace DK.Web
                 admin = new ApplicationUser
                 {
                     UserName = username,
-                    Email = username,
+                    Email = $"{username}@email.com",
                     LastName = "Quản trị hệ thống",
                     Status = 1,
                 };
-                userManager.Create(admin, "1");
+                userManager.CreateAsync(admin, "1").GetAwaiter().GetResult();
             }
 
             if (!userManager.IsInRole(admin.Id, RoleList.SupperAdmin))

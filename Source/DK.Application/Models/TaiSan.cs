@@ -52,6 +52,7 @@ namespace DK.Application.Models
             var value = prop.GetValue(this);
             if (value == null) return null;
             if (value is decimal) return ((decimal?)value).ToMoneyString();
+            if (value is IList<string> listValues) return string.Join("<br />", listValues);
             return value.ToString();
         }
 

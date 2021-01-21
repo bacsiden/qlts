@@ -2,7 +2,6 @@
 @model KiemKe
 @{
     ViewBag.Title = Model.Id != Guid.Empty ? "Chỉnh sửa kiểm kê" : "Thêm mới kiểm kê";
-    var canManage = DK.Application.Models.RoleList.GetAll().Any(User.IsInRole);
 }
 <style>
     .search-item {

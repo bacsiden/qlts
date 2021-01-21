@@ -66,13 +66,7 @@ namespace DK.Web.Controllers
         // GET: Tài sản chưa phê duyệt
         public ActionResult TaisanUnApproved(TaiSanSearchModel search)
         {
-            var canManage = RoleList.GetAll().Any(User.IsInRole);
             search.IsApproved = false;
-
-            if (!canManage)
-            {
-                search.CreatedBy = User.Identity.Name;
-            }
 
             CreateDropDownViewBag();
             ViewBag.SearchModel = search;
@@ -180,6 +174,12 @@ namespace DK.Web.Controllers
                 taiSan = _taiSanRepository.Get(id.Value);
             }
 
+            var canManage = RoleList.GetAll().Any(User.IsInRole);
+            if ((isApproved || taiSan?.IsApproved == true) && !canManage)
+            {
+                return CustomRedirect(returnUrl);
+            }
+
             if (taiSan == null)
             {
                 taiSan = new TaiSan
@@ -192,7 +192,7 @@ namespace DK.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult NewOrEditAsset(TaiSan taisan, string returnUrl)
+        public ActionResult NewOrEditAsset(TaiSan taiSan, string returnUrl)
         {
             if (!ModelState.IsValid)
             {
@@ -203,32 +203,38 @@ namespace DK.Web.Controllers
                     }
                 }
                 CreateDropDownViewBag();
-                return View(taisan);
+                return View(taiSan);
+            }
+
+            var canManage = RoleList.GetAll().Any(User.IsInRole);
+            if (taiSan?.IsApproved == true && !canManage)
+            {
+                return CustomRedirect(returnUrl);
             }
 
             var types = _typeRepository.Find(m => true).ToList();
             var number = types.First(m => m.Id == TypeConstant.TaiSanSequenceId);
-            var currentAsset = _taiSanRepository.Get(taisan.Id);
+            var currentAsset = _taiSanRepository.Get(taiSan.Id);
             if (currentAsset != null)
             {
-                taisan.Children = currentAsset.Children;
+                taiSan.Children = currentAsset.Children;
             }
             else
             {
                 var existingCodes = _taiSanService.GetExistingCodes();
-                taisan.GenerateCode(existingCodes);
-                taisan.CreatedBy = User.Identity.Name;
-                taisan.Number = ++number.Number;
+                taiSan.GenerateCode(existingCodes);
+                taiSan.CreatedBy = User.Identity.Name;
+                taiSan.Number = ++number.Number;
             }
 
-            taisan.Tags = string.IsNullOrWhiteSpace(taisan.JoinedTags) ? new List<string>() : taisan.JoinedTags.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries).Select(m => m.Trim()).ToList();
+            taiSan.Tags = string.IsNullOrWhiteSpace(taiSan.JoinedTags) ? new List<string>() : taiSan.JoinedTags.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries).Select(m => m.Trim()).ToList();
 
-            _taiSanRepository.Upsert(taisan);
+            _taiSanRepository.Upsert(taiSan);
             _typeRepository.Update(number);
 
             var newTypes = new List<Application.Models.Type>();
             
-            _taiSanService.AddNewType(types, newTypes, TypeConstant.Tags, taisan.Tags);
+            _taiSanService.AddNewType(types, newTypes, TypeConstant.Tags, taiSan.Tags);
             if (newTypes.Any())
                 _typeRepository.AddRange(newTypes);
 

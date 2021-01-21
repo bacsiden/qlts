@@ -3,7 +3,6 @@
 @{
     ViewBag.Title = "Chi tiết kiểm kê";
     var kiemKe = ViewBag.KiemKe as DK.Application.Models.Type;
-    var canManage = DK.Application.Models.RoleList.GetAll().Any(User.IsInRole);
     var reportTemplates = DK.Application.Models.ReportVariables.Templates.Where(m => m.Key.StartsWith("1")).ToList();
 }
 
@@ -52,10 +51,7 @@
             </div>
         </div>
     </div>
-    if (canManage)
-    {
-        <button class="btn btn-sm bd bg-primary tx-white pointer" type="submit"><i class="fa fa-save"></i> Lưu lại</button>
-    }
+    <button class="btn btn-sm bd bg-primary tx-white pointer" type="submit"><i class="fa fa-save"></i> Lưu lại</button>
     <a class="btn btn-sm bd pointer bg-white" href="/KiemKe/Index"><i class="fa fa-arrow-left"></i> Quay lại</a>
 }
 <div class="row mt-4">
@@ -88,11 +84,13 @@
                 $('#pullData .fa-spin').addClass('d-none');
                 $('#pullData').attr('disabled', false);
                 if (!data) {
-                    console.log("Thành công");
-                    window.location.reload();
+                    alertSuccess("Đọc từ thiết bị thành công<br />Hệ thống sẽ tự động tải lại sau 5 giây.");
+                    setTimeout(function () {
+                        window.location.reload();
+                    }, 5000);
                 }
                 else
-                    alert(data);
+                    alertError(data);
             });
         }
         function pushData(id, $button) {
@@ -109,10 +107,10 @@
                 $('#pushData').attr('disabled', false);
                 $('#pushData .fa-spin').addClass('d-none');
                 if (!data) {
-                    console.log("Thành công");
+                    alertSuccess("Đẩy dữ liệu vào thiết bị thành công");
                 }
                 else
-                    alert(data);
+                    alertError(data);
             });
         }
     </script>

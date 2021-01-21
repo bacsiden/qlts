@@ -92,7 +92,7 @@ function focusDown(e) {
 
 function mergeCategory() {
     var items = $("#post-data input.merge-item:checked");
-    if (items.length < 2) {
+    if (items.length < 1) {
         return;
     }
 
