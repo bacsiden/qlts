@@ -113,7 +113,7 @@ namespace DK.Web.Controllers
                     //var photoDir = device.GetDirectoryInfo(dir);
 
                     //var files = photoDir.EnumerateFiles("*.*", SearchOption.AllDirectories);
-                    var filename = $@"IPSM card\Android\data\{id}.json";
+                    var filename = $@"Bộ nhớ trong dùng chung\DCIM\{id}.json";
                     using (StreamWriter w = new StreamWriter($"{HtmlFolder}KiemKe.json", false))
                     {
                         w.Write(output);
