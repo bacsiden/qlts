@@ -325,15 +325,18 @@ namespace DK.Web.Controllers
 
         private PagerViewModel SearchTaiSan(TaiSanSearchModel search)
         {
+            
             var list = _taiSanRepository.Find(search);
 
             var pager = new Pager(list.Count(), search.PageIndex, search.PageSize);
             if (!string.IsNullOrWhiteSpace(search.pattern))
                 _taiSanService.ExportDataAsync(list.ToList(), search);
             search.pattern = null;
+
+            var baseUrl = search.IsApproved ? nameof(Index) : nameof(TaisanUnApproved);
             return new PagerViewModel
             {
-                BaseUrl = Url.Action("Index", search.ToPagingModel()),
+                BaseUrl = Url.Action(baseUrl, search.ToPagingModel()),
                 Items = list.Skip((pager.CurrentPage - 1) * pager.PageSize).Take(pager.PageSize).ToList(),
                 Pager = pager
             };
