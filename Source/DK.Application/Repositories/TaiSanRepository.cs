@@ -56,6 +56,15 @@ namespace DK.Application.Repositories
             {
                 query &= filter.Eq(m => m.NganSachNam, model.NganSachNamSearch);
             }
+            if (model.SoLuong.HasValue)
+            {
+                var soLuongFilter = filter.Eq(m => m.SoLuong, model.SoLuong);
+                if (model.SoLuong == 0)
+                {
+                    soLuongFilter |= filter.Eq(m => m.SoLuong, null);
+                }
+                query &= soLuongFilter;
+            }
             if (model.NamSanXuat.HasValue)
             {
                 query &= filter.Eq(m => m.NamSanXuat, model.NamSanXuat);

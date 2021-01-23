@@ -82,6 +82,10 @@
                 @Html.LabelFor(m => m.NamSuDungSearch)
                 @Html.TextBoxFor(m => m.NamSuDungSearch, new { Class = "form-control form-control-sm", type = "number", min = "1" })
             </div>
+            <div class="col-md-2 col-sm-3 search-item">
+                @Html.LabelFor(m => m.SoLuong)
+                @Html.TextBoxFor(m => m.SoLuong, new { Class = "form-control form-control-sm", type = "number" })
+            </div>
             @*<div class="col-md-2 col-sm-3 search-item">
             @Html.LabelFor(m => m.SoLuongSearch)
             @Html.TextBoxFor(m => m.SoLuongSearch, new { Class = "form-control form-control-sm", type = "number", min = "1" })

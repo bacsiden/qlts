@@ -108,24 +108,14 @@ namespace DK.Web.Controllers
                 var devices = MediaDevice.GetDevices();
                 using (var device = devices.First())
                 {
-                    //var dir = @"IPSM card\Android\data";
                     device.Connect();
-                    //var photoDir = device.GetDirectoryInfo(dir);
-
-                    //var files = photoDir.EnumerateFiles("*.*", SearchOption.AllDirectories);
-                    var filename = $@"Bộ nhớ trong dùng chung\DCIM\{id}.json";
+                    var filename = $@"Bộ nhớ trong dùng chung\Download\kiem_ke.json";
                     using (StreamWriter w = new StreamWriter($"{HtmlFolder}KiemKe.json", false))
                     {
                         w.Write(output);
                     }
                     if (device.FileExists(filename)) device.DeleteFile(filename);
                     device.UploadFile($"{HtmlFolder}KiemKe.json", filename);
-                    //foreach (var file in files)
-                    //{
-                    //    MemoryStream memoryStream = new System.IO.MemoryStream();
-                    //    device.DownloadFile(file.FullName, memoryStream);
-                    //    memoryStream.Position = 0;
-                    //}
                     device.Disconnect();
                 }
 
@@ -151,7 +141,7 @@ namespace DK.Web.Controllers
                 using (var device = devices.First())
                 {
                     device.Connect();
-                    var filename = $@"IPSM card\Android\data\{id}.json";
+                    var filename = $@"Bộ nhớ trong dùng chung\Download\kiem_ke.json";
                     if (!device.FileExists(filename)) throw new Exception($"Không tìm thấy đợt kiểm kê '{type.Title}' từ thiết bị kiểm kê");
                     var serializer = new JsonSerializer();
                     var memorySteam = new MemoryStream();
@@ -162,9 +152,10 @@ namespace DK.Web.Controllers
                         var lstKiemKe = serializer.Deserialize<List<KiemKe>>(jsonTextReader);
                         foreach (var item in lstKiemKe)
                         {
-                            if (kiemKes.Any(m => m.Id == item.Id))
+                            var kk = kiemKes.FirstOrDefault(m => m.Id == item.Id);
+                            if (kk != null && kk.SoLuongKiemKe != item.SoLuongKiemKe)
                             {
-                                _kiemKeRepository.Update(item);
+                                _kiemKeRepository.Set(item.Id, nameof(KiemKe.SoLuongKiemKe), item.SoLuongKiemKe);
                             }
                         }
                     }
