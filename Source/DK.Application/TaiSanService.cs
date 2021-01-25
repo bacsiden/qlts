@@ -493,14 +493,22 @@ namespace DK.Application
         public void AddNewType(List<Models.Type> types, List<Models.Type> newTypes, string name, string value)
         {
             if (!string.IsNullOrWhiteSpace(value) && !types.Any(m => m.Name == name && value.Equals(m.Title, StringComparison.OrdinalIgnoreCase)))
-                newTypes.Add(new Models.Type { Name = name, Title = value });
+            {
+                var type = new Models.Type { Name = name, Title = value };
+                types.Add(type);
+                newTypes.Add(type);
+            }
         }
         public void AddNewType(List<Models.Type> types, List<Models.Type> newTypes, string name, List<string> values)
         {
             values.ForEach(x =>
             {
                 if (!string.IsNullOrWhiteSpace(x) && !types.Any(m => m.Name == name && x.Equals(m.Title, StringComparison.OrdinalIgnoreCase)))
-                    newTypes.Add(new Models.Type { Name = name, Title = x });
+                {
+                    var type = new Models.Type { Name = name, Title = x };
+                    types.Add(type);
+                    newTypes.Add(type);
+                }
             });
         }
 

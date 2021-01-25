@@ -71,7 +71,7 @@
         @foreach (var field in views)
         {
             i++;
-            if (i == 1 && isParent && (canManage || !isApproved))
+            if (i <= 3 && isParent)
             {
                 <td>
                     <a href="@Url.Action("NewOrEditAsset", new { item.Id, isApproved, returnUrl = Request.RawUrl })">@item.Display(field.FieldName)</a>
