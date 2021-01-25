@@ -84,10 +84,10 @@
                 $('#pullData .fa-spin').addClass('d-none');
                 $('#pullData').attr('disabled', false);
                 if (!data) {
-                    alertSuccess("Đọc từ thiết bị thành công<br />Hệ thống sẽ tự động tải lại sau 5 giây.");
+                    alertSuccess("Đọc từ thiết bị thành công<br />Hệ thống sẽ tự động tải lại sau 1 giây.");
                     setTimeout(function () {
                         window.location.reload();
-                    }, 5000);
+                    }, 1000);
                 }
                 else
                     alertError(data);
