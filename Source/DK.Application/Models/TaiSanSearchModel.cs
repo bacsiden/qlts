@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace DK.Application.Models
@@ -28,12 +29,16 @@ namespace DK.Application.Models
 
         [Display(Name = "Giá kiểm kê đến")]
         public decimal? GiaKiemKeDen { get; set; }
+
+        [Display(Name = "Chủng loại")]
+        public List<string> ChungLoais { get; set; } = new List<string>();
+
         public string SearchText { get; set; }
         public int PageIndex { get; set; } = 1;
         public int PageSize { get; set; } = 10;
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
-        public bool IncludeSub { get; set; } = true;
+        public bool IncludeSub { get; set; }
         public bool Preview { get; set; }
         public object ToPagingModel()
         {
@@ -43,6 +48,7 @@ namespace DK.Application.Models
                 Name,
                 GroupName,
                 ChungLoai,
+                ChungLoais = string.Join(", ", ChungLoais),
                 NhanHieu,
                 Serial,
                 XuatXu,

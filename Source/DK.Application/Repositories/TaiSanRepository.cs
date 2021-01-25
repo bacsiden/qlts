@@ -5,6 +5,7 @@ using DK.Application.Models;
 using System.Collections.Generic;
 using MongoDB.Bson;
 using System.Text.RegularExpressions;
+using System.Linq;
 
 namespace DK.Application.Repositories
 {
@@ -125,6 +126,11 @@ namespace DK.Application.Repositories
             if (model.Tags.Count > 0)
             {
                 query &= filter.All(m => m.Tags, model.Tags);
+            }
+
+            if (model.ChungLoais?.Any() == true)
+            {
+                query &= filter.In(m => m.ChungLoai, model.ChungLoais);
             }
 
             return _collection.Find(query).SortBy(m => m.Number).ToEnumerable();

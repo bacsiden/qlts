@@ -135,8 +135,7 @@ namespace DK.Web.Controllers
             try
             {
                 var type = _typeRepository.Get(id);
-                var kiemKes = _kiemKeRepository.Find(m => m.KiemKeId == id);
-                string output = JsonConvert.SerializeObject(kiemKes);
+                var kiemKes = _kiemKeRepository.Find(m => m.KiemKeId == id).ToList();
                 var devices = MediaDevice.GetDevices();
                 using (var device = devices.First())
                 {
@@ -152,7 +151,7 @@ namespace DK.Web.Controllers
                         var lstKiemKe = serializer.Deserialize<List<KiemKe>>(jsonTextReader);
                         foreach (var item in lstKiemKe)
                         {
-                            var kk = kiemKes.FirstOrDefault(m => m.Id == item.Id);
+                            var kk = kiemKes.FirstOrDefault(m => m.Code == item.Code);
                             if (kk != null && kk.SoLuongKiemKe != item.SoLuongKiemKe)
                             {
                                 _kiemKeRepository.Set(item.Id, nameof(KiemKe.SoLuongKiemKe), item.SoLuongKiemKe);

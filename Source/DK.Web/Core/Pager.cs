@@ -5,7 +5,7 @@ namespace DK.Web.Core
 {
     public class Pager
     {
-        public Pager(int totalItems, int? page, int pageSize = 10)
+        public Pager(int totalItems, int? page, int pageSize = 500)
         {
             // calculate total, start and end pages
             var totalPages = (int)Math.Ceiling((decimal)totalItems / (decimal)pageSize);

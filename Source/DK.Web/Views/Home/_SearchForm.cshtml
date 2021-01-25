@@ -2,7 +2,8 @@
 @model DK.Application.Models.TaiSanSearchModel
 @{
     var tags = ViewBag.Tags as IEnumerable<string> ?? new List<string>();
-    var pageSizeList = new int[] { 10, 50, 100, 200, 500 };
+    var chungLoais = ViewBag.ChungLoai as IEnumerable<string> ?? new List<string>();
+    var pageSizeList = new int[] { 500, 1000, 2000, 5000 };
     var canManage = DK.Application.Models.RoleList.GetAll().Any(User.IsInRole);
     var allViews = ((List<ViewField>)ViewBag.ViewFields).ToList();
     var reportTemplates = DK.Application.Models.ReportVariables.Templates.Where(m => !m.Key.StartsWith("1"));
@@ -35,9 +36,14 @@
             @Html.LabelFor(m => m.GroupName)
             @Html.DropDownListFor(x => x.GroupName, new SelectList(ViewBag.GroupName), "Tất cả", new { Class = "form-control form-control-sm" })
         </div>
-        <div class="col-md-2 col-sm-3 search-item">
-            @Html.LabelFor(m => m.ChungLoai)
-            @Html.DropDownListFor(x => x.ChungLoai, new SelectList(ViewBag.ChungLoai), "Tất cả", new { Class = "form-control form-control-sm" })
+        <div class="col-md-4 col-sm-6 search-item">
+            @Html.LabelFor(m => m.ChungLoais)
+            <select name="ChungLoais" class="form-control form-control-sm input-sm select2" multiple="multiple">
+                @foreach (var tag in chungLoais)
+                {
+                    <option value="@tag" @(Model.ChungLoais.Contains(tag) ? "selected='selected'" : "")>@tag</option>
+                }
+            </select>
         </div>
     </div>
     <div class="collapse py-2" id="collapseExample">

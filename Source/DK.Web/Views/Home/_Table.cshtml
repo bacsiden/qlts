@@ -49,17 +49,13 @@
                 <input type="checkbox" class="checkitem" value="@item.Id" />
             </td>
         }
-        else
-        {
-            <td></td>
-        }
 
         @if (isParent)
         {
             <td class="ac">
-                @if (isParent && (canManage || !isApproved))
+                @if (isParent)
                 {
-                    <a href="@Url.Action("NewOrEditAsset", new { item.Id, isApproved, returnUrl = Request.RawUrl})">@stt</a>
+                    @stt
                 }
             </td>
         }
@@ -71,7 +67,7 @@
         @foreach (var field in views)
         {
             i++;
-            if (i <= 3 && isParent)
+            if (i <= 2 && isParent)
             {
                 <td>
                     <a href="@Url.Action("NewOrEditAsset", new { item.Id, isApproved, returnUrl = Request.RawUrl })">@item.Display(field.FieldName)</a>
