@@ -19,24 +19,24 @@ namespace DK.Application.Models
             { "2B", new Tuple<string, string>("Báo cáo tổng hợp tài chuyên dùng", "2ABC.xlsx") },
             { "2C", new Tuple<string, string>("Báo cáo tổng hợp tài sản phục vụ công tác quản lý", "2ABC.xlsx") },
 
-            { "3A", new Tuple<string, string>("Báo cáo chi tiết tài sản đặc biệt", "3AB.xlsx") },
-            { "3B", new Tuple<string, string>("Báo cáo chi tiết tài chuyên dùng", "3AB.xlsx") },
-            { "3C", new Tuple<string, string>("Báo cáo chi tiết tài sản phục vụ công tác quản lý", "3C.xlsx") },
+            { "3A", new Tuple<string, string>("Báo cáo chi tiết tài sản đặc biệt (đất)", "3AB.xlsx") },
+            { "3B", new Tuple<string, string>("Báo cáo chi tiết tài chuyên dùng (đất)", "3AB.xlsx") },
+            { "3C", new Tuple<string, string>("Báo cáo chi tiết tài sản phục vụ công tác quản lý (đất)", "3C.xlsx") },
 
-            { "4A", new Tuple<string, string>("Báo cáo chi tiết tài sản đặc biệt", "4ABC.xlsx") },
-            { "4B", new Tuple<string, string>("Báo cáo chi tiết tài chuyên dùng", "4ABC.xlsx") },
-            { "4C", new Tuple<string, string>("Báo cáo chi tiết tài sản phục vụ công tác quản lý", "4ABC.xlsx") },
+            { "4A", new Tuple<string, string>("Báo cáo chi tiết tài sản đặc biệt (nhà)", "4ABC.xlsx") },
+            { "4B", new Tuple<string, string>("Báo cáo chi tiết tài chuyên dùng (nhà)", "4ABC.xlsx") },
+            { "4C", new Tuple<string, string>("Báo cáo chi tiết tài sản phục vụ công tác quản lý (nhà)", "4ABC.xlsx") },
 
-            { "5A", new Tuple<string, string>("Báo cáo chi tiết tài sản đặc biệt", "5ABC.xlsx") },
-            { "5B", new Tuple<string, string>("Báo cáo chi tiết tài chuyên dùng", "5ABC.xlsx") },
-            { "5C", new Tuple<string, string>("Báo cáo chi tiết tài sản phục vụ công tác quản lý", "5ABC.xlsx") },
+            { "5A", new Tuple<string, string>("Báo cáo chi tiết tài sản đặc biệt (ô tô)", "5ABC.xlsx") },
+            { "5B", new Tuple<string, string>("Báo cáo chi tiết tài chuyên dùng (ô tô)", "5ABC.xlsx") },
+            { "5C", new Tuple<string, string>("Báo cáo chi tiết tài sản phục vụ công tác quản lý (ô tô)", "5ABC.xlsx") },
 
-            { "6B", new Tuple<string, string>("Báo cáo chi tiết tài chuyên dùng", "6BC.xlsx") },
-            { "6C", new Tuple<string, string>("Báo cáo chi tiết tài sản phục vụ công tác quản lý", "6BC.xlsx") },
+            { "6B", new Tuple<string, string>("Báo cáo chi tiết tài chuyên dùng (mô tô, xe máy)", "6BC.xlsx") },
+            { "6C", new Tuple<string, string>("Báo cáo chi tiết tài sản phục vụ công tác quản lý (mô tô, xe máy)", "6BC.xlsx") },
 
-            { "6A", new Tuple<string, string>("Báo cáo chi tiết tài sản đặc biệt", "6A7BC.xlsx") },
-            { "7B", new Tuple<string, string>("Báo cáo chi tiết tài chuyên dùng", "6A7BC.xlsx") },
-            { "7C", new Tuple<string, string>("Báo cáo chi tiết tài sản phục vụ công tác quản lý", "6A7BC.xlsx") },
+            { "6A", new Tuple<string, string>("Báo cáo chi tiết tài sản đặc biệt (> 100tr)", "6A7BC.xlsx") },
+            { "7B", new Tuple<string, string>("Báo cáo chi tiết tài chuyên dùng (> 100tr)", "6A7BC.xlsx") },
+            { "7C", new Tuple<string, string>("Báo cáo chi tiết tài sản phục vụ công tác quản lý (> 100tr)", "6A7BC.xlsx") },
 
             { "7A", new Tuple<string, string>("Biên bản đánh giá lại tài sản đặc biệt", "7A8BC.xlsx") },
             { "8B", new Tuple<string, string>("Biên bản đánh giá lại tài chuyên dùng", "7A8BC.xlsx") },
