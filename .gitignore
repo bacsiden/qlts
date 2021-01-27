@@ -2,6 +2,7 @@ Source/.vs/
 Source/packages/
 Source/DK.Web/bin/
 Source/DK.Web/obj/
+Source/DK.Web/Html/
 Source/DK.Services/obj/
 Source/DK.Services/bin/
 Source/DK.Services.Specs/obj/
