@@ -48,7 +48,7 @@ namespace DK.Application.Models
                 Name,
                 GroupName,
                 ChungLoai,
-                ChungLoais = string.Join(", ", ChungLoais),
+                ChungLoais = string.Join($"&{nameof(ChungLoais)}=", ChungLoais),
                 NhanHieu,
                 Serial,
                 XuatXu,
@@ -64,7 +64,7 @@ namespace DK.Application.Models
                 PhongQuanLy,
                 LoaiXe,
                 PageSize,
-                Tags = string.Join(", ", Tags)
+                Tags = string.Join($"&{nameof(Tags)}=", Tags)
             };
         }
 

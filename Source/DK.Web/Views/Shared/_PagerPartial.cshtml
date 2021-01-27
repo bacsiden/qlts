@@ -3,12 +3,13 @@
 @if (Model.Pager.EndPage > 1)
 {
     var baseUrl = Model.BaseUrl + (Model.BaseUrl.Contains("?") ? "&" : "?");
+    baseUrl = HttpUtility.UrlDecode(baseUrl);
     <div class="ht-80 d-flex align-items-center justify-content-center">
         <ul class="pagination pagination-basic mg-b-0">
             @if (Model.Pager.CurrentPage > 1)
             {
                 <li class="page-item">
-                    <a class="page-link" href="@(Model.BaseUrl)">
+                    <a class="page-link" href="@(HttpUtility.UrlDecode(Model.BaseUrl))">
                         <i class="fa fa-angle-double-left"></i>
                     </a>
                 </li>
