@@ -11,6 +11,9 @@ using DK.Application.Repositories;
 using FlexCel.Render;
 using FlexCel.Report;
 using FlexCel.XlsAdapter;
+using NPOI.HSSF.UserModel;
+using NPOI.SS.UserModel;
+using NPOI.XSSF.UserModel;
 
 namespace DK.Application
 {
@@ -162,22 +165,7 @@ namespace DK.Application
                 var xlsx = new XlsFile(true);
                 xlsx.Open(TemplateFolder + template.Item2);
                 fr.Run(xlsx);
-                if (search.Preview)
-                {
-                    using (FlexCelHtmlExport html = new FlexCelHtmlExport(xlsx, true))
-                    {
-                        html.Export($"{HtmlFolder}{search.pattern}.html", null);
-                        return Task.CompletedTask;
-                    }
-                }
-                else
-                {
-                    using (MemoryStream XlsStream = new MemoryStream())
-                    {
-                        xlsx.Save(XlsStream);
-                        return SendToBrowser(XlsStream, "application/excel", GetReportName(search.pattern));
-                    }
-                }
+                return ExportExcelAsyc(xlsx, search.pattern, search.Preview);
             }
         }
 
@@ -204,23 +192,7 @@ namespace DK.Application
                 var xlsx = new XlsFile(true);
                 xlsx.Open(TemplateFolder + template.Item2);
                 fr.Run(xlsx);
-
-                if (search.Preview)
-                {
-                    using (FlexCelHtmlExport html = new FlexCelHtmlExport(xlsx, true))
-                    {
-                        html.Export($"{HtmlFolder}{search.pattern}.html", null);
-                        return Task.CompletedTask;
-                    }
-                }
-                else
-                {
-                    using (MemoryStream XlsStream = new MemoryStream())
-                    {
-                        xlsx.Save(XlsStream);
-                        return SendToBrowser(XlsStream, "application/excel", GetReportName(search.pattern));
-                    }
-                }
+                return ExportExcelAsyc(xlsx, search.pattern, search.Preview);
             }
         }
 
@@ -260,23 +232,7 @@ namespace DK.Application
                 var xlsx = new XlsFile(true);
                 xlsx.Open(TemplateFolder + template.Item2);
                 fr.Run(xlsx);
-
-                if (search.Preview)
-                {
-                    using (FlexCelHtmlExport html = new FlexCelHtmlExport(xlsx, true))
-                    {
-                        html.Export($"{HtmlFolder}{search.pattern}.html", null);
-                        return Task.CompletedTask;
-                    }
-                }
-                else
-                {
-                    using (MemoryStream XlsStream = new MemoryStream())
-                    {
-                        xlsx.Save(XlsStream);
-                        return SendToBrowser(XlsStream, "application/excel", GetReportName(search.pattern));
-                    }
-                }
+                return ExportExcelAsyc(xlsx, search.pattern, search.Preview);
             }
         }
 
@@ -344,22 +300,7 @@ namespace DK.Application
                 var xlsx = new XlsFile(true);
                 xlsx.Open(TemplateFolder + template.Item2);
                 fr.Run(xlsx);
-                if (preview)
-                {
-                    using (FlexCelHtmlExport html = new FlexCelHtmlExport(xlsx, true))
-                    {
-                        html.Export($"{HtmlFolder}{pattern}.html", null);
-                        return Task.CompletedTask;
-                    }
-                }
-                else
-                {
-                    using (MemoryStream XlsStream = new MemoryStream())
-                    {
-                        xlsx.Save(XlsStream);
-                        return SendToBrowser(XlsStream, "application/excel", GetReportName(pattern));
-                    }
-                }
+                return ExportExcelAsyc(xlsx, pattern, preview);
             }
         }
 
@@ -458,17 +399,11 @@ namespace DK.Application
 
 
                         //doc.SetMediaById(doc.Printer.GetMediaId(), true);
-
                     }
                     doc.EndPrint();
                     doc.Close();
                 }
-
-                using (MemoryStream XlsStream = new MemoryStream())
-                {
-                    xlsx.Save(XlsStream);
-                    return SendToBrowser(XlsStream, "application/excel", "Tài sản dán mã vạch.xlsx".RemoveDiacritics());
-                }
+                return ExportExcelAsyc(xlsx, "Tài sản dán mã vạch.xlsx".RemoveDiacritics(), false);
             }
         }
 
@@ -623,6 +558,32 @@ namespace DK.Application
             response.ContentType = MimeType;
             response.BinaryWrite(MemData);
             response.End();
+        }
+
+        private Task ExportExcelAsyc(XlsFile xlsx, string pattern, bool preview)
+        {
+            if (preview)
+            {
+                using (FlexCelHtmlExport html = new FlexCelHtmlExport(xlsx, true))
+                {
+                    html.Export($"{HtmlFolder}{preview}.html", null);
+                    return Task.CompletedTask;
+                }
+            }
+            else
+            {
+                var r = new Random();
+                var number = r.Next(10);
+                var path = HtmlFolder + $"{number}.xlsx";
+                xlsx.Save(path);
+                using (MemoryStream XlsStream = new MemoryStream())
+                {
+                    IWorkbook workbook = new XSSFWorkbook(path);
+                    workbook.Write(XlsStream);
+                    workbook.Close();
+                    return SendToBrowser(XlsStream, "application/excel", GetReportName(pattern));
+                }
+            }
         }
     }
 }
