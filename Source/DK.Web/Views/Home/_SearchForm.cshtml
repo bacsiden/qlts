@@ -3,7 +3,7 @@
 @{
     var tags = ViewBag.Tags as IEnumerable<string> ?? new List<string>();
     var chungLoais = ViewBag.ChungLoai as IEnumerable<string> ?? new List<string>();
-    var pageSizeList = new int[] { 500, 1000, 2000, 5000 };
+    var pageSizeList = new int[] { 10, 50, 100, 200, 500 };
     var canManage = DK.Application.Models.RoleList.GetAll().Any(User.IsInRole);
     var allViews = ((List<ViewField>)ViewBag.ViewFields).ToList();
     var reportTemplates = DK.Application.Models.ReportVariables.Templates.Where(m => !m.Key.StartsWith("1"));

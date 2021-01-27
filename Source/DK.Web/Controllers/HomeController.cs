@@ -351,14 +351,14 @@ namespace DK.Web.Controllers
         {
             var types = _typeRepository.Find(m => true).ToList();
             ViewBag.GroupName = TypeConstant.Groups;
-            ViewBag.ChungLoai = types.Where(m => m.Name == TypeConstant.ChungLoai).Select(m => m.Title);
-            ViewBag.DanhMuc = types.Where(m => m.Name == TypeConstant.Group).Select(m => m.Title);
-            ViewBag.NguonKinhPhi = types.Where(m => m.Name == TypeConstant.NguonKinhPhi).Select(m => m.Title);
-            ViewBag.NganSachKhac = types.Where(m => m.Name == TypeConstant.NguonKinhPhiKhac).Select(m => m.Title);
-            ViewBag.ChatLuong = types.Where(m => m.Name == TypeConstant.ChatLuong).Select(m => m.Title);
-            ViewBag.LoaiXe = types.Where(m => m.Name == TypeConstant.LoaiXe).Select(m => m.Title);
-            ViewBag.PhongBan = types.Where(m => m.Name == TypeConstant.PhongBan).Select(m => m.Title);
-            ViewBag.Tags = types.Where(m => m.Name == TypeConstant.Tags).Select(m => m.Title);
+            ViewBag.ChungLoai = types.Where(m => m.Name == TypeConstant.ChungLoai).Select(m => m.Title).Distinct();
+            ViewBag.DanhMuc = types.Where(m => m.Name == TypeConstant.Group).Select(m => m.Title).Distinct();
+            ViewBag.NguonKinhPhi = types.Where(m => m.Name == TypeConstant.NguonKinhPhi).Select(m => m.Title).Distinct();
+            ViewBag.NganSachKhac = types.Where(m => m.Name == TypeConstant.NguonKinhPhiKhac).Select(m => m.Title).Distinct();
+            ViewBag.ChatLuong = types.Where(m => m.Name == TypeConstant.ChatLuong).Select(m => m.Title).Distinct();
+            ViewBag.LoaiXe = types.Where(m => m.Name == TypeConstant.LoaiXe).Select(m => m.Title).Distinct();
+            ViewBag.PhongBan = types.Where(m => m.Name == TypeConstant.PhongBan).Select(m => m.Title).Distinct();
+            ViewBag.Tags = types.Where(m => m.Name == TypeConstant.Tags).Select(m => m.Title).Distinct();
             ViewBag.Members = UserManager.Users.Select(m => m.UserName).ToList();
         }
     }
