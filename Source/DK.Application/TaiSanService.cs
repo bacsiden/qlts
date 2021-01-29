@@ -566,7 +566,7 @@ namespace DK.Application
             {
                 using (FlexCelHtmlExport html = new FlexCelHtmlExport(xlsx, true))
                 {
-                    html.Export($"{HtmlFolder}{preview}.html", null);
+                    html.Export($"{HtmlFolder}{pattern}.html", null);
                     return Task.CompletedTask;
                 }
             }
