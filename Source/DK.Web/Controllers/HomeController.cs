@@ -174,12 +174,6 @@ namespace DK.Web.Controllers
                 taiSan = _taiSanRepository.Get(id.Value);
             }
 
-            var canManage = RoleList.GetAll().Any(User.IsInRole);
-            if ((isApproved || taiSan?.IsApproved == true) && !canManage)
-            {
-                return CustomRedirect(returnUrl);
-            }
-
             if (taiSan == null)
             {
                 taiSan = new TaiSan

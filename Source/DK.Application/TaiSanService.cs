@@ -238,8 +238,9 @@ namespace DK.Application
 
         private string GetReportName(string pattern)
         {
-            var template = ReportVariables.Templates[pattern];
-            return $"{pattern} {template.Item1.RemoveDiacritics()}.xlsx";
+            ReportVariables.Templates.TryGetValue(pattern, out Tuple<string,string> template);
+            var name = template == null? pattern.RemoveDiacritics(): $"{pattern} {template.Item1.RemoveDiacritics()}.xlsx";
+            return name;
         }
 
         private TaiSan BuildSumTaiSan(List<TaiSan> taiSans)
