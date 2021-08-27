@@ -187,11 +187,16 @@ namespace DK.Application.Models
         [Display(Name = "Phòng/Ban quản lý")]
         public string PhongQuanLy { get; set; }
 
+        // search contains
+        [ColumnIndex(26)]
+        [Display(Name = "Hệ thống TS")]
+        public string HeThongTS { get; set; }
+
         /// <summary>
         /// chỉ đối với phương tiện
         /// </summary>
         // filter
-        [ColumnIndex(26)]
+        [ColumnIndex(27)]
         [Display(Name = "Loại xe")]
         public string LoaiXe { get; set; }
 
@@ -199,7 +204,7 @@ namespace DK.Application.Models
         /// chỉ đối với phương tiện
         /// </summary>
         // filter
-        [ColumnIndex(27)]
+        [ColumnIndex(28)]
         [Display(Name = "Biển số")]
         public string BienSo { get; set; }
 
@@ -207,56 +212,56 @@ namespace DK.Application.Models
         /// chỉ đối với phương tiện
         /// </summary>
         [Display(Name = "Dung tích xi lanh")]
-        [ColumnIndex(28)]
+        [ColumnIndex(29)]
         public int? DungTichXiLanh { get; set; }
 
         /// <summary>
         /// chỉ đối với phương tiện
         /// </summary>
         [Display(Name = "Số chỗ ngồi")]
-        [ColumnIndex(29)]
+        [ColumnIndex(30)]
         public int? SoChoNgoi { get; set; }
 
         /// <summary>
         /// chỉ đối với nhà đất
         /// </summary>
         [Display(Name = "Số tầng")]
-        [ColumnIndex(30)]
+        [ColumnIndex(31)]
         public int? SoTang { get; set; }
 
         /// <summary>
         /// chỉ đối với nhà đất
         /// </summary>
         [Display(Name = "Diện tích xây dựng (m2)")]
-        [ColumnIndex(31)]
+        [ColumnIndex(32)]
         public int? DienTichXayDung { get; set; }
 
         /// <summary>
         /// chỉ đối với nhà đất
         /// </summary>
         [Display(Name = "Cấp công trình")]
-        [ColumnIndex(32)]
+        [ColumnIndex(33)]
         public string CapCongTrinh { get; set; }
 
         /// <summary>
         /// chỉ đối với nhà đất
         /// </summary>
         [Display(Name = "Địa chỉ")]
-        [ColumnIndex(33)]
+        [ColumnIndex(34)]
         public string DiaChi { get; set; }
 
         /// <summary>
         /// chỉ đối với nhà đất
         /// </summary>
         [Display(Name = "Diện tích khuôn viên (m2)")]
-        [ColumnIndex(34)]
+        [ColumnIndex(35)]
         public int? DienTichKhuonVien { get; set; }
 
         /// <summary>
         /// Multi select
         /// </summary>
         [Display(Name = "Tags")]
-        [ColumnIndex(35)]
+        [ColumnIndex(36)]
         public List<string> Tags { get; set; } = new List<string>();
 
         [BsonIgnore]

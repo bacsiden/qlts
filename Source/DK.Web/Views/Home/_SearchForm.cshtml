@@ -146,6 +146,10 @@
                 @Html.LabelFor(m => m.LoaiXe)
                 @Html.DropDownListFor(x => x.LoaiXe, new SelectList(ViewBag.LoaiXe), "Tất cả", new { Class = "form-control form-control-sm" })
             </div>
+            <div class="col-md-2 col-sm-3 search-item">
+                @Html.LabelFor(m => m.HeThongTS)
+                @Html.TextBoxFor(m => m.HeThongTS, new { Class = "form-control form-control-sm", placeholder = "Hệ thống tài sản" })
+            </div>
             <div class="col-md-4 col-sm-6 search-item">
                 @Html.LabelFor(m => m.Tags)
                 <select name="Tags" class="form-control form-control-sm input-sm select2" multiple="multiple">

@@ -487,6 +487,7 @@ namespace DK.Application
             ts.NguoiQuanLy = GetCellString(xls, row, nameof(TaiSan.NguoiQuanLy));
             ts.PhongQuanLy = GetCellString(xls, row, nameof(TaiSan.PhongQuanLy));
 
+            ts.HeThongTS = GetCellString(xls, row, nameof(TaiSan.HeThongTS));
             ts.LoaiXe = GetCellString(xls, row, nameof(TaiSan.LoaiXe));
             ts.BienSo = GetCellString(xls, row, nameof(TaiSan.BienSo));
             ts.DungTichXiLanh = GetCellInt(xls, row, nameof(TaiSan.DungTichXiLanh));

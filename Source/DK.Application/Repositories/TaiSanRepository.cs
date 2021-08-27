@@ -121,6 +121,10 @@ namespace DK.Application.Repositories
             {
                 query &= filter.Regex(m => m.NguoiQuanLy, BsonRegularExpression.Create(new Regex(model.NguoiQuanLy, RegexOptions.IgnoreCase)));
             }
+            if (!string.IsNullOrWhiteSpace(model.HeThongTS))
+            {
+                query &= filter.Regex(m => m.HeThongTS, BsonRegularExpression.Create(new Regex(model.HeThongTS, RegexOptions.IgnoreCase)));
+            }
             #endregion
 
             if (model.Tags.Count > 0)
