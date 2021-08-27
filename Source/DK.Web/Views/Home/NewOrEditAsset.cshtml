@@ -17,9 +17,9 @@
 
     .bootstrap-tagsinput {
         width: 100%;
-        padding: 0px 6px 5px 6px!important;
+        padding: 0px 6px 5px 6px !important;
     }
-    
+
     hr {
         margin-top: 5px;
         margin-bottom: 5px;
@@ -34,14 +34,17 @@
 
 @using (Html.BeginForm(null, null, FormMethod.Post, new { role = "form", onsubmit = "removeCurrencySeparators()" }))
 {
-    <button class="btn btn-sm bd bg-primary tx-white pointer"><i class="fa fa-save"></i> Lưu lại</button>
+    if (canManage || !Model.IsApproved)
+    {
+        <button class="btn btn-sm bd bg-primary tx-white pointer"><i class="fa fa-save"></i> Lưu lại</button>
+    }
     <a class="btn btn-sm bd pointer bg-white" href="@Request.Params["returnUrl"]"><i class="fa fa-arrow-left"></i> Quay lại</a>
     <div class="card mt-2 mb-2 shadow-base">
         <div class="card-body">
             @Html.Partial("_NewOrEditAssetForm", Model)
         </div>
     </div>
-    if (canManage && !Model.IsApproved)
+    if (canManage || !Model.IsApproved)
     {
         <button class="btn btn-sm bd bg-primary tx-white pointer"><i class="fa fa-save"></i> Lưu lại</button>
     }
@@ -54,7 +57,7 @@
     <h4 class="mt-3">
         Danh sách tài sản con
     </h4>
-    if (canManage && !Model.IsApproved)
+    if (canManage || !Model.IsApproved)
     {
         <div class="mb-1">
             <a href="@Url.Action("NewOrEditChildAsset", "Home", new { parentId = Model.Id, Code = "", returnUrl = Request.RawUrl })" class="btn btn-primary btn-sm mr-1"><i class="fa fa-plus"></i> Thêm</a>
