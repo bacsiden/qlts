@@ -461,7 +461,7 @@ namespace DK.Application
             ts.GroupName = GetCellString(xls, row, nameof(TaiSan.GroupName));
 
             var allowGroups = string.Join(", ", types.Where(m => m.Name == TypeConstant.Group).Select(m => m.Title));
-            if (!TypeConstant.Groups.Any(m => m.Equals(ts.GroupName, StringComparison.OrdinalIgnoreCase)))
+            if (allowGroups?.IndexOf(ts.GroupName) < 0)
             {
                 throw new Exception($"Lỗi dữ liệu tại dòng {row}. Tên nhóm tài sản phải là: {allowGroups}");
             }

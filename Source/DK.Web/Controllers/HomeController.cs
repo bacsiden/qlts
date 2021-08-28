@@ -344,7 +344,7 @@ namespace DK.Web.Controllers
         private void CreateDropDownViewBag()
         {
             var types = _typeRepository.Find(m => true).ToList();
-            ViewBag.GroupName = TypeConstant.Groups;
+            ViewBag.GroupName = types.Where(m => m.Name == TypeConstant.Group).Select(m => m.Title).Distinct();
             ViewBag.ChungLoai = types.Where(m => m.Name == TypeConstant.ChungLoai).Select(m => m.Title).Distinct();
             ViewBag.DanhMuc = types.Where(m => m.Name == TypeConstant.Group).Select(m => m.Title).Distinct();
             ViewBag.NguonKinhPhi = types.Where(m => m.Name == TypeConstant.NguonKinhPhi).Select(m => m.Title).Distinct();
