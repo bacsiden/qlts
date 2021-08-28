@@ -460,9 +460,10 @@ namespace DK.Application
             ts.Name = GetCellString(xls, row, nameof(TaiSan.Name));
             ts.GroupName = GetCellString(xls, row, nameof(TaiSan.GroupName));
 
+            var allowGroups = string.Join(", ", types.Where(m => m.Name == TypeConstant.Group).Select(m => m.Title));
             if (!TypeConstant.Groups.Any(m => m.Equals(ts.GroupName, StringComparison.OrdinalIgnoreCase)))
             {
-                throw new Exception($"Lỗi dữ liệu tại dòng {row}. Tên nhóm tài sản phải là: {TypeConstant.GDacBiet}, {TypeConstant.GChuyenDung}, {TypeConstant.GQuanLy}");
+                throw new Exception($"Lỗi dữ liệu tại dòng {row}. Tên nhóm tài sản phải là: {allowGroups}");
             }
 
             ts.ChungLoai = GetCellString(xls, row, nameof(TaiSan.ChungLoai));
@@ -501,6 +502,7 @@ namespace DK.Application
             ts.Tags = GetCellListString(xls, row, nameof(TaiSan.Tags));
             ts.Modified = DateTime.UtcNow.AddHours(7);
 
+            AddNewType(types, newTypes, TypeConstant.Group, ts.GroupName);
             AddNewType(types, newTypes, TypeConstant.ChungLoai, ts.ChungLoai);
             AddNewType(types, newTypes, TypeConstant.NguonKinhPhi, ts.NguonKinhPhi);
             AddNewType(types, newTypes, TypeConstant.NguonKinhPhiKhac, ts.NganSachKhac);

@@ -23,6 +23,7 @@ namespace DK.Application.Models
         public const string GQuanLy = "Tài sản phục vụ công tác quản lý";
         public const string GDacBiet = "Tài sản đặc biệt";
         public const string GChuyenDung = "Tài sản chuyên dùng";
+        public const string GKTNV = "Tài sản KTNV";
 
         public static List<string> Groups = new List<string> { GQuanLy, GDacBiet, GChuyenDung };
         public static string ToMoneyString(this decimal? input)
