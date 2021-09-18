@@ -48,8 +48,14 @@ namespace DK.Application
             for (int row = 3; row <= xls.RowCount; row++)
             {
                 var ts = new TaiSan() { CreatedBy = userName };
-                FillTaiSan(xls, ts, types, newTypes, row);
-
+                try
+                {
+                    FillTaiSan(xls, ts, types, newTypes, row);
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
                 ts.Code = GetCellString(xls, row, nameof(TaiSan.Code));
                 if (!string.IsNullOrWhiteSpace(ts.Code) || ts.Number.HasValue) throw new Exception($"Lỗi dữ liệu tại dòng {row}. Không được nhập cột Mã tài sản hoặc Số hiệu. Các cột đó sẽ được tự sinh");
 
@@ -238,8 +244,8 @@ namespace DK.Application
 
         private string GetReportName(string pattern)
         {
-            ReportVariables.Templates.TryGetValue(pattern, out Tuple<string,string> template);
-            var name = template == null? pattern.RemoveDiacritics(): $"{pattern} {template.Item1.RemoveDiacritics()}.xlsx";
+            ReportVariables.Templates.TryGetValue(pattern, out Tuple<string, string> template);
+            var name = template == null ? pattern.RemoveDiacritics() : $"{pattern} {template.Item1.RemoveDiacritics()}.xlsx";
             return name;
         }
 
@@ -451,7 +457,8 @@ namespace DK.Application
         private void FillTaiSan(XlsFile xls, TaiSan ts, List<Models.Type> types, List<Models.Type> newTypes, int row, System.Type type = null)
         {
             var no = GetCellInt(xls, row, nameof(TaiSan.No));
-            if (!no.HasValue) throw new Exception($"Lỗi dữ liệu tại dòng {row}. Cột STT phải có dữ liệu");
+            if (!no.HasValue) 
+                throw new Exception($"Lỗi dữ liệu tại dòng {row}. Cột STT phải có dữ liệu");
             ts.No = no.Value;
 
             ts.Code = GetCellString(xls, row, nameof(TaiSan.Code));
@@ -459,7 +466,8 @@ namespace DK.Application
 
             ts.Name = GetCellString(xls, row, nameof(TaiSan.Name));
             ts.GroupName = GetCellString(xls, row, nameof(TaiSan.GroupName));
-
+            if (string.IsNullOrEmpty(ts.GroupName))
+                throw new Exception($"Lỗi dữ liệu tại dòng {row}. Tên nhóm tài sản phải có giá trị");
             var allowGroups = string.Join(", ", types.Where(m => m.Name == TypeConstant.Group).Select(m => m.Title));
             if (allowGroups?.IndexOf(ts.GroupName) < 0)
             {
